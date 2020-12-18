@@ -1,0 +1,1128 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+	<meta name="generator" content="Hugo 0.79.0" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>执子之手 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="执子之手">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="执子之手 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.gitee.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.gitee.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.gitee.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.gitee.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    
+    <link href="https://orchidflower.gitee.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: false, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.gitee.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item menu-item-active">
+          <a href="https://orchidflower.gitee.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.gitee.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.gitee.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.gitee.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.gitee.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+    
+ <section id="posts" class="posts-expand">
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/" itemprop="url">
+        迁移到SpringBoot 01 - 插件加载
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-05-09">
+    2018-05-09
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/05/09/migrating-to-spring-boot-01-loading-plugin/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 01 - 插件加载">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>首先简单说一下云平台的业务功能：<em>云平台上提供了多种多样的服务，这些服务可能来源于不同的供应商。也就是说对于某一种服务来说，可能会有多个供应商提供相同的服务；而对于某一个供应商来说，它可能提供多种服务。</em></p>
+<p>之前的云平台中有一个插件机制，使用插件机制解决了供应商与系统的耦合度问题。系统抽象了服务层，服务层在合适的时机加载插件以调用供应商的服务。</p>
+<p>加载相关的代码大概类似这样：</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#f92672">...</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span style="color:#111">ClassLoader</span> <span style="color:#111">localClassLoader</span> <span style="color:#f92672">=</span> <span style="color:#111">Thread</span><span style="color:#f92672">.</span><span style="color:#75af00">currentThread</span><span style="color:#f92672">().</span><span style="color:#75af00">getContextClassLoader</span><span style="color:#f92672">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#00a8c8">for</span> <span style="color:#f92672">(</span><span style="color:#111">String</span> <span style="color:#111">str</span> <span style="color:#f92672">:</span> <span style="color:#111">providerClassNames</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    <span style="color:#00a8c8">try</span> <span style="color:#f92672">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>        <span style="color:#111">Class</span><span style="color:#f92672">&lt;?&gt;</span> <span style="color:#111">localClass</span> <span style="color:#f92672">=</span> <span style="color:#111">localClassLoader</span><span style="color:#f92672">.</span><span style="color:#75af00">loadClass</span><span style="color:#f92672">(</span><span style="color:#111">str</span><span style="color:#f92672">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>        <span style="color:#111">XXXServiceProvider</span> <span style="color:#111">localProvider</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">XXXServiceProvider</span><span style="color:#f92672">)</span> <span style="color:#111">localClass</span><span style="color:#f92672">.</span><span style="color:#75af00">newInstance</span><span style="color:#f92672">();</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>        <span style="color:#111">localProvider</span><span style="color:#f92672">.</span><span style="color:#75af00">initial</span><span style="color:#f92672">();</span><span style="color:#75715e">// 初始化插件
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span> <span style="color:#00a8c8">catch</span> <span style="color:#f92672">(</span><span style="color:#111">Exception</span> <span style="color:#111">e</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>		<span style="color:#f92672">...</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>    <span style="color:#f92672">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#f92672">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#f92672">...</span>
+</code></pre></div><p>providerClassNames是一个数组，其中并所有插件的主类名字。通过获取到的ClassLoader，对插件主类进行加载，从而获得插件对象。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2018/05/08/migrating-to-spring-boot-00-background/" itemprop="url">
+        迁移到SpringBoot 00 - 背景介绍
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-05-08">
+    2018-05-08
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/05/08/migrating-to-spring-boot-00-background/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 00 - 背景介绍">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2018/05/08/migrating-to-spring-boot-00-background/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>最近因为发布方面的原因，需要对项目进行一次改造，趁着这次机会，对云平台项目进行了彻底的重构，迁移到了Spring Boot上。改造过程中，从传统的Spring项目迁移到Spring Boot上，还是碰到了一些问题的，也因此留下了这个系列的笔记。其中的内容，应该对希望把传统的Spring项目迁移到Spring Boot的人会有所帮助。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2018/05/08/migrating-to-spring-boot-00-background/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/" itemprop="url">
+        Apache HttpClient 使用（上）
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-04-23">
+    2018-04-23
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/04/23/Apache-HttpClient-Manual/" class="leancloud_visitors" data-flag-title="Apache HttpClient 使用（上）">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。HttpClient已经应用在很多的项目中，比如Apache Jakarta上很著名的另外两个开源项目Cactus和HTMLUnit都使用了HttpClient。</p>
+<p>目前最新的版本是4.5，支持HTTP 1.0/HTTP 1.1协议。正在开发中的5.0版本（还在Beta阶段）支持HTTP/2协议。</p>
+<h1 id="1-特性">1. 特性</h1>
+<ol>
+<li>基于标准、纯净的java语言。实现了Http1.0和Http1.1</li>
+<li>以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）。</li>
+<li>支持HTTPS协议。</li>
+<li>通过Http代理建立透明的连接。</li>
+<li>利用CONNECT方法通过Http代理建立隧道的https连接。</li>
+<li>Basic, Digest, NTLMv1, NTLMv2, NTLM2 Session, SNPNEGO/Kerberos认证方案。</li>
+<li>插件式的自定义认证方案。</li>
+<li>便携可靠的套接字工厂使它更容易的使用第三方解决方案。</li>
+<li>连接管理器支持多线程应用。支持设置最大连接数，同时支持设置每个主机的最大连接数，发现并关闭过期的连接。</li>
+<li>自动处理Set-Cookie中的Cookie。</li>
+<li>插件式的自定义Cookie策略。</li>
+<li>Request的输出流可以避免流中内容直接缓冲到socket服务器。</li>
+<li>Response的输入流可以有效的从socket服务器直接读取相应内容。</li>
+<li>在http1.0和http1.1中利用KeepAlive保持持久连接。</li>
+<li>直接获取服务器发送的response code和 headers。</li>
+<li>设置连接超时的能力。</li>
+<li>实验性的支持http1.1 response caching。</li>
+<li>源代码基于Apache License 可免费获取。</li>
+</ol>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/" itemprop="url">
+        Apache HttpClient 使用（下）
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-04-23">
+    2018-04-23
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/04/23/Apache-HttpClient-Manual-Part2/" class="leancloud_visitors" data-flag-title="Apache HttpClient 使用（下）">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="4-链接池">4. 链接池</h1>
+<p>通常我们可以使用<code>PoolingHttpClientConnectionManager</code>来创建一个链接池。</p>
+<h2 id="41-对于链接池的管理">4.1 对于链接池的管理</h2>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>// 设置最大连接数  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>cm.setMaxTotal(200);  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>// 设置每个主机地址的并发数  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>cm.setDefaultMaxPerRoute(20);  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>// 通过PoolingHttpClientConnectionManager，来获取CloseableHttpClient  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>// 创建http GET请求  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>HttpGet httpGet = new HttpGet(&#34;http://www.baidu.com/&#34;);    
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>// 执行请求  
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>response = httpClient.execute(httpGet);    
+</code></pre></div>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/" itemprop="url">
+        Spring应用因Session Timeout设置引起的GC问题
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-08-29">
+    2017-08-29
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/08/29/Spring-Session-Timeout-caused-GC-failure/" class="leancloud_visitors" data-flag-title="Spring应用因Session Timeout设置引起的GC问题">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>最近在客户的要求下，对系统进行了压测。自己压测的时候一切指标都挺正常。但是客户却反馈说压测的时候有时候会碰到性能衰减很厉害，不稳定。于是有了下面这次的排查过程。客户反馈说问题是发生在多次连续压测之后碰到的，所以进行了一系列的测试。</p>
+<p>先说一下测试环境的一些信息：测试主机是阿里云的ECS，配置是2C + 16G。为了方便，数据库采用的是Docker搭建的，版本是5.6.X。另外，这台机器上还安装了Zookeeper 3.4.X 和Kafka 1.0。系统本身是一个标准的Spring + CXF的应用，提供给客户使用的服务是标准的Restful接口。</p>
+<h1 id="1-重现问题">1. 重现问题</h1>
+<p>因为客户反馈是多次压测之后碰到的，因此首先尝试连续压测多次看看能不能重现问题。为了可能存在的数据库性能问题，临时申请了RDS作为数据库；另外为了尽快发现问题，将程序占用内存缩小到1G。这次测试测出了客户所说的问题，通过jconsole监控也发现了问题原因，应该是因为GC导致的。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15035654400984.jpg" alt="">
+看图表可以发现，压测5~6分钟之后，Java的GC占用了大量的CPU时间（左上图中的蓝色线），而且内存占用一直居高不下（右上图）。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/" itemprop="url">
+        使用Docker运行Jenkins（二）
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-08-20">
+    2017-08-20
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/" class="leancloud_visitors" data-flag-title="使用Docker运行Jenkins（二）">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>Gitea 是一款极易搭建的自助 Git 服务，最初是fork子Gogs项目（Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自助 Git 服务）。Gitea使用 Go 语言开发。使用 Go 语言开发使得 Gitea 能够通过独立的二进制分发，并且支持 Go 语言支持的 所有平台，包括 Linux、Mac OS X、Windows 以及 ARM 平台。</p>
+<p>Gitea占用资源小，比起Gitlab这种庞然大物来说简直是精致得要命。但是作为小团队的项目管理用来替代Gitlab还是基本能够满足需求的。而且Gitea（包括Gogs）社区还是挺活跃的，新功能也在逐渐增加中，个人很看好它的前景。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/08/13/How-to-setup-Jenkins-in-Docker/" itemprop="url">
+        使用Docker运行Jenkins服务（一）
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-08-13">
+    2017-08-13
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/08/13/How-to-setup-Jenkins-in-Docker/" class="leancloud_visitors" data-flag-title="使用Docker运行Jenkins服务（一）">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/08/13/How-to-setup-Jenkins-in-Docker/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-jenkins是什么">1. Jenkins是什么？</h1>
+<p>某百科的解释是：</p>
+<blockquote>
+<p>Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。</p>
+</blockquote>
+<p>这个解释大体上是靠谱的，Jenkins的核心作用就是一个CI（持续集成）工具。CI的概念是：持续集成指的是，频繁地（一天多次）将代码集成到主干。持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。而Jenkins能够完成这些自动化构建、测试的大部分工作。</p>
+<p>Jenkins的前身是Hudson。这其中的渊源涉及到Oracle收购Java引起的版权纷争。有兴趣的可以看附录里面的相关链接。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/08/13/How-to-setup-Jenkins-in-Docker/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/" itemprop="url">
+        Shell脚本中的一些特殊变量
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-08-05">
+    2017-08-05
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/08/05/Some-special-parameters-in-Shell/" class="leancloud_visitors" data-flag-title="Shell脚本中的一些特殊变量">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    Shell脚本的一些参数总是感觉记不住，特此记录一下，以备后查。 1. 参数说明 参数 说明 $0 当前脚本的文件名 &mdash; &mdash; $n 传递给脚本或函数的参数。n 是一个数
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/07/30/How-to-using-argument-in-xargs/" itemprop="url">
+        xargs使用复杂参数
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-07-30">
+    2017-07-30
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/07/30/How-to-using-argument-in-xargs/" class="leancloud_visitors" data-flag-title="xargs使用复杂参数">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/07/30/How-to-using-argument-in-xargs/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    一般情况下xargs只处理一个参数，因此可以这样使用，最后的rm会自动补齐一个参数： 1find . | grep hello | xargs rm 但是有时候需要多个参数才能够正常运行，这
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/07/30/How-to-using-argument-in-xargs/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2017/07/23/How-to-login-without-password-over-SSH/" itemprop="url">
+        如何无密码登录SSH
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-07-23">
+    2017-07-23
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/07/23/How-to-login-without-password-over-SSH/" class="leancloud_visitors" data-flag-title="如何无密码登录SSH">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2017/07/23/How-to-login-without-password-over-SSH/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    我们在用Jenkins做发布工具的时候，经常用到的功能是通过SSH通道完成各种功能。例如使用scp命令拷贝安装包到服务器上，通过ssh -t命
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2017/07/23/How-to-login-without-password-over-SSH/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+<nav class="pagination">
+    <a class="extend prev" rel="prev" href="https://orchidflower.gitee.io/page/3/"><i class="fa fa-angle-left"></i></a>
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/">1</a>
+        
+        
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/page/2/">2</a>
+        
+        
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/page/3/">3</a>
+        
+        
+    
+        
+        
+          <span class="page-number current">4</span>
+        
+        
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/page/5/">5</a>
+        
+        
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/page/6/">6</a>
+        
+        
+    
+        
+        
+          <a class="page-number" href="https://orchidflower.gitee.io/page/7/">7</a>
+        
+        
+    
+    <a class="extend next" rel="next" href="https://orchidflower.gitee.io/page/5/"><i class="fa fa-angle-right"></i></a>
+</nav>
+
+
+
+
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+    <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.gitee.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.gitee.io/post/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.gitee.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.gitee.io/tags/">
+         
+        <span class="site-state-item-count">75</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+<div class="feed-link motion-element">
+<a href="https://orchidflower.gitee.io/index.xml" rel="alternate" type="application/rss+xml" target="_blank">
+    <i class="fa fa-rss"></i>
+    RSS 订阅
+</a>
+</div>
+
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2020</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
+</div>
+<div class="theme-info">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.gitee.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/bootstrap.js"></script>
+
+
+
+<script type="text/javascript" src="https://orchidflower.gitee.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.gitee.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.gitee.io/js/vendor/valine/Valine.min.js"></script>
+<script>
+  AV.initialize("rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI", "0VSzBkok3Snp1c4xHL4r3Sn3");
+
+  function showVisitors(Counter) {
+    var query = new AV.Query(Counter);
+    var entries = [];
+    var $visitors = $(".leancloud_visitors");
+
+    $visitors.each(function () {
+      entries.push( $(this).attr("id").trim() );
+    });
+
+    query.containedIn('url', entries);
+    query.find()
+      .then(function (results) {
+        var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+        var COMMENT_CONTAINER_REF = '.leancloud-comments-count';
+
+        if (results.length === 0) {
+          $visitors.find(COUNT_CONTAINER_REF).text(0);
+          return;
+        }
+
+        for (var i = 0; i < results.length; i++) {
+          var item = results[i];
+          var url = item.get('url');
+          var time = item.get('time');          
+          var comments = item.get('comments'); 
+          var element = document.getElementById(url);
+
+          $(element).find(COUNT_CONTAINER_REF).text(time);
+          if (comments) {
+            $(element).find(COMMENT_CONTAINER_REF).text(comments);
+          }
+          
+        }
+      }, function (error) {
+        console.log("Error: " + error.code + " " + error.message);
+      });
+  }
+
+  $(function() {
+    var Counter = AV.Object.extend("Counter");
+    showVisitors(Counter);
+  });
+</script>
+
+
+</body>
+</html>

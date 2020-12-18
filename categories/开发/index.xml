@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>开发 on 执子之手</title>
+    <link>https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91/</link>
+    <description>Recent content in 开发 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何在Ubuntu上静态编译Golang&#43;GoCV程序</title>
+      <link>https://orchidflower.gitee.io/2020/12/18/How-to-build-static-binary-with-gocv/</link>
+      <pubDate>Fri, 18 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2020/12/18/How-to-build-static-binary-with-gocv/</guid>
+      <description>&lt;p&gt;最近做了一个图像增强程序，用到了OpenCV。为了方便发布，我将代码使用&lt;code&gt;Golang&lt;/code&gt;+&lt;code&gt;GoCV&lt;/code&gt;重写，但是编译的时候发现比较麻烦，特别记录一下，以备后查。
+本文对应版本如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 18.04.5 LTS&lt;/li&gt;
+&lt;li&gt;Golang 1.15.6&lt;/li&gt;
+&lt;li&gt;OpenCV 4.5.0&lt;/li&gt;
+&lt;li&gt;GoCV 0.2.5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-golang环境准备&#34;&gt;1. Golang环境准备&lt;/h1&gt;
+&lt;h2 id=&#34;11-安装golang&#34;&gt;1.1 安装Golang&lt;/h2&gt;
+&lt;p&gt;下载对应的包，然后解压，设置&lt;code&gt;PATH&lt;/code&gt;路径即可，不多说了。&lt;/p&gt;
+&lt;h2 id=&#34;12-设置gopath&#34;&gt;1.2 设置GOPATH&lt;/h2&gt;
+&lt;p&gt;使用&lt;code&gt;go get&lt;/code&gt;下载的包将下载到&lt;code&gt;$GOPATH&lt;/code&gt;目录中。
+这里设置成&lt;code&gt;/home/ubuntu/.go&lt;/code&gt;。不设置的话将自动设置成&lt;code&gt;~/go&lt;/code&gt;目录。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;cd&lt;/span&gt; /home/ubuntu/.go
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GOPATH&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/home/ubuntu/.go
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;13-下载gocv源码&#34;&gt;1.3 下载GoCV源码&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 设置代理翻墙，要不然下载不了&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;git config --global http.proxy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;git config --global https.proxy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;http_proxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;https_proxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;go get -v -u -d gocv.io/x/gocv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM</title>
+      <link>https://orchidflower.gitee.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</guid>
+      <description>&lt;p&gt;当一次要导出非常多数据的时候，例如100w条，如果使用&lt;code&gt;MyBatis&lt;/code&gt;将全部结果都查询到&lt;code&gt;list&lt;/code&gt;中，经常会导致内存溢出。这个时候，我们可以使用&lt;code&gt;MyBatis&lt;/code&gt;的&lt;code&gt;ResultHandler&lt;/code&gt;来使用游标方式访问数据，从而避免&lt;code&gt;OOM&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ResultHandler&lt;/code&gt;是MyBatis提供的一个接口，通过该接口可以让&lt;code&gt;MyBatis&lt;/code&gt;以流式的方式处理结果集，而不必等待整个结果集全部准备完毕，在准备好一条记录后就调用该接口中的&lt;code&gt;handleResult&lt;/code&gt;方法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;handleResult&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ResultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;resultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;要使用&lt;code&gt;ResultHandler&lt;/code&gt;需要在&lt;code&gt;Mapper&lt;/code&gt;层声明的时候做一定的处理。这里简单描述一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Mac上编译RedisDesktopManager（1）国际化处理</title>
+      <link>https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/</link>
+      <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/</guid>
+      <description>&lt;h1 id=&#34;1-概述&#34;&gt;1. 概述&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Redis Desktop Manager（RedisDesktopManager，RDM）是一个快速、简单、支持跨平台的 Redis 桌面管理工具，基于 Qt 5 开发，支持通过 SSH Tunnel 连接。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;ndash; 开源中国上面对项目的介绍&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RedisDesktopManager&lt;/code&gt; 是一款优秀的 &lt;code&gt;Redis&lt;/code&gt; 客户端。最初是作为开源项目发布的，官方也会发布编译好的版本。后来，作者做了一些商业化处理，上架了&lt;code&gt;App Store&lt;/code&gt;，从此不再发布编译后的版本，也在开源版本中阉割掉了 &lt;code&gt;SSH Tunnel&lt;/code&gt; 功能。有鉴于此，网上有很多人写教程来说明如何从源码构建一个发行版本，但是目前见到的教程多多少少都有一些问题。最近花了一些时间尝试完善整个编译过程，目前进展不错。以后会陆续说明编译过程中碰到的问题以及对应的解决办法。&lt;/p&gt;
+&lt;p&gt;今天首先来说一下国际化的问题。&lt;/p&gt;
+&lt;p&gt;目前网上流行的 &lt;code&gt;RedisDesktopManager&lt;/code&gt; 编译方法都没有对国际化文件进行处理，所以编译后的版本没有国际化功能，界面只显示英文，语言切换功能无效。经过对相关源码的分析，终于找到了正确的编译处理方法，现在可以完美切换语言。效果如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/2020-07-02-15936592204991.jpg&#34; alt=&#34;-w800&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用HttpServletRequestWrapper解决无法多次获取request Body的问题</title>
+      <link>https://orchidflower.gitee.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</guid>
+      <description>&lt;p&gt;在使用AOP编程的时候，经常碰到需要多次获取整个请求的body的情况。例如：典型场景下我们要在AOP切面中做日志记录或权限校验，此时需要调用&lt;code&gt;request.getInputStream&lt;/code&gt;获取输入流，从而读取整个请求的消息体。但是这通常会触发一个异常：&lt;code&gt;java.lang.IllegalStateException: getInputStream() can&#39;t be called after getReader()&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;出现这个问题的原因是默认的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象中的&lt;code&gt;getInputStream&lt;/code&gt;,&lt;code&gt;getReader&lt;/code&gt;函数式只允许调用一次。在一次请求中，除了我们在切面中调用&lt;code&gt;getInputStream&lt;/code&gt;之外，&lt;code&gt;Spring MVC&lt;/code&gt;框架在进行参数转换的时候还需要调用&lt;code&gt;getInputStream&lt;/code&gt;方法读取整个请求的消息体，然后转回为请求参数，这违背了只调用一次的原则，从而触发了以异常，&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我们可以引入&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;这个对象。这个类封装了&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为，我们可以继承这个类，从而使用一个新类模拟原始&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为。然后使用过滤器（filter）将原始的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象替换为&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;对象。&lt;/p&gt;
+&lt;p&gt;最近在项目中有需求为API请求增加参数签名校验，使用了AOP切面功能，因此碰到了上面的问题：参数校验切面中需要在读取整个请求报文，然后对报文进行hmac算法从而计算签名值。下面说一下具体的解决办法，以代码为主。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>iOS证书及推送相关概念</title>
+      <link>https://orchidflower.gitee.io/2018/09/04/ios-push-and-certificate/</link>
+      <pubDate>Tue, 04 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/09/04/ios-push-and-certificate/</guid>
+      <description>&lt;h1 id=&#34;1i-os开发中碰到的概念&#34;&gt;1.i OS开发中碰到的概念&lt;/h1&gt;
+&lt;h2 id=&#34;11-开发者账号&#34;&gt;1.1 开发者账号&lt;/h2&gt;
+&lt;p&gt;苹果对开发者账号分为如下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人 Individual  （$99/year，可以上架Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;组织 Organizations。又可以写分为两类：
+&lt;ul&gt;
+&lt;li&gt;组织 Organization  （普通账号，$99/year，能够上传Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;企业账号 Enterprise Program  （企业账号，$299/year，能够进行企业发布，不能够发布到Apple Store，不限制UUID数目）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;教育机构（Educational Institutions）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/15264592291888.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 08 - 日志</title>
+      <link>https://orchidflower.gitee.io/2018/07/13/migrating-to-spring-boot-08-logging/</link>
+      <pubDate>Fri, 13 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/07/13/migrating-to-spring-boot-08-logging/</guid>
+      <description>&lt;p&gt;SpringBoot默认的日志配置通常来说足够满足要求：日志记录到控制台，也能够配置日志的级别，样式等等。但是其也有些不足：没有了之前logback提供的热更新日志配置的功能。&lt;/p&gt;
+&lt;p&gt;logback有个非常好用的配置是“scan”，当“scan=true”的时候默认一分钟刷新一次配置。这样可以自动更新系统的日志级别。对于在线系统可以方便修改日志级别获取更加详细的日志，方便定位错误。这样可以保证服务不中断的情况下调整日志级别获取更多日志信息。但是默认的SpringBoot配置中不支持这种选项。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 07 - Redis发布订阅机制</title>
+      <link>https://orchidflower.gitee.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/</link>
+      <pubDate>Mon, 09 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/</guid>
+      <description>&lt;p&gt;Redis中的发布订阅机制（Pub/Sub）是基于channel这一概念的，这有些类似于Kafka中的基于topic的消息机制，只是不支持持久化。如果publish的消息，没有任何client处于&amp;quot;subscribe&amp;quot;状态，消息将会被丢弃。如果client在subcribe时，链接断开后重连，那么此期间的消息也将丢失。Redis server将会&amp;quot;尽力&amp;quot;将消息发送给处于subscribe状态的client，但是仍不会保证每条消息都能被正确接收。&lt;/p&gt;
+&lt;p&gt;为了解耦发布者(publisher)和订阅者(subscriber)之间的关系，Redis 使用了 channel (频道)作为两者的中介：发布者将信息直接发布给 channel ，而 channel 负责将信息发送给适当的订阅者，发布者和订阅者之间没有相互关系，也不知道对方的存在。&lt;/p&gt;
+&lt;p&gt;Spring Data Redis组件对Pub/Sub机制进行了抽象，提供了类似JMS的编程模式。Spring Data Redis使用了一个Container（RedisMessageListenerContainer）来解决发布订阅机制。这个Container使用一个Redis链接解决了多个topic订阅的问题。它把其他的订阅、发布者隔离成基本的POJO对象，而不用与Redis对象打交道。这简化了整个编程模型。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 06 - Swagger</title>
+      <link>https://orchidflower.gitee.io/2018/07/06/migrating-to-spring-boot-06-swagger/</link>
+      <pubDate>Fri, 06 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/07/06/migrating-to-spring-boot-06-swagger/</guid>
+      <description>&lt;p&gt;随着技术的发展，现在的Web系统架构基本都由原来的后端渲染（例如JSP），变成了：前端渲染、前后端分离的形态。前端和后端的唯一联系，变成了API接口。API文档变成了前后端开发人员联系的纽带，变得越来越重要，swagger就是一款让你更好的书写API文档的框架。没有API文档工具之前，大家都是手写API文档的，在什么地方书写的都有，有在Wiki上写的，有在Word里面写的，也有在对应的项目目录下readme.md上写的，每个公司都有每个公司的玩法，无所谓好坏。另外还有专门针对API文档开发的应用，例如showdoc之类的。&lt;/p&gt;
+&lt;p&gt;书写API文档的工具有很多，但是能称之为“框架”的，估计也只有swagger了。使用Swagger有个好处就是文档与代码结合紧密，更新代码的同时也会更新文档，不用担心同步的问题。而且在Java中使用Swagger也比较方便。&lt;/p&gt;
+&lt;p&gt;云认证平台提供的Restful接口是基于CXF实现的。网上现有的关于Swagger的文档多数是基于Spring MVC的，并不适用于CXF。下面我将针对CXF+SpringBoot的组合如何使用Swagger进行介绍。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>SpringBoot中使用Jackson导致Long型数据精度丢失问题</title>
+      <link>https://orchidflower.gitee.io/2018/06/22/Handling-Bigint-using-Jackson-in-Springboot/</link>
+      <pubDate>Fri, 22 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/06/22/Handling-Bigint-using-Jackson-in-Springboot/</guid>
+      <description>&lt;p&gt;数据库中有一个bigint类型数据，对应java后台类型为Long型，在某个查询页面中碰到了问题：页面上显示的数据和数据库中的数据不一致。例如数据库中存储的是：1475797674679549851，显示出来却成了1475797674679550000，后面几位全变成了0，精度丢失了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spring使用POI导出Excel内存溢出问题的解决（续）</title>
+      <link>https://orchidflower.gitee.io/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/</guid>
+      <description>&lt;p&gt;上篇文章介绍了一个方法，解决了导出Excel过程中内存溢出的问题。但是有些问题还没有搞明白，那就是为什么要这样打开数据库游标？为什么fetchSize必须为：-2147483648？这里面涉及到数据库游标的更多信息，这一篇文章将深入介绍这方面内容。&lt;/p&gt;
+&lt;p&gt;在数据库中，游标是一个十分重要的概念。游标提供了一种对从表中检索出的数据进行操作的灵活手段，就本质而言，游标实际上是一种能从包括多条数据记录的结果集中每次提取一条记录的机制。游标总是与一条SQL 选择语句相关联因为游标由结果集（可以是零条、一条或由相关的选择语句检索出的多条记录）和结果集中指向特定记录的游标位置组成。&lt;/p&gt;
+&lt;p&gt;MySQL数据库游标通常有两种形式：Client Side Cursor（客户端游标）和Server Side Cursor（服务器端游标）。默认情况下，客户端游标会把整个结果集获取到客户端内存中，如果结果集太大，就会引发Out Of Memory错误；而服务器端游标会将结果集缓存在服务器端，客户端从服务器端分批获得结果集。&lt;/p&gt;
+&lt;p&gt;MySQL默认是使用客户端游标的，因为通常情况下，程序处理的结果集不会特别大，对小结果集使用客户端游标效率更高：结果集一次性传输到客户端，客户端可以自行处理，服务器端也可以为其他客户端提供服务。但是针对大结果集，默认的客户端游标处理方式满足不了要求，针对这种情况，MySQL的Java客户端做了一个特殊的处理。下面参照官方帮助看一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spring使用POI导出Excel内存溢出问题的解决</title>
+      <link>https://orchidflower.gitee.io/2018/06/11/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring/</link>
+      <pubDate>Mon, 11 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/06/11/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring/</guid>
+      <description>&lt;p&gt;云认证平台提供将认证记录导出为Excel的功能。但是当业务量慢慢发展起来以后，就碰到一个比较棘手的问题：需要导出的认证记录太多，导出Excel的时候经常碰到服务器内存溢出问题。例如当要导出30w条记录的时候，服务端内存占用会超过2G，继续增加Heap空间不是一个非常合适的方案，因为无法预知一共需要多少内存。&lt;/p&gt;
+&lt;p&gt;因此，这两天特意找了一下解决方案，终于有了解决方案。最终方案导出256w条记录的时候，服务器内战占用1.6G，不再继续增加。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 05 - 事务管理</title>
+      <link>https://orchidflower.gitee.io/2018/06/01/migrating-to-spring-boot-05-transaction-management/</link>
+      <pubDate>Fri, 01 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/06/01/migrating-to-spring-boot-05-transaction-management/</guid>
+      <description>&lt;p&gt;Spring项目中使用数据库的方式多种多样，注入MyBatis、JDBC、Hibernate等等都是支持的。之前的系统是基于MyBatis的。&lt;/p&gt;
+&lt;p&gt;关于如何Spring Boot和MyBatis网上有很多文章，可以参考。有时间我也会专门写一篇介绍集成的过程。本文讲的就是MyBatis移植到Spring Boot方面碰到的一些问题，主要是事务控制方面的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 04 - Redis</title>
+      <link>https://orchidflower.gitee.io/2018/05/24/migrating-to-spring-boot-04-Redis/</link>
+      <pubDate>Thu, 24 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/05/24/migrating-to-spring-boot-04-Redis/</guid>
+      <description>&lt;p&gt;相比于Spring来说，在SpringBoot中使用Redis大幅简化了。通过使用&lt;code&gt;spring-boot-starter-data-redis&lt;/code&gt;，使用Redis变得非常简单。&lt;/p&gt;
+&lt;p&gt;基本步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;添加依赖&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&amp;gt;&lt;/span&gt;org.springframework.boot&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&amp;gt;&lt;/span&gt;spring-boot-starter-data-redis&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;配置application.properties/yaml&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;spring&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;redis&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;192.168.2.230&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;port&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;6379&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;password&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;xxxxxx&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;database&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;timeout&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;3000ms&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;注入RedisTemplate使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;    &lt;span style=&#34;color:#75af00&#34;&gt;@Autowired&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;    &lt;span style=&#34;color:#111&#34;&gt;StringRedisTemplate&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;stringRedisTemplate&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;就是这么简单。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 03 - Servlet和Filter</title>
+      <link>https://orchidflower.gitee.io/2018/05/18/migrating-to-spring-boot-03-Servlet-Filter/</link>
+      <pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/05/18/migrating-to-spring-boot-03-Servlet-Filter/</guid>
+      <description>&lt;p&gt;原先云认证中有几个特殊加载的组件：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;checkingServlet&lt;/code&gt;&lt;/strong&gt;：一个Servlet，用于检查系统的状态，主要用于负载均衡LB检测服务是否正常使用。该Servlet定义了了一组URL，可以用来检查系统的状态，例如：/checking/database（检查数据库是否可以访问），/checking/version（返回系统版本号），/checking（总体检查系统状态）等。这些功能理论上不适用Servlet也能够实现，但是由于历史原因采用了Servlet，这次一直也不考虑重新编写。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;ClientCertificateFromProxyFilter&lt;/code&gt;&lt;/strong&gt;：一个Filter，用于检查负载均衡转发过来的客户端证书，配合Spring Security完成双向SSL的认证工作。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 02 - 异常处理</title>
+      <link>https://orchidflower.gitee.io/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/</link>
+      <pubDate>Tue, 15 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/</guid>
+      <description>&lt;p&gt;首先说一下背景信息。云认证平台是一个传统的Spring项目，从上到下可以分为：API层（对应Spring Controller）、Service层、DAO层（MyBatis）几层。为了方便处理，从开发规范上我们要求了Service层的异常在Service层自行处理。&lt;/p&gt;
+&lt;p&gt;为了实现这一点，在接口定义上，从API层调用Service层的请求会有统一的返回基类：&lt;code&gt;CommonResult&lt;/code&gt;。其定义如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;CommonResult&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;implements&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Serializable&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;final&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;long&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;serialVersionUID&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;1L&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * success 请求成功与否的标志。
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;boolean&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;success&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Boolean&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;FALSE&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * resultCode 返回码。
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;resultCode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;/**
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     * message 详细信息。
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;     */&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;message&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;16&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;17&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所有需要从API层调用到的Service层的返回值都是该类或者该类的子类。如果是Service层之间互相调用，则不受此限制。&lt;/p&gt;
+&lt;p&gt;本章的内容主要与AOP有关。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 01 - 插件加载</title>
+      <link>https://orchidflower.gitee.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/</link>
+      <pubDate>Wed, 09 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/</guid>
+      <description>&lt;p&gt;首先简单说一下云平台的业务功能：&lt;em&gt;云平台上提供了多种多样的服务，这些服务可能来源于不同的供应商。也就是说对于某一种服务来说，可能会有多个供应商提供相同的服务；而对于某一个供应商来说，它可能提供多种服务。&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;之前的云平台中有一个插件机制，使用插件机制解决了供应商与系统的耦合度问题。系统抽象了服务层，服务层在合适的时机加载插件以调用供应商的服务。&lt;/p&gt;
+&lt;p&gt;加载相关的代码大概类似这样：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ClassLoader&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;localClassLoader&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Thread&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;currentThread&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;().&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;getContextClassLoader&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;String&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;str&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;providerClassNames&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;Class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;localClass&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;localClassLoader&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;loadClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;XXXServiceProvider&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;localProvider&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;XXXServiceProvider&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;localClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;newInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;        &lt;span style=&#34;color:#111&#34;&gt;localProvider&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;initial&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;();&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;// 初始化插件
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;catch&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Exception&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;e&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;		&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;providerClassNames是一个数组，其中并所有插件的主类名字。通过获取到的ClassLoader，对插件主类进行加载，从而获得插件对象。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>迁移到SpringBoot 00 - 背景介绍</title>
+      <link>https://orchidflower.gitee.io/2018/05/08/migrating-to-spring-boot-00-background/</link>
+      <pubDate>Tue, 08 May 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/05/08/migrating-to-spring-boot-00-background/</guid>
+      <description>&lt;p&gt;最近因为发布方面的原因，需要对项目进行一次改造，趁着这次机会，对云平台项目进行了彻底的重构，迁移到了Spring Boot上。改造过程中，从传统的Spring项目迁移到Spring Boot上，还是碰到了一些问题的，也因此留下了这个系列的笔记。其中的内容，应该对希望把传统的Spring项目迁移到Spring Boot的人会有所帮助。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apache HttpClient 使用（上）</title>
+      <link>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/</guid>
+      <description>&lt;p&gt;HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。HttpClient已经应用在很多的项目中，比如Apache Jakarta上很著名的另外两个开源项目Cactus和HTMLUnit都使用了HttpClient。&lt;/p&gt;
+&lt;p&gt;目前最新的版本是4.5，支持HTTP 1.0/HTTP 1.1协议。正在开发中的5.0版本（还在Beta阶段）支持HTTP/2协议。&lt;/p&gt;
+&lt;h1 id=&#34;1-特性&#34;&gt;1. 特性&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;基于标准、纯净的java语言。实现了Http1.0和Http1.1&lt;/li&gt;
+&lt;li&gt;以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）。&lt;/li&gt;
+&lt;li&gt;支持HTTPS协议。&lt;/li&gt;
+&lt;li&gt;通过Http代理建立透明的连接。&lt;/li&gt;
+&lt;li&gt;利用CONNECT方法通过Http代理建立隧道的https连接。&lt;/li&gt;
+&lt;li&gt;Basic, Digest, NTLMv1, NTLMv2, NTLM2 Session, SNPNEGO/Kerberos认证方案。&lt;/li&gt;
+&lt;li&gt;插件式的自定义认证方案。&lt;/li&gt;
+&lt;li&gt;便携可靠的套接字工厂使它更容易的使用第三方解决方案。&lt;/li&gt;
+&lt;li&gt;连接管理器支持多线程应用。支持设置最大连接数，同时支持设置每个主机的最大连接数，发现并关闭过期的连接。&lt;/li&gt;
+&lt;li&gt;自动处理Set-Cookie中的Cookie。&lt;/li&gt;
+&lt;li&gt;插件式的自定义Cookie策略。&lt;/li&gt;
+&lt;li&gt;Request的输出流可以避免流中内容直接缓冲到socket服务器。&lt;/li&gt;
+&lt;li&gt;Response的输入流可以有效的从socket服务器直接读取相应内容。&lt;/li&gt;
+&lt;li&gt;在http1.0和http1.1中利用KeepAlive保持持久连接。&lt;/li&gt;
+&lt;li&gt;直接获取服务器发送的response code和 headers。&lt;/li&gt;
+&lt;li&gt;设置连接超时的能力。&lt;/li&gt;
+&lt;li&gt;实验性的支持http1.1 response caching。&lt;/li&gt;
+&lt;li&gt;源代码基于Apache License 可免费获取。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apache HttpClient 使用（下）</title>
+      <link>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/</guid>
+      <description>&lt;h1 id=&#34;4-链接池&#34;&gt;4. 链接池&lt;/h1&gt;
+&lt;p&gt;通常我们可以使用&lt;code&gt;PoolingHttpClientConnectionManager&lt;/code&gt;来创建一个链接池。&lt;/p&gt;
+&lt;h2 id=&#34;41-对于链接池的管理&#34;&gt;4.1 对于链接池的管理&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;// 设置最大连接数  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;cm.setMaxTotal(200);  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;// 设置每个主机地址的并发数  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;cm.setDefaultMaxPerRoute(20);  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;// 通过PoolingHttpClientConnectionManager，来获取CloseableHttpClient  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;// 创建http GET请求  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;HttpGet httpGet = new HttpGet(&amp;#34;http://www.baidu.com/&amp;#34;);    
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;// 执行请求  
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;response = httpClient.execute(httpGet);    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spring应用因Session Timeout设置引起的GC问题</title>
+      <link>https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</guid>
+      <description>&lt;p&gt;最近在客户的要求下，对系统进行了压测。自己压测的时候一切指标都挺正常。但是客户却反馈说压测的时候有时候会碰到性能衰减很厉害，不稳定。于是有了下面这次的排查过程。客户反馈说问题是发生在多次连续压测之后碰到的，所以进行了一系列的测试。&lt;/p&gt;
+&lt;p&gt;先说一下测试环境的一些信息：测试主机是阿里云的ECS，配置是2C + 16G。为了方便，数据库采用的是Docker搭建的，版本是5.6.X。另外，这台机器上还安装了Zookeeper 3.4.X 和Kafka 1.0。系统本身是一个标准的Spring + CXF的应用，提供给客户使用的服务是标准的Restful接口。&lt;/p&gt;
+&lt;h1 id=&#34;1-重现问题&#34;&gt;1. 重现问题&lt;/h1&gt;
+&lt;p&gt;因为客户反馈是多次压测之后碰到的，因此首先尝试连续压测多次看看能不能重现问题。为了可能存在的数据库性能问题，临时申请了RDS作为数据库；另外为了尽快发现问题，将程序占用内存缩小到1G。这次测试测出了客户所说的问题，通过jconsole监控也发现了问题原因，应该是因为GC导致的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/15035654400984.jpg&#34; alt=&#34;&#34;&gt;
+看图表可以发现，压测5~6分钟之后，Java的GC占用了大量的CPU时间（左上图中的蓝色线），而且内存占用一直居高不下（右上图）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kafka介绍与使用</title>
+      <link>https://orchidflower.gitee.io/2017/06/25/How-to-use-Kafka/</link>
+      <pubDate>Sun, 25 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/06/25/How-to-use-Kafka/</guid>
+      <description>&lt;p&gt;Apache Kafka是分布式发布-订阅消息系统。它最初由LinkedIn公司开发，之后成为Apache项目的一部分。Kafka是一种快速、可扩展的、设计内在就是分布式的，分区的和可复制的提交日志服务。
+Apache Kafka与传统消息系统相比，有以下不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它被设计为一个分布式系统，易于向外扩展；&lt;/li&gt;
+&lt;li&gt;它同时为发布和订阅提供高吞吐量；&lt;/li&gt;
+&lt;li&gt;它支持多订阅者，当失败时能自动平衡消费者；&lt;/li&gt;
+&lt;li&gt;它将消息持久化到磁盘，因此可用于批量消费，例如ETL，以及实时应用程序。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Mac上运行SOAPUI 5.3.0</title>
+      <link>https://orchidflower.gitee.io/2017/06/21/Running-SOAPUI-5-3-0-on-Mac-OSX/</link>
+      <pubDate>Wed, 21 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/06/21/Running-SOAPUI-5-3-0-on-Mac-OSX/</guid>
+      <description>&lt;h1 id=&#34;0-前言&#34;&gt;0. 前言&lt;/h1&gt;
+&lt;p&gt;Mac上找不到特别好的SOAP Webservice测试工具。以前用过SOAP UI，感觉很好。但是SOAP UI在Mac上安装有些问题。特此记录一下安装过程。&lt;/p&gt;
+&lt;p&gt;SoapUI目前最新的版本是5.3.0，目前已经开源。SmartBear在SOAP UI之后发布了新版本更名为SOAPUI NG。SOAPUI NG体积大了很多，而且功能更加繁琐，个人感觉还不如以前的版本好用。SoapUI以前收费，到了5.2.1以后版本就开源并且免费了。&lt;/p&gt;
+&lt;p&gt;SoapUI在Mac会出现无响应的现象：界面能够打开，但是画面卡住，鼠标显示成旋转彩球，无法操作。要正常使用需要修改一下才行。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Mac上如何安装FastDFS</title>
+      <link>https://orchidflower.gitee.io/2017/06/18/How-to-install-FastDFS-on-Mac/</link>
+      <pubDate>Sun, 18 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/06/18/How-to-install-FastDFS-on-Mac/</guid>
+      <description>&lt;p&gt;项目中用到了FastDFS来做文件存储。最近重构的时候，因为经常处于移动办公的状态，所以访问公司的服务器不是很方便，所以感觉有必要在本机上搭建一套FastDFS的测试环境。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;FastDFS是什么？&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;FastDFS是一个开源的轻量级分布式文件系统，它对文件进行管理，功能包括：文件存储、文件同步、文件访问（文件上传、文件下载）等，解决了大容量存储和负载均衡的问题。特别适合以文件为载体的在线服务，如相册网站、视频网站等等。
+FastDFS为互联网量身定制，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用FastDFS很容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。
+FastDFS里面有两种角色：Tracker、Storage。Tracker主要做调度工作，在访问上起负载均衡的作用。Storage存储节点存储文件，完成文件管理的所有功能：存储、同步和提供存取接口，FastDFS同时对文件的meta data进行管理。所谓文件的meta data就是文件的相关属性，以键值对（key value pair）方式表示，如：width=1024，其中的key为width，value为1024。文件meta data是文件属性列表，可以包含多个键值对。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+    <item>
+      <title>DelegatingFilterProxy源码分析</title>
+      <link>https://orchidflower.gitee.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</link>
+      <pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-name&amp;gt;&lt;/span&gt;springSecurityFilterChain&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-name&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-class&amp;gt;&lt;/span&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-class&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-mapping&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-name&amp;gt;&lt;/span&gt;springSecurityFilterChain&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-name&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/documentation/*&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;9&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-mapping&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;用过Spring Security的人都会熟悉以上代码，一般教程上都会说明，使用Spring Security就需要在web.xml中指定以上代码。从这个配置中，可能会给我们造成一个错觉，以为DelegatingFilterProxy类就是springSecurity的入口，但其实这个类位于spring-web这个jar下面，说明这个类本身是和springSecurity无关。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Tomcat中使用ThreadLocal以及Session</title>
+      <link>https://orchidflower.gitee.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</guid>
+      <description>&lt;p&gt;最近运营同事在管理平台（生产环境）上碰到一个问题：登录之后会莫名其妙地变成未登录状态，被踢回登录页面。&lt;/p&gt;
+&lt;p&gt;管理平台使用的Spring MVC框架实现的后台接口，React实现的前台页面。之前引入React的时候已经做过前后端分离。但是当时考虑到技术栈的原因，没有对登录体系进行彻底改造，没有引入AccessToken来维护登录状态，依然保留了Java的Session机制。考虑到管理平台属于内部使用，访问量不大，因此直接在Nginx层使用iphash进行了Session粘滞，确保同一个用户的请求总是被同一个的后台Tomcat处理，这样就可以使用传统的session机制保持用户登录状态。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Java SSL握手记录分析</title>
+      <link>https://orchidflower.gitee.io/2017/04/28/Java-SSL-Handshake-Log/</link>
+      <pubDate>Fri, 28 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/04/28/Java-SSL-Handshake-Log/</guid>
+      <description>&lt;p&gt;公司项目当中经常使用CXF库连接WebService服务，而且我们自己提供的服务也是基于CXF的SOAP服务，经常需要指导客户怎么连接我们的服务。CXF库整个体系架构比较庞大，相关的类、知识点都比较多。尤其是连接SSL双向认证服务的时候，经常碰到问题。&lt;/p&gt;
+&lt;p&gt;使用双向SSL认证的时候，在Spring中配置起来非常简单，但是一旦出错就比较难找问题。经过多次尝试，最后发现还是分析SSL握手记录比较靠谱，比较容易找出真正的问题所在。特此记录一下自己的一些心得，以作备忘并希望能够帮到其他人。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在VSCode中为Vue.js开发启用静态类型检查Flow</title>
+      <link>https://orchidflower.gitee.io/2017/04/11/Using-flow-js-for-vue-in-VSCode/</link>
+      <pubDate>Tue, 11 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/04/11/Using-flow-js-for-vue-in-VSCode/</guid>
+      <description>&lt;p&gt;众所周知，Javascript是一种弱类型（或者称为动态类型）语言，即变量的类型是不确定的。例如，下面代码中的&lt;code&gt;temp&lt;/code&gt;一开始是字符串，后来又变成了数字：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;temp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;hello&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;temp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;弱类型语言变量类型完全由当时的值决定，所以称为“弱类型”。这样设计有其好处，可以写出非常简洁的代码。但是在构建大型项目的时候，无法在编译期发现问题会导致很难发现问题，反而会为程序员带来非常大的负担。这实际上限制了JS项目的规模，无法开发过于复杂的项目。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Node.js 使用Redis发布订阅模式</title>
+      <link>https://orchidflower.gitee.io/2017/03/30/Nodejs-using-redis-publish-subscribe/</link>
+      <pubDate>Thu, 30 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/03/30/Nodejs-using-redis-publish-subscribe/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;最近在用Node.js做一个管理系统的时候碰到了一个场景：为了访问性能，系统在内存中（不是Redis）缓存了一些常用数据，例如系统菜单树之类的。但是什么时候刷新这些缓存就成了问题。当然在单服务器模式下也不是大问题，只要在更新数据的时候删除内存中的缓存数据即可。但是这一方法在分布式服务中就无效了：同时会有多个这种系统在跑，但是只有一台服务器接到了处理请求，其他服务器根本没有办法刷新内存中的数据。
+当然有人会说将缓存放到Redis中不就解决问题了？但是如果数据量稍大一些，而且访问频繁、更新却不频繁，放到Redis中每次访问都会对Redis带来不小的压力，显得很没有必要。
+这种情况下，自然就可以使用Redis的发布订阅机制来解决问题了：当数据更新之后，只要发布一个消息到Redis，所有服务器都可以收到消息，执行刷新缓存的操作了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Electron开发使用Vue Devtools</title>
+      <link>https://orchidflower.gitee.io/2017/03/29/Using-Vue-Devtools-in-Electron/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/03/29/Using-Vue-Devtools-in-Electron/</guid>
+      <description>&lt;p&gt;最近在用Electron + Vue.js 2.0写一个桌面工具。使用下来感觉Electron用起来还是挺爽的。之前为了开发跨平台的桌面应用，我曾经用过Python+wxPython，Swing，SWT等各种技术，但是都有这样那样的问题（例如打包比较麻烦、界面各平台不太一致等）。而Electron基于目前成熟的前端技术，通过内嵌的浏览器内核实现了统一的表现形式，这一点用于做跨平台开发真是太方便了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Node.js从入门到放弃（一）-基础知识</title>
+      <link>https://orchidflower.gitee.io/2017/02/27/nodejs-learning-note-01/</link>
+      <pubDate>Mon, 27 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/02/27/nodejs-learning-note-01/</guid>
+      <description>&lt;p&gt;最近一周比较忙，一直忙着搭建开发平台。之前不就刚用Golang搭建了一个服务端开发平台。完成之后，就需要针对Golang开发的服务开发一个管理平台，用Golang也能做，但是感觉还是麻烦，最后决定使用Node.js。&lt;/p&gt;
+&lt;p&gt;这次搭建的平台倾向于使用比较新的一些Node.js特性，例如ES6、async/await解决回调地狱等。之前用过Node.js，但是属于浅尝辄止，这次准备充分了解一下。因此有了这些学习笔记。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安装Go语言调试工具dlv</title>
+      <link>https://orchidflower.gitee.io/2017/02/15/install-golang-debugger-dlv-on-mac/</link>
+      <pubDate>Wed, 15 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/02/15/install-golang-debugger-dlv-on-mac/</guid>
+      <description>&lt;p&gt;Dlv，也成为Delve，是Go语言的源码调试工具。由&lt;code&gt;derekparker&lt;/code&gt;开发，开源与Github。在Mac上配置Go语言开发环境的时候，经常碰到的问题就是Dlv调用总是不成功，无法启动应用，无法调试等等。大部分的问题都与Mac的安全机制有关。Mac上使用codesign对应用进行签名，没有签名的程序会受到一些限制，例如无法作为调试程序。&lt;/p&gt;
+&lt;p&gt;当然如果为了方便，你可以通过Homebrew安装Homebrew编译好的Dlv。下面描述的是如何从源码构建这一工具。Delve作者专门写了一篇文档（请看附录的链接），描述如何对Dlv进行自签名。方法是生成一个自签名的证书，然后从源码编译安装Dlv。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

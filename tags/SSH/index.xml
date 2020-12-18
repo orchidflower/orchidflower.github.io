@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSH on 执子之手</title>
+    <link>https://orchidflower.gitee.io/tags/SSH/</link>
+    <description>Recent content in SSH on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 23 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/SSH/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何无密码登录SSH</title>
+      <link>https://orchidflower.gitee.io/2017/07/23/How-to-login-without-password-over-SSH/</link>
+      <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2017/07/23/How-to-login-without-password-over-SSH/</guid>
+      <description>我们在用Jenkins做发布工具的时候，经常用到的功能是通过SSH通道完成各种功能。例如使用scp命令拷贝安装包到服务器上，通过ssh -t命</description>
+    </item>
+    
+  </channel>
+</rss>
