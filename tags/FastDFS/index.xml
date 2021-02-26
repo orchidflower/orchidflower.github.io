@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>FastDFS on 执子之手</title>
-    <link>https://orchidflower.github.io/tags/FastDFS/</link>
+    <link>https://orchidflower.gitee.io/tags/FastDFS/</link>
     <description>Recent content in FastDFS on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 18 Jun 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/FastDFS/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Jun 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/FastDFS/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在Mac上如何安装FastDFS</title>
-      <link>https://orchidflower.github.io/2017/06/18/How-to-install-FastDFS-on-Mac/</link>
+      <link>https://orchidflower.gitee.io/2017/06/18/How-to-install-FastDFS-on-Mac/</link>
       <pubDate>Sun, 18 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/06/18/How-to-install-FastDFS-on-Mac/</guid>
+      <guid>https://orchidflower.gitee.io/2017/06/18/How-to-install-FastDFS-on-Mac/</guid>
       <description>&lt;p&gt;项目中用到了FastDFS来做文件存储。最近重构的时候，因为经常处于移动办公的状态，所以访问公司的服务器不是很方便，所以感觉有必要在本机上搭建一套FastDFS的测试环境。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;FastDFS是什么？&lt;/p&gt;
