@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Ubuntu on 执子之手</title>
-    <link>https://orchidflower.github.io/tags/Ubuntu/</link>
+    <link>https://orchidflower.gitee.io/tags/Ubuntu/</link>
     <description>Recent content in Ubuntu on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/Ubuntu/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何在Ubuntu上静态编译Golang&#43;GoCV程序</title>
-      <link>https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/</link>
+      <link>https://orchidflower.gitee.io/2020/12/18/How-to-build-static-binary-with-gocv/</link>
       <pubDate>Fri, 18 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/</guid>
+      <guid>https://orchidflower.gitee.io/2020/12/18/How-to-build-static-binary-with-gocv/</guid>
       <description>&lt;p&gt;最近做了一个图像增强程序，用到了OpenCV。为了方便发布，我将代码使用&lt;code&gt;Golang&lt;/code&gt;+&lt;code&gt;GoCV&lt;/code&gt;重写，但是编译的时候发现比较麻烦，特别记录一下，以备后查。
 本文对应版本如下：&lt;/p&gt;
 &lt;ul&gt;
@@ -41,10 +41,10 @@
     
     <item>
       <title>使用KeepAlived配置Nginx高可用</title>
-      <link>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</link>
+      <link>https://orchidflower.gitee.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</link>
       <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</guid>
+      <guid>https://orchidflower.gitee.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</guid>
       <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
 &lt;p&gt;最近为一个传统行业的客户开发了一个生产调度系统。但是他的生产环境是自己搭建的，不是购买的云服务，因此碰到了一些问题。&lt;/p&gt;
 &lt;p&gt;客户购买了多台高性能的物理机，在上面自行搭建虚拟机。但是只有虚拟机，没有提供类似负载均衡、数据库等基础服务。为了解决负载均衡问题，我们自行安装了 &lt;code&gt;Nginx&lt;/code&gt; 。为了保证系统健壮和性能，安装 &lt;code&gt;Nginx&lt;/code&gt; 的两台虚拟机（Ubuntu 18.04.3 LTS，172.16.45.22，172.16.45.26）分别部署在两台不同的物理机上（172.16.45.11， 172.168.45.12）。然后 &lt;code&gt;DNS&lt;/code&gt; 解析到两台 &lt;code&gt;Nginx&lt;/code&gt; 主机上。&lt;/p&gt;
@@ -55,10 +55,10 @@
     
     <item>
       <title>如何修改Ubuntu服务器上的DNS设置</title>
-      <link>https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</link>
+      <link>https://orchidflower.gitee.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</link>
       <pubDate>Fri, 10 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</guid>
+      <guid>https://orchidflower.gitee.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</guid>
       <description>&lt;p&gt;公司的几台服务器安装的时候设置了联通的DNS服务器，由于公司网络切换到了电信，最近经常出现解析服务器IP失败的情况。所以想着要更换一下DNS服务器，以提高网络访问速度。&lt;/p&gt;
 &lt;p&gt;因为历史原因，服务器操作系统主要有 &lt;code&gt;Ubuntu 16.04 LTS&lt;/code&gt; 和 &lt;code&gt;Ubuntu 18.04 LTS&lt;/code&gt; 两种。实际修改中发现，他们的配置方法是不一样的，特此记录一下。&lt;/p&gt;
 &lt;h1 id=&#34;1-ubuntu-1604-lts&#34;&gt;1. Ubuntu 16.04 LTS&lt;/h1&gt;
@@ -72,19 +72,19 @@
     
     <item>
       <title>在Ubuntu 16.04 LTS上设置DOCKER_OPTS</title>
-      <link>https://orchidflower.github.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</link>
+      <link>https://orchidflower.gitee.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</link>
       <pubDate>Thu, 22 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</guid>
+      <guid>https://orchidflower.gitee.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</guid>
       <description>&lt;p&gt;之前一直使用&lt;code&gt;Ubuntu 14.04&lt;/code&gt;来跑Docker。今天在16.04 LTS上跑Docker的时候发现设置&lt;code&gt;DOCKER_OPTS&lt;/code&gt;的时候有些区别，特此记录一下。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>从一台没有外网连接的阿里云主机上访问微信API</title>
-      <link>https://orchidflower.github.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</link>
+      <link>https://orchidflower.gitee.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</link>
       <pubDate>Sun, 12 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</guid>
+      <guid>https://orchidflower.gitee.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</guid>
       <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
 &lt;p&gt;公司的生产环境是部署在阿里云上的。Zabbix最初装在一台没有外网连接的ECS上，通过Nginx进行访问。但是后来发现如果需要报警，需要从Zabbix这台主机访问微信公众号服务器（qyapi.weixin.qq.com）。运维的兄弟最初选择了固定带宽的网络，但是考虑到费用问题，后期想切换到按量付费的网络，但是阿里云居然不支持这种切换（这里吐槽一下阿里的设计）。&lt;/p&gt;
 &lt;p&gt;由于该主机是按照包月包年方式购买的，退掉重新申请主机安装Zabbix显然不划算。在主机到期之前，必须想办法实现在没有外网的情况下访问微信服务器（考虑到费用问题，原先固定带宽已经被修改成了0M，也就没有费用了）。&lt;/p&gt;</description>
