@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DNS on 执子之手</title>
-    <link>https://orchidflower.gitee.io/tags/DNS/</link>
+    <link>https://orchidflower.github.io/tags/DNS/</link>
     <description>Recent content in DNS on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 10 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/DNS/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/DNS/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何修改Ubuntu服务器上的DNS设置</title>
-      <link>https://orchidflower.gitee.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</link>
+      <link>https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</link>
       <pubDate>Fri, 10 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</guid>
+      <guid>https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/</guid>
       <description>&lt;p&gt;公司的几台服务器安装的时候设置了联通的DNS服务器，由于公司网络切换到了电信，最近经常出现解析服务器IP失败的情况。所以想着要更换一下DNS服务器，以提高网络访问速度。&lt;/p&gt;
 &lt;p&gt;因为历史原因，服务器操作系统主要有 &lt;code&gt;Ubuntu 16.04 LTS&lt;/code&gt; 和 &lt;code&gt;Ubuntu 18.04 LTS&lt;/code&gt; 两种。实际修改中发现，他们的配置方法是不一样的，特此记录一下。&lt;/p&gt;
 &lt;h1 id=&#34;1-ubuntu-1604-lts&#34;&gt;1. Ubuntu 16.04 LTS&lt;/h1&gt;

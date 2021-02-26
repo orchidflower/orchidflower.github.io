@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>证书 on 执子之手</title>
-    <link>https://orchidflower.gitee.io/tags/%E8%AF%81%E4%B9%A6/</link>
+    <link>https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6/</link>
     <description>Recent content in 证书 on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 04 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/%E8%AF%81%E4%B9%A6/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 04 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>iOS证书及推送相关概念</title>
-      <link>https://orchidflower.gitee.io/2018/09/04/ios-push-and-certificate/</link>
+      <link>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</link>
       <pubDate>Tue, 04 Sep 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2018/09/04/ios-push-and-certificate/</guid>
+      <guid>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</guid>
       <description>&lt;h1 id=&#34;1i-os开发中碰到的概念&#34;&gt;1.i OS开发中碰到的概念&lt;/h1&gt;
 &lt;h2 id=&#34;11-开发者账号&#34;&gt;1.1 开发者账号&lt;/h2&gt;
 &lt;p&gt;苹果对开发者账号分为如下几类：&lt;/p&gt;
@@ -31,10 +31,10 @@
     
     <item>
       <title>Nginx配置导致的SSL证书认证失败</title>
-      <link>https://orchidflower.gitee.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</link>
+      <link>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</link>
       <pubDate>Sat, 03 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</guid>
+      <guid>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;注： 这是在之前博客上发过的文章，在实际使用中经常会有人碰到，特意转贴过来。&lt;/p&gt;
 &lt;/blockquote&gt;
