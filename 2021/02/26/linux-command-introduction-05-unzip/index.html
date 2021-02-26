@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
-    <title>Zookeeper - 执子之手</title>
+    <title>Linux常用命令介绍 05 - unzip - 执子之手</title>
     <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
     
-    <meta property="og:title" content="Zookeeper">
+    <meta property="og:title" content="Linux常用命令介绍 05 - unzip">
     <meta property="og:site_name" content="执子之手">
     <meta property="og:image" content="/img/author.jpg"> 
-    <meta name="title" content="Zookeeper - 执子之手" />
+    <meta name="title" content="Linux常用命令介绍 05 - unzip - 执子之手" />
     <meta name="description" content="Do one thing at a time, and do well."> 
     <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
     <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
     <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
     <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-    
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
     <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript" id="hexo.configuration">
@@ -24,13 +24,13 @@
   var CONFIG = {
     scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
-    fancybox: false, 
+     fancybox: true, 
     motion: true
   };
 </script>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-<div class="container one-collumn sidebar-position-left   ">
+<div class="container one-collumn sidebar-position-left page-home  ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -111,71 +111,112 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-<section id="posts" class="posts-collapse">
-<div class="collection-title">
-    <h2 >Zookeeper
-    <small>标签</small>
-    </h2>
-</div>
-
-<div class="collection-title">
-  <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-</div>
-
-  <article class="post post-type-normal }}" itemscope itemtype="http://schema.org/Article">
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
-      <h1 class="post-title">
-        <a class="post-title-link" href="https://orchidflower.github.io/2017/06/25/How-to-use-Kafka/" itemprop="url">
-            <span itemprop="name">Kafka介绍与使用</span>
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2021/02/26/linux-command-introduction-05-unzip/" itemprop="url">
+        Linux常用命令介绍 05 - unzip
         </a>
       </h1>
-
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-06-25"
-              content="06-25" >
-          06-25
-        </time>
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2021-02-26">
+    2021-02-26
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">135 字 ~1分钟</span>
+</span>
+      <span id="/2021/02/26/linux-command-introduction-05-unzip/" class="leancloud_visitors" data-flag-title="Linux常用命令介绍 05 - unzip">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
       </div>
     </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>unzip命令可以用来解压zip文件。用法比较简单，但是有些不太常用的命令需要记录一下。</p>
+<h1 id="1-查看文件列表">1. 查看文件列表</h1>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>unzip -l ShadowHunters.epub
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#75715e"># 查看更详细信息，包括压缩率等</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>unzip -lv ShadowHunters.epub
+</code></pre></div><h1 id="2-解压文件">2. 解压文件</h1>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>unzip -d ./temp ShadowHunters.epub
+</code></pre></div><h1 id="3-解压一个文件">3. 解压一个文件</h1>
+<p>使用<code>-p</code>命令，将文件内容输出到标准输出，然后使用重定向创建文件：</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>unzip -p ShadowHunters.epub ops/xhtml/cover.html &gt; cover.html
+</code></pre></div><h1 id="4-更新文件">4. 更新文件</h1>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>zip -u ShadowHunters.epub ops/xhtml/cover.html
+</code></pre></div>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Linux" rel="tag" title="Linux">#Linux#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/" rel="prev" title="如何在Ubuntu上静态编译Golang&#43;GoCV程序">
+        如何在Ubuntu上静态编译Golang&#43;GoCV程序 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
   </article>
-
-
- </section>
-
-
-
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-
-  
-  
-
-
-
-<nav class="pagination">
-    
-    
-        
-        
-          <span class="page-number current">1</span>
-        
-        
-    
-    
-</nav>
-
+</section>
 
           </div>
         </div>
@@ -189,7 +230,16 @@
 <aside id="sidebar" class="sidebar">
   <div class="sidebar-inner">
 
-    <section class="site-overview sidebar-panel  sidebar-panel-active ">
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
       <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image"
         src="https://orchidflower.github.io/img/author.jpg"
@@ -225,13 +275,6 @@
     </div>
 </nav>
       
-<div class="feed-link motion-element">
-<a href="https://orchidflower.github.io/tags/Zookeeper/index.xml" rel="alternate" type="application/rss+xml" target="_blank">
-    <i class="fa fa-rss"></i>
-    RSS 订阅
-</a>
-</div>
-
       
 <div class="links-of-author motion-element">
     
@@ -271,6 +314,19 @@
       
     </section>
     
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-查看文件列表">1. 查看文件列表</a></li>
+    <li><a href="#2-解压文件">2. 解压文件</a></li>
+    <li><a href="#3-解压一个文件">3. 解压一个文件</a></li>
+    <li><a href="#4-更新文件">4. 更新文件</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
   </div>
 </aside>
 
@@ -320,14 +376,18 @@
 <script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
 <script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
 
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
 <script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
 <script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
 <script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
 <script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
 
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
 <script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
-
-
 
 <script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
 <script type="text/x-mathjax-config">
@@ -346,7 +406,16 @@
 <script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
 <script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
 
-
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
 
 </body>
 </html>

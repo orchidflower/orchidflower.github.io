@@ -6,7 +6,28 @@
     <description>Recent content in Linux on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 20 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux常用命令介绍 05 - unzip</title>
+      <link>https://orchidflower.github.io/2021/02/26/linux-command-introduction-05-unzip/</link>
+      <pubDate>Fri, 26 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/02/26/linux-command-introduction-05-unzip/</guid>
+      <description>&lt;p&gt;unzip命令可以用来解压zip文件。用法比较简单，但是有些不太常用的命令需要记录一下。&lt;/p&gt;
+&lt;h1 id=&#34;1-查看文件列表&#34;&gt;1. 查看文件列表&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;unzip -l ShadowHunters.epub
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 查看更详细信息，包括压缩率等&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;unzip -lv ShadowHunters.epub
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;2-解压文件&#34;&gt;2. 解压文件&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;unzip -d ./temp ShadowHunters.epub
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;3-解压一个文件&#34;&gt;3. 解压一个文件&lt;/h1&gt;
+&lt;p&gt;使用&lt;code&gt;-p&lt;/code&gt;命令，将文件内容输出到标准输出，然后使用重定向创建文件：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;unzip -p ShadowHunters.epub ops/xhtml/cover.html &amp;gt; cover.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h1 id=&#34;4-更新文件&#34;&gt;4. 更新文件&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;zip -u ShadowHunters.epub ops/xhtml/cover.html
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
     <item>
       <title>Linux常用命令介绍 04 - journalctl</title>
       <link>https://orchidflower.github.io/2020/04/20/linux-command-introduction-04-journalctl/</link>

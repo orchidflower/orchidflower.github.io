@@ -1,6 +1,20 @@
 <search>
     
      <entry>
+        <title>Linux常用命令介绍 05 - unzip</title>
+        <url>https://orchidflower.github.io/2021/02/26/linux-command-introduction-05-unzip/</url>
+        <categories>
+          <category>运维</category>
+        </categories>
+        <tags>
+          <tag>Linux</tag>
+        </tags>
+        <content type="html"> unzip命令可以用来解压zip文件。用法比较简单，但是有些不太常用的命令需要记录一下。
+1. 查看文件列表 1unzip -l ShadowHunters.epub 2# 查看更详细信息，包括压缩率等 3unzip -lv ShadowHunters.epub 2. 解压文件 1unzip -d ./temp ShadowHunters.epub 3. 解压一个文件 使用-p命令，将文件内容输出到标准输出，然后使用重定向创建文件：
+1unzip -p ShadowHunters.epub ops/xhtml/cover.html &amp;gt; cover.html 4. 更新文件 1zip -u ShadowHunters.epub ops/xhtml/cover.html </content>
+    </entry>
+    
+     <entry>
         <title>如何在Ubuntu上静态编译Golang&#43;GoCV程序</title>
         <url>https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/</url>
         <categories>

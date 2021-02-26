@@ -118,6 +118,92 @@
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/" itemprop="url">
+        迁移到SpringBoot 02 - 异常处理
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-05-15">
+    2018-05-15
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 02 - 异常处理">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.github.io/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>首先说一下背景信息。云认证平台是一个传统的Spring项目，从上到下可以分为：API层（对应Spring Controller）、Service层、DAO层（MyBatis）几层。为了方便处理，从开发规范上我们要求了Service层的异常在Service层自行处理。</p>
+<p>为了实现这一点，在接口定义上，从API层调用Service层的请求会有统一的返回基类：<code>CommonResult</code>。其定义如下：</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#00a8c8">public</span> <span style="color:#00a8c8">class</span> <span style="color:#75af00">CommonResult</span> <span style="color:#00a8c8">implements</span> <span style="color:#111">Serializable</span> <span style="color:#f92672">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">static</span> <span style="color:#00a8c8">final</span> <span style="color:#00a8c8">long</span> <span style="color:#111">serialVersionUID</span> <span style="color:#f92672">=</span> <span style="color:#111">1L</span><span style="color:#f92672">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>    <span style="color:#75715e">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#75715e">     * success 请求成功与否的标志。
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#75715e">     */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#00a8c8">protected</span> <span style="color:#00a8c8">boolean</span> <span style="color:#111">success</span> <span style="color:#f92672">=</span> <span style="color:#111">Boolean</span><span style="color:#f92672">.</span><span style="color:#75af00">FALSE</span><span style="color:#f92672">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#75715e">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#75715e">     * resultCode 返回码。
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#75715e">     */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#00a8c8">protected</span> <span style="color:#111">String</span> <span style="color:#111">resultCode</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#f92672">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#75715e">/**
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#75715e">     * message 详细信息。
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#75715e">     */</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#00a8c8">protected</span> <span style="color:#111">String</span> <span style="color:#111">message</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#f92672">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#f92672">...</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#f92672">}</span>
+</code></pre></div><p>所有需要从API层调用到的Service层的返回值都是该类或者该类的子类。如果是Service层之间互相调用，则不受此限制。</p>
+<p>本章的内容主要与AOP有关。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.github.io/2018/05/15/migrating-to-spring-boot-02-Exception-Handler/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
         <a class="post-title-link" href="https://orchidflower.github.io/2018/05/09/migrating-to-spring-boot-01-loading-plugin/" itemprop="url">
         迁移到SpringBoot 01 - 插件加载
         </a>
@@ -773,72 +859,6 @@
     <footer class="post-footer"><div class="post-eof"></div></footer>
   </article>
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">
-        <a class="post-title-link" href="https://orchidflower.github.io/2017/07/23/How-to-login-without-password-over-SSH/" itemprop="url">
-        如何无密码登录SSH
-        </a>
-      </h1>
-      <div class="post-meta">
-      <span class="post-time">
-<span class="post-meta-item-icon">
-    <i class="fa fa-calendar-o"></i>
-</span>
-<span class="post-meta-item-text">时间：</span>
-<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-07-23">
-    2017-07-23
-</time>
-</span> 
-      
-
-  <span class="post-category" >
-  &nbsp; | &nbsp;
-  <span class="post-meta-item-icon">
-    <i class="fa fa-folder-o"></i>
-  </span>
-  <span class="post-meta-item-text">分类：</span>
-  
-    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
-        <span itemprop="name">运维</span>
-      </a>
-      &nbsp; 
-    </span>
-  
-</span>
-
-
-      
-      <span id="/2017/07/23/How-to-login-without-password-over-SSH/" class="leancloud_visitors" data-flag-title="如何无密码登录SSH">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-    </span>
-    <span class="post-meta-item-text">评论：</span>
-    <a href="https://orchidflower.github.io/2017/07/23/How-to-login-without-password-over-SSH/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-fire"></i>
-    </span>
-    <span class="post-meta-item-text">访问：</span>
-    <span class="leancloud-visitors-count">0</span>
-</span>
-      </div>
-    </header>
-    <div class="post-body" itemprop="articleBody">
-    我们在用Jenkins做发布工具的时候，经常用到的功能是通过SSH通道完成各种功能。例如使用scp命令拷贝安装包到服务器上，通过ssh -t命
-    </div>
-    
-    <div class="post-more-link text-center">
-    <a class="btn" href="https://orchidflower.github.io/2017/07/23/How-to-login-without-password-over-SSH/" rel="contents">
-      阅读全文 &raquo;
-    </a>
-    </div>
-    
-    <footer class="post-footer"><div class="post-eof"></div></footer>
-  </article>
-
 </section>
 
 
@@ -935,7 +955,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.github.io/post/">
-        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-count">68</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -1015,16 +1035,19 @@
       <div class="footer-inner">
         <div class="copyright" >
   <span itemprop="copyrightYear">  &copy; 
-  2009 - 2020</span>
+  2009 - 2021</span>
   <span class="with-love"><i class="fa fa-heart"></i></span>
   <span class="author" itemprop="copyrightHolder">执子之手</span>
 </div>
 <div class="powered-by">
   Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
 </div>
-<div class="theme-info">
+<div class="powered-by">
   Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
   </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号</a>
 </div>
 
 
