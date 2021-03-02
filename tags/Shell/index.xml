@@ -2,35 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Shell on 执子之手</title>
-    <link>https://orchidflower.github.io/tags/Shell/</link>
+    <link>https://orchidflower.gitee.io/tags/Shell/</link>
     <description>Recent content in Shell on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 05 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Shell/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/Shell/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Shell脚本中的一些特殊变量</title>
-      <link>https://orchidflower.github.io/2017/08/05/Some-special-parameters-in-Shell/</link>
+      <link>https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/</link>
       <pubDate>Sat, 05 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/08/05/Some-special-parameters-in-Shell/</guid>
+      <guid>https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/</guid>
       <description>Shell脚本的一些参数总是感觉记不住，特此记录一下，以备后查。 1. 参数说明 参数 说明 $0 当前脚本的文件名 &amp;mdash; &amp;mdash; $n 传递给脚本或函数的参数。n 是一个数</description>
     </item>
     
     <item>
       <title>xargs使用复杂参数</title>
-      <link>https://orchidflower.github.io/2017/07/30/How-to-using-argument-in-xargs/</link>
+      <link>https://orchidflower.gitee.io/2017/07/30/How-to-using-argument-in-xargs/</link>
       <pubDate>Sun, 30 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/07/30/How-to-using-argument-in-xargs/</guid>
+      <guid>https://orchidflower.gitee.io/2017/07/30/How-to-using-argument-in-xargs/</guid>
       <description>一般情况下xargs只处理一个参数，因此可以这样使用，最后的rm会自动补齐一个参数： 1find . | grep hello | xargs rm 但是有时候需要多个参数才能够正常运行，这</description>
     </item>
     
     <item>
       <title>在alias命令中使用单引号</title>
-      <link>https://orchidflower.github.io/2017/07/16/How-to-using-single-quota-in-alias-command/</link>
+      <link>https://orchidflower.gitee.io/2017/07/16/How-to-using-single-quota-in-alias-command/</link>
       <pubDate>Sun, 16 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/07/16/How-to-using-single-quota-in-alias-command/</guid>
+      <guid>https://orchidflower.gitee.io/2017/07/16/How-to-using-single-quota-in-alias-command/</guid>
       <description>Linux中的alias命令可以将一条复杂的命令缩短为一个简单的指令，实际工作中经常会用到。使用alias的时候命令本身需要使用单引号包括起</description>
     </item>
     

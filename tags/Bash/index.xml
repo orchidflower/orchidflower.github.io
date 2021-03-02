@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bash on 执子之手</title>
-    <link>https://orchidflower.github.io/tags/Bash/</link>
+    <link>https://orchidflower.gitee.io/tags/Bash/</link>
     <description>Recent content in Bash on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 05 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Bash/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 05 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/Bash/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Shell脚本中的一些特殊变量</title>
-      <link>https://orchidflower.github.io/2017/08/05/Some-special-parameters-in-Shell/</link>
+      <link>https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/</link>
       <pubDate>Sat, 05 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/08/05/Some-special-parameters-in-Shell/</guid>
+      <guid>https://orchidflower.gitee.io/2017/08/05/Some-special-parameters-in-Shell/</guid>
       <description>Shell脚本的一些参数总是感觉记不住，特此记录一下，以备后查。 1. 参数说明 参数 说明 $0 当前脚本的文件名 &amp;mdash; &amp;mdash; $n 传递给脚本或函数的参数。n 是一个数</description>
     </item>
     
     <item>
       <title>在Mac上启用Docker的Bash Completion</title>
-      <link>https://orchidflower.github.io/2017/02/12/enable-docker-bash-completion-on-mac/</link>
+      <link>https://orchidflower.gitee.io/2017/02/12/enable-docker-bash-completion-on-mac/</link>
       <pubDate>Sun, 12 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.github.io/2017/02/12/enable-docker-bash-completion-on-mac/</guid>
+      <guid>https://orchidflower.gitee.io/2017/02/12/enable-docker-bash-completion-on-mac/</guid>
       <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
 &lt;p&gt;在Ubuntu上使用Docker的时候，使用tab键自动完成docker命令感觉非常方便，例如：只需要输入image或者container ID的前几位就可以使用Tab键补齐整个命令行。但是在Mac上却没有办法实现相同的操作。&lt;/p&gt;
 &lt;p&gt;经过搜索终于找到了原因：原来是因为没有启用Bash completion功能导致的。而实际上Docker安装包内已经提供了针对Docker的&lt;code&gt;Bash Completion&lt;/code&gt;脚本，只需要启用即可。&lt;/p&gt;</description>
