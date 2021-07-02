@@ -6,7 +6,25 @@
     <description>Recent content in Posts on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 26 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MyBatis Plus中主键生成方式ASSIGN_ID的算法分析</title>
+      <link>https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</link>
+      <pubDate>Fri, 02 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</guid>
+      <description>&lt;p&gt;&lt;code&gt;MyBatis Plus&lt;/code&gt; 中提供了 &lt;code&gt;ASSIGN_ID&lt;/code&gt; 这种方式生成主键，使用起来非常方便，只要在&lt;code&gt;PO&lt;/code&gt;上定义一下就可以了，例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Order&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Model&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Order&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;    &lt;span style=&#34;color:#75af00&#34;&gt;@TableId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;value&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;IdType&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;ASSIGN_ID&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Long&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;
+&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样在保存的时候，&lt;code&gt;MyBatis Plus&lt;/code&gt;会负责生成主键值，自动设置到字段&lt;code&gt;id&lt;/code&gt;中。
+一直好奇这个主键是怎么生成的，抽时间查看了一下源码，特意记录一下。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Linux常用命令介绍 05 - unzip</title>
       <link>https://orchidflower.gitee.io/2021/02/26/linux-command-introduction-05-unzip/</link>
@@ -88,9 +106,7 @@
       
       <guid>https://orchidflower.gitee.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</guid>
       <description>&lt;p&gt;&lt;code&gt;CleanMyMacX&lt;/code&gt; 是&lt;code&gt;Mac&lt;/code&gt;平台上优秀的卸载工具。虽然&lt;code&gt;Mac&lt;/code&gt;上的应用安装卸载比&lt;code&gt;Windows&lt;/code&gt;上简单很多，&lt;code&gt;AppStore&lt;/code&gt;上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非&lt;code&gt;AppStore&lt;/code&gt;软件在删除对应的app之后不会同时删除对应的数据。 &lt;code&gt;CleanMyMacX&lt;/code&gt; 这种类型的软件会扫描这些相关的数据并一起删除。&lt;/p&gt;
-&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;尝试了很多网上提供的办法都不成功，最后发现了一个简单的办法，只要删除对应的执行文件即可，针对最新的4.6.15有效：&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;rm &amp;ldquo;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/*&amp;quot;&lt;/del&gt;&lt;/p&gt;</description>
+&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;</description>
     </item>
     
     <item>

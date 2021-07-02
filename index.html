@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head>
-	<meta name="generator" content="Hugo 0.79.0" />
+	<meta name="generator" content="Hugo 0.84.4" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
@@ -114,6 +114,81 @@
             
     
  <section id="posts" class="posts-expand">
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/" itemprop="url">
+        MyBatis Plus中主键生成方式ASSIGN_ID的算法分析
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2021-07-02">
+    2021-07-02
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/" class="leancloud_visitors" data-flag-title="MyBatis Plus中主键生成方式ASSIGN_ID的算法分析">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p><code>MyBatis Plus</code> 中提供了 <code>ASSIGN_ID</code> 这种方式生成主键，使用起来非常方便，只要在<code>PO</code>上定义一下就可以了，例如：</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#00a8c8">public</span> <span style="color:#00a8c8">class</span> <span style="color:#75af00">Order</span> <span style="color:#00a8c8">extends</span> <span style="color:#111">Model</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#75af00">@TableId</span><span style="color:#f92672">(</span><span style="color:#111">value</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;id&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">type</span> <span style="color:#f92672">=</span> <span style="color:#111">IdType</span><span style="color:#f92672">.</span><span style="color:#75af00">ASSIGN_ID</span><span style="color:#f92672">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#00a8c8">private</span> <span style="color:#111">Long</span> <span style="color:#111">id</span><span style="color:#f92672">;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#75715e">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span style="color:#75715e"></span><span style="color:#f92672">}</span>
+</code></pre></div><p>这样在保存的时候，<code>MyBatis Plus</code>会负责生成主键值，自动设置到字段<code>id</code>中。
+一直好奇这个主键是怎么生成的，抽时间查看了一下源码，特意记录一下。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -410,8 +485,6 @@
     <div class="post-body" itemprop="articleBody">
     <p><code>CleanMyMacX</code> 是<code>Mac</code>平台上优秀的卸载工具。虽然<code>Mac</code>上的应用安装卸载比<code>Windows</code>上简单很多，<code>AppStore</code>上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非<code>AppStore</code>软件在删除对应的app之后不会同时删除对应的数据。 <code>CleanMyMacX</code> 这种类型的软件会扫描这些相关的数据并一起删除。</p>
 <p>最近发现 <code>CleanMyMacX</code> 会附带一个后台服务：<code>CleanMyMacX HealthMonitor</code>，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。</p>
-<p><del>尝试了很多网上提供的办法都不成功，最后发现了一个简单的办法，只要删除对应的执行文件即可，针对最新的4.6.15有效：</del></p>
-<p><del>rm &ldquo;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/*&quot;</del></p>
     </div>
     
     <div class="post-more-link text-center">
@@ -783,80 +856,6 @@ settings apply to battery ( -b ), charger (wall power) ( -c ), UPS ( -u ) or all
     <footer class="post-footer"><div class="post-eof"></div></footer>
   </article>
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">
-        <a class="post-title-link" href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" itemprop="url">
-        在Mac上编译RedisDesktopManager（1）国际化处理
-        </a>
-      </h1>
-      <div class="post-meta">
-      <span class="post-time">
-<span class="post-meta-item-icon">
-    <i class="fa fa-calendar-o"></i>
-</span>
-<span class="post-meta-item-text">时间：</span>
-<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-07-01">
-    2020-07-01
-</time>
-</span> 
-      
-
-  <span class="post-category" >
-  &nbsp; | &nbsp;
-  <span class="post-meta-item-icon">
-    <i class="fa fa-folder-o"></i>
-  </span>
-  <span class="post-meta-item-text">分类：</span>
-  
-    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
-        <span itemprop="name">开发</span>
-      </a>
-      &nbsp; 
-    </span>
-  
-</span>
-
-
-      
-      <span id="/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" class="leancloud_visitors" data-flag-title="在Mac上编译RedisDesktopManager（1）国际化处理">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-    </span>
-    <span class="post-meta-item-text">评论：</span>
-    <a href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-fire"></i>
-    </span>
-    <span class="post-meta-item-text">访问：</span>
-    <span class="leancloud-visitors-count">0</span>
-</span>
-      </div>
-    </header>
-    <div class="post-body" itemprop="articleBody">
-    <h1 id="1-概述">1. 概述</h1>
-<blockquote>
-<p>Redis Desktop Manager（RedisDesktopManager，RDM）是一个快速、简单、支持跨平台的 Redis 桌面管理工具，基于 Qt 5 开发，支持通过 SSH Tunnel 连接。</p>
-</blockquote>
-<p>&ndash; 开源中国上面对项目的介绍</p>
-<p><code>RedisDesktopManager</code> 是一款优秀的 <code>Redis</code> 客户端。最初是作为开源项目发布的，官方也会发布编译好的版本。后来，作者做了一些商业化处理，上架了<code>App Store</code>，从此不再发布编译后的版本，也在开源版本中阉割掉了 <code>SSH Tunnel</code> 功能。有鉴于此，网上有很多人写教程来说明如何从源码构建一个发行版本，但是目前见到的教程多多少少都有一些问题。最近花了一些时间尝试完善整个编译过程，目前进展不错。以后会陆续说明编译过程中碰到的问题以及对应的解决办法。</p>
-<p>今天首先来说一下国际化的问题。</p>
-<p>目前网上流行的 <code>RedisDesktopManager</code> 编译方法都没有对国际化文件进行处理，所以编译后的版本没有国际化功能，界面只显示英文，语言切换功能无效。经过对相关源码的分析，终于找到了正确的编译处理方法，现在可以完美切换语言。效果如图：</p>
-<p><img src="http://blog-cache.orchidflower.cn/2020-07-02-15936592204991.jpg" alt="-w800"></p>
-    </div>
-    
-    <div class="post-more-link text-center">
-    <a class="btn" href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" rel="contents">
-      阅读全文 &raquo;
-    </a>
-    </div>
-    
-    <footer class="post-footer"><div class="post-eof"></div></footer>
-  </article>
-
 </section>
 
 
@@ -956,7 +955,7 @@ settings apply to battery ( -b ), charger (wall power) ( -c ), UPS ( -u ) or all
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.gitee.io/post/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -1041,7 +1040,7 @@ settings apply to battery ( -b ), charger (wall power) ( -c ), UPS ( -u ) or all
   <span class="author" itemprop="copyrightHolder">执子之手</span>
 </div>
 <div class="powered-by">
-  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.84.4</a>
 </div>
 <div class="powered-by">
   Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT

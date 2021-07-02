@@ -183,17 +183,17 @@ To enable this functionality, create a Statement instance in the following manne
 <p>stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
 java.sql.ResultSet.CONCUR_READ_ONLY);
 stmt.setFetchSize(Integer.MIN_VALUE);</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>&gt;The combination of a forward-only, read-only result set, with a fetch size of Integer.`MIN_VALUE` serves as a signal to the driver to stream result sets row-by-row. After this, any result sets created with the statement will be retrieved row-by-row.
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-mysql" data-lang="mysql"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#f92672">&gt;</span><span style="color:#111">The</span> <span style="color:#111">combination</span> <span style="color:#111">of</span> <span style="color:#111">a</span> <span style="color:#111">forward</span><span style="color:#f92672">-</span><span style="color:#111">only</span><span style="color:#111">,</span> <span style="color:#00a8c8">read</span><span style="color:#f92672">-</span><span style="color:#111">only</span> <span style="color:#111">result</span> <span style="color:#00a8c8">set</span><span style="color:#111">,</span> <span style="color:#00a8c8">with</span> <span style="color:#111">a</span> <span style="color:#00a8c8">fetch</span> <span style="color:#111">size</span> <span style="color:#111">of</span> <span style="color:#00a8c8">Integer</span><span style="color:#111">.</span><span style="color:#f92672">`</span><span style="color:#111">MIN_VALUE</span><span style="color:#f92672">`</span> <span style="color:#111">serves</span> <span style="color:#00a8c8">as</span> <span style="color:#111">a</span> <span style="color:#111">signal</span> <span style="color:#00a8c8">to</span> <span style="color:#111">the</span> <span style="color:#111">driver</span> <span style="color:#00a8c8">to</span> <span style="color:#111">stream</span> <span style="color:#111">result</span> <span style="color:#111">sets</span> <span style="color:#111">row</span><span style="color:#f92672">-</span><span style="color:#00a8c8">by</span><span style="color:#f92672">-</span><span style="color:#111">row</span><span style="color:#111">.</span> <span style="color:#111">After</span> <span style="color:#111">this</span><span style="color:#111">,</span> <span style="color:#111">any</span> <span style="color:#111">result</span> <span style="color:#111">sets</span> <span style="color:#111">created</span> <span style="color:#00a8c8">with</span> <span style="color:#111">the</span> <span style="color:#111">statement</span> <span style="color:#111">will</span> <span style="color:#111">be</span> <span style="color:#111">retrieved</span> <span style="color:#111">row</span><span style="color:#f92672">-</span><span style="color:#00a8c8">by</span><span style="color:#f92672">-</span><span style="color:#111">row</span><span style="color:#111">.</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>简单翻译一下：
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>&gt; 缺省情况下，结果集会被整个的拉取并保存到客户端内存中。通常情况下，这是这是最有效的方式，可以与MySQL的网络协议完美配合。如果你需要处理一个大数量级的结果集或者你无法在你的JVM中申请足够的Heap内存，你可以告诉驱动使用流方式返回结果集，一次返回一条记录。
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#960050;background-color:#1e0010">简单翻译一下：</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#f92672">&gt;</span> <span style="color:#960050;background-color:#1e0010">缺省情况下，结果集会被整个的拉取并保存到客户端内存中。通常情况下，这是这是最有效的方式，可以与</span><span style="color:#111">MySQL的网络协议完美配合</span><span style="color:#960050;background-color:#1e0010">。如果你需要处理一个大数量级的结果集或者你无法在你的</span><span style="color:#111">JVM中申请足够的Heap内存</span><span style="color:#960050;background-color:#1e0010">，你可以告诉驱动使用流方式返回结果集，一次返回一条记录。</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>&gt; 要开启这个功能，可以按照下面的代码方式创建结果Statement：
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#f92672">&gt;</span> <span style="color:#960050;background-color:#1e0010">要开启这个功能，可以按照下面的代码方式创建结果</span><span style="color:#111">Statement</span><span style="color:#960050;background-color:#1e0010">：</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>&gt; ```java
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>       java.sql.ResultSet.CONCUR_READ_ONLY);
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>stmt.setFetchSize(Integer.MIN_VALUE);
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">```</span><span style="color:#111">java</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#111">stmt</span> <span style="color:#f92672">=</span> <span style="color:#111">conn</span><span style="color:#111">.</span><span style="color:#75af00">createStatement</span><span style="color:#111">(</span><span style="color:#111">java</span><span style="color:#111">.</span><span style="color:#00a8c8">sql</span><span style="color:#111">.</span><span style="color:#111">ResultSet</span><span style="color:#111">.</span><span style="color:#111">TYPE_FORWARD_ONLY</span><span style="color:#111">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>       <span style="color:#111">java</span><span style="color:#111">.</span><span style="color:#00a8c8">sql</span><span style="color:#111">.</span><span style="color:#111">ResultSet</span><span style="color:#111">.</span><span style="color:#111">CONCUR_READ_ONLY</span><span style="color:#111">);</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#111">stmt</span><span style="color:#111">.</span><span style="color:#75af00">setFetchSize</span><span style="color:#111">(</span><span style="color:#00a8c8">Integer</span><span style="color:#111">.</span><span style="color:#111">MIN_VALUE</span><span style="color:#111">);</span>
 </code></pre></div><blockquote>
 <p>使用<code>TYPE_FORWARD_ONLY</code>，<code>CONCUR_READER_ONLY</code>的组合创建一个Statement，并且指定fetchSize为Integer.MIN_VALUE，这会告诉MySQL的驱动使用流方式处理结果集，一次返回一条记录。</p>
 </blockquote>
@@ -444,7 +444,7 @@ c. 传统客户端游标处理模式，对应其他三种测试用例。</p>
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.gitee.io/post/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -542,7 +542,7 @@ c. 传统客户端游标处理模式，对应其他三种测试用例。</p>
   <span class="author" itemprop="copyrightHolder">执子之手</span>
 </div>
 <div class="powered-by">
-  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.84.4</a>
 </div>
 <div class="powered-by">
   Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT

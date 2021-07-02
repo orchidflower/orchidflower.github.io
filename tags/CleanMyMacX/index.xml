@@ -14,9 +14,7 @@
       
       <guid>https://orchidflower.gitee.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</guid>
       <description>&lt;p&gt;&lt;code&gt;CleanMyMacX&lt;/code&gt; 是&lt;code&gt;Mac&lt;/code&gt;平台上优秀的卸载工具。虽然&lt;code&gt;Mac&lt;/code&gt;上的应用安装卸载比&lt;code&gt;Windows&lt;/code&gt;上简单很多，&lt;code&gt;AppStore&lt;/code&gt;上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非&lt;code&gt;AppStore&lt;/code&gt;软件在删除对应的app之后不会同时删除对应的数据。 &lt;code&gt;CleanMyMacX&lt;/code&gt; 这种类型的软件会扫描这些相关的数据并一起删除。&lt;/p&gt;
-&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;尝试了很多网上提供的办法都不成功，最后发现了一个简单的办法，只要删除对应的执行文件即可，针对最新的4.6.15有效：&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;rm &amp;ldquo;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/*&amp;quot;&lt;/del&gt;&lt;/p&gt;</description>
+&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;</description>
     </item>
     
   </channel>

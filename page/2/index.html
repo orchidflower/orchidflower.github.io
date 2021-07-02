@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head>
-	<meta name="generator" content="Hugo 0.79.0" />
+	<meta name="generator" content="Hugo 0.84.4" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
@@ -114,6 +114,80 @@
             
     
  <section id="posts" class="posts-expand">
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" itemprop="url">
+        在Mac上编译RedisDesktopManager（1）国际化处理
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-07-01">
+    2020-07-01
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.gitee.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" class="leancloud_visitors" data-flag-title="在Mac上编译RedisDesktopManager（1）国际化处理">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-概述">1. 概述</h1>
+<blockquote>
+<p>Redis Desktop Manager（RedisDesktopManager，RDM）是一个快速、简单、支持跨平台的 Redis 桌面管理工具，基于 Qt 5 开发，支持通过 SSH Tunnel 连接。</p>
+</blockquote>
+<p>&ndash; 开源中国上面对项目的介绍</p>
+<p><code>RedisDesktopManager</code> 是一款优秀的 <code>Redis</code> 客户端。最初是作为开源项目发布的，官方也会发布编译好的版本。后来，作者做了一些商业化处理，上架了<code>App Store</code>，从此不再发布编译后的版本，也在开源版本中阉割掉了 <code>SSH Tunnel</code> 功能。有鉴于此，网上有很多人写教程来说明如何从源码构建一个发行版本，但是目前见到的教程多多少少都有一些问题。最近花了一些时间尝试完善整个编译过程，目前进展不错。以后会陆续说明编译过程中碰到的问题以及对应的解决办法。</p>
+<p>今天首先来说一下国际化的问题。</p>
+<p>目前网上流行的 <code>RedisDesktopManager</code> 编译方法都没有对国际化文件进行处理，所以编译后的版本没有国际化功能，界面只显示英文，语言切换功能无效。经过对相关源码的分析，终于找到了正确的编译处理方法，现在可以完美切换语言。效果如图：</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-07-02-15936592204991.jpg" alt="-w800"></p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.gitee.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -804,74 +878,6 @@
     <footer class="post-footer"><div class="post-eof"></div></footer>
   </article>
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">
-        <a class="post-title-link" href="https://orchidflower.gitee.io/2020/03/13/linux-command-introduction-01-curl/" itemprop="url">
-        Linux常用命令介绍 01 - curl
-        </a>
-      </h1>
-      <div class="post-meta">
-      <span class="post-time">
-<span class="post-meta-item-icon">
-    <i class="fa fa-calendar-o"></i>
-</span>
-<span class="post-meta-item-text">时间：</span>
-<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-03-13">
-    2020-03-13
-</time>
-</span> 
-      
-
-  <span class="post-category" >
-  &nbsp; | &nbsp;
-  <span class="post-meta-item-icon">
-    <i class="fa fa-folder-o"></i>
-  </span>
-  <span class="post-meta-item-text">分类：</span>
-  
-    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-      <a href="https://orchidflower.gitee.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
-        <span itemprop="name">运维</span>
-      </a>
-      &nbsp; 
-    </span>
-  
-</span>
-
-
-      
-      <span id="/2020/03/13/linux-command-introduction-01-curl/" class="leancloud_visitors" data-flag-title="Linux常用命令介绍 01 - curl">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-    </span>
-    <span class="post-meta-item-text">评论：</span>
-    <a href="https://orchidflower.gitee.io/2020/03/13/linux-command-introduction-01-curl/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-fire"></i>
-    </span>
-    <span class="post-meta-item-text">访问：</span>
-    <span class="leancloud-visitors-count">0</span>
-</span>
-      </div>
-    </header>
-    <div class="post-body" itemprop="articleBody">
-    <p>很久没有更新博客了。之前一直用hexo，配置起来稍显复杂，单个的时间一长有些忘了，搞不起来了，于是荒废了很长时间。最近下定决心迁移到了Hugo上。总体感觉Hugo速度确实快，这一点非常喜欢。以后有时间可以介绍一下这次迁移的过程。</p>
-<p>这几年一直不间断的与Linux打交道，但是Linux的命令一直没有深入研究过，所以碰到问题的时候还是要各种搜索，挺麻烦的。这次想整理一个常用命令的介绍系列，把平常用到的命令简单介绍一下。不会是详尽的帮助类介绍，更多的是基于场景的介绍：譬如要实现什么功能用什么参数之类的。作为以后的备查吧，就不用再到处搜索了。：）</p>
-<p>第一个命令介绍curl。</p>
-    </div>
-    
-    <div class="post-more-link text-center">
-    <a class="btn" href="https://orchidflower.gitee.io/2020/03/13/linux-command-introduction-01-curl/" rel="contents">
-      阅读全文 &raquo;
-    </a>
-    </div>
-    
-    <footer class="post-footer"><div class="post-eof"></div></footer>
-  </article>
-
 </section>
 
 
@@ -971,7 +977,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.gitee.io/post/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -1056,7 +1062,7 @@
   <span class="author" itemprop="copyrightHolder">执子之手</span>
 </div>
 <div class="powered-by">
-  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.84.4</a>
 </div>
 <div class="powered-by">
   Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT

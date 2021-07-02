@@ -154,7 +154,7 @@
     <i class="fa fa-eye"></i>
 </span>
 <span class="post-meta-item-text">阅读：</span>
-<span class="leancloud-visitors-count">522 字 ~2分钟</span>
+<span class="leancloud-visitors-count">550 字 ~2分钟</span>
 </span>
       <span id="/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/" class="leancloud_visitors" data-flag-title="禁用CleanMyMacX HealthMonitor">
     &nbsp; | &nbsp;
@@ -170,14 +170,16 @@
     <div class="post-body" itemprop="articleBody">
     <p><code>CleanMyMacX</code> 是<code>Mac</code>平台上优秀的卸载工具。虽然<code>Mac</code>上的应用安装卸载比<code>Windows</code>上简单很多，<code>AppStore</code>上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非<code>AppStore</code>软件在删除对应的app之后不会同时删除对应的数据。 <code>CleanMyMacX</code> 这种类型的软件会扫描这些相关的数据并一起删除。</p>
 <p>最近发现 <code>CleanMyMacX</code> 会附带一个后台服务：<code>CleanMyMacX HealthMonitor</code>，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。</p>
-<p><del>尝试了很多网上提供的办法都不成功，最后发现了一个简单的办法，只要删除对应的执行文件即可，针对最新的4.6.15有效：</del></p>
-<p><del>rm &ldquo;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/*&quot;</del></p>
-<p><strong>2020.12.03 补充：</strong>
+<p><strong>2020.12.03 补充：该方法不太好，请参考下面的说明。</strong></p>
+<p>尝试了很多网上提供的办法都不成功，最后发现了一个简单的办法，只要删除对应的执行文件即可，针对最新的4.6.15有效：</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>rm <span style="color:#d88200">&#34;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/*&#34;</span>
+</code></pre></div><p><strong>2020.12.03 补充：</strong>
 以上方法有些后遗症，打开控制台程序，可以看到在<code>system.log</code>中定期出现异常信息：</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>Dec  3 00:40:02 macBookPro com.apple.xpc.launchd[1] (com.macpaw.CleanMyMac4.HealthMonitor[7781]): Service exited with abnormal code: 78
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>Dec  3 00:40:02 macBookPro com.apple.xpc.launchd[1] (com.macpaw.CleanMyMac4.HealthMonitor): Service only ran for 0 seconds. Pushing respawn out by 10 seconds.
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>Dec  3 00:40:14 macBookPro com.apple.xpc.launchd[1] (com.macpaw.CleanMyMac4.HealthMonitor[7785]): Could not find and/or execute program specified by service: 45: Operation not supported: com.macpaw.CleanMyMac4.HealthMonitor
-</code></pre></div><p>经过试验，可以修改权限解决，不需要删除文件，也不会出现system.log中的异常日志。针对4.7.1有效：</p>
+</code></pre></div><p><strong>请使用以下方法：</strong></p>
+<p>经过试验，可以修改权限解决，不需要删除文件，也不会出现system.log中的异常日志。针对4.7.1有效：</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>chmod 400 &#34;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LoginItems/CleanMyMac X HealthMonitor.app/Contents/MacOS/CleanMyMac X HealthMonitor&#34;
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>chmod 400 &#34;/Applications/CleanMyMac X.app/Contents/Library/LoginItems/CleanMyMac X Menu.app/Contents/Library/LaunchServices/com.macpaw.CleanMyMac4.Agent&#34;
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>chmod 400 &#34;/Applications/CleanMyMac X.app/Contents/Library/LaunchServices/com.macpaw.CleanMyMac4.Agent&#34;
@@ -261,7 +263,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.gitee.io/post/">
-        <span class="site-state-item-count">68</span>
+        <span class="site-state-item-count">69</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -349,7 +351,7 @@
   <span class="author" itemprop="copyrightHolder">执子之手</span>
 </div>
 <div class="powered-by">
-  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.79.0</a>
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.84.4</a>
 </div>
 <div class="powered-by">
   Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
