@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Java on 执子之手</title>
-    <link>https://orchidflower.gitee.io/tags/Java/</link>
+    <link>https://orchidflower.github.io/tags/Java/</link>
     <description>Recent content in Java on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 02 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.gitee.io/tags/Java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Java/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>MyBatis Plus中主键生成方式ASSIGN_ID的算法分析</title>
-      <link>https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</link>
+      <link>https://orchidflower.github.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</link>
       <pubDate>Fri, 02 Jul 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</guid>
+      <guid>https://orchidflower.github.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</guid>
       <description>&lt;p&gt;&lt;code&gt;MyBatis Plus&lt;/code&gt; 中提供了 &lt;code&gt;ASSIGN_ID&lt;/code&gt; 这种方式生成主键，使用起来非常方便，只要在&lt;code&gt;PO&lt;/code&gt;上定义一下就可以了，例如：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Order&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Model&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Order&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;
@@ -27,10 +27,10 @@
     
     <item>
       <title>使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM</title>
-      <link>https://orchidflower.gitee.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</link>
+      <link>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</link>
       <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</guid>
+      <guid>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</guid>
       <description>&lt;p&gt;当一次要导出非常多数据的时候，例如100w条，如果使用&lt;code&gt;MyBatis&lt;/code&gt;将全部结果都查询到&lt;code&gt;list&lt;/code&gt;中，经常会导致内存溢出。这个时候，我们可以使用&lt;code&gt;MyBatis&lt;/code&gt;的&lt;code&gt;ResultHandler&lt;/code&gt;来使用游标方式访问数据，从而避免&lt;code&gt;OOM&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;ResultHandler&lt;/code&gt;是MyBatis提供的一个接口，通过该接口可以让&lt;code&gt;MyBatis&lt;/code&gt;以流式的方式处理结果集，而不必等待整个结果集全部准备完毕，在准备好一条记录后就调用该接口中的&lt;code&gt;handleResult&lt;/code&gt;方法：&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;handleResult&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ResultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;resultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
@@ -39,10 +39,10 @@
     
     <item>
       <title>使用HttpServletRequestWrapper解决无法多次获取request Body的问题</title>
-      <link>https://orchidflower.gitee.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</link>
+      <link>https://orchidflower.github.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</link>
       <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</guid>
+      <guid>https://orchidflower.github.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</guid>
       <description>&lt;p&gt;在使用AOP编程的时候，经常碰到需要多次获取整个请求的body的情况。例如：典型场景下我们要在AOP切面中做日志记录或权限校验，此时需要调用&lt;code&gt;request.getInputStream&lt;/code&gt;获取输入流，从而读取整个请求的消息体。但是这通常会触发一个异常：&lt;code&gt;java.lang.IllegalStateException: getInputStream() can&#39;t be called after getReader()&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;出现这个问题的原因是默认的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象中的&lt;code&gt;getInputStream&lt;/code&gt;,&lt;code&gt;getReader&lt;/code&gt;函数式只允许调用一次。在一次请求中，除了我们在切面中调用&lt;code&gt;getInputStream&lt;/code&gt;之外，&lt;code&gt;Spring MVC&lt;/code&gt;框架在进行参数转换的时候还需要调用&lt;code&gt;getInputStream&lt;/code&gt;方法读取整个请求的消息体，然后转回为请求参数，这违背了只调用一次的原则，从而触发了以异常，&lt;/p&gt;
 &lt;p&gt;为了解决这个问题，我们可以引入&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;这个对象。这个类封装了&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为，我们可以继承这个类，从而使用一个新类模拟原始&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为。然后使用过滤器（filter）将原始的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象替换为&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;对象。&lt;/p&gt;
@@ -51,10 +51,10 @@
     
     <item>
       <title>Apache HttpClient 使用（上）</title>
-      <link>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/</link>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</link>
       <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual/</guid>
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</guid>
       <description>&lt;p&gt;HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。HttpClient已经应用在很多的项目中，比如Apache Jakarta上很著名的另外两个开源项目Cactus和HTMLUnit都使用了HttpClient。&lt;/p&gt;
 &lt;p&gt;目前最新的版本是4.5，支持HTTP 1.0/HTTP 1.1协议。正在开发中的5.0版本（还在Beta阶段）支持HTTP/2协议。&lt;/p&gt;
 &lt;h1 id=&#34;1-特性&#34;&gt;1. 特性&lt;/h1&gt;
@@ -82,10 +82,10 @@
     
     <item>
       <title>Apache HttpClient 使用（下）</title>
-      <link>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/</link>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</link>
       <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2018/04/23/Apache-HttpClient-Manual-Part2/</guid>
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</guid>
       <description>&lt;h1 id=&#34;4-链接池&#34;&gt;4. 链接池&lt;/h1&gt;
 &lt;p&gt;通常我们可以使用&lt;code&gt;PoolingHttpClientConnectionManager&lt;/code&gt;来创建一个链接池。&lt;/p&gt;
 &lt;h2 id=&#34;41-对于链接池的管理&#34;&gt;4.1 对于链接池的管理&lt;/h2&gt;
@@ -106,10 +106,10 @@
     
     <item>
       <title>Spring应用因Session Timeout设置引起的GC问题</title>
-      <link>https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</link>
+      <link>https://orchidflower.github.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</link>
       <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</guid>
+      <guid>https://orchidflower.github.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</guid>
       <description>&lt;p&gt;最近在客户的要求下，对系统进行了压测。自己压测的时候一切指标都挺正常。但是客户却反馈说压测的时候有时候会碰到性能衰减很厉害，不稳定。于是有了下面这次的排查过程。客户反馈说问题是发生在多次连续压测之后碰到的，所以进行了一系列的测试。&lt;/p&gt;
 &lt;p&gt;先说一下测试环境的一些信息：测试主机是阿里云的ECS，配置是2C + 16G。为了方便，数据库采用的是Docker搭建的，版本是5.6.X。另外，这台机器上还安装了Zookeeper 3.4.X 和Kafka 1.0。系统本身是一个标准的Spring + CXF的应用，提供给客户使用的服务是标准的Restful接口。&lt;/p&gt;
 &lt;h1 id=&#34;1-重现问题&#34;&gt;1. 重现问题&lt;/h1&gt;
@@ -120,10 +120,10 @@
     
     <item>
       <title>Kafka介绍与使用</title>
-      <link>https://orchidflower.gitee.io/2017/06/25/How-to-use-Kafka/</link>
+      <link>https://orchidflower.github.io/2017/06/25/How-to-use-Kafka/</link>
       <pubDate>Sun, 25 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/06/25/How-to-use-Kafka/</guid>
+      <guid>https://orchidflower.github.io/2017/06/25/How-to-use-Kafka/</guid>
       <description>&lt;p&gt;Apache Kafka是分布式发布-订阅消息系统。它最初由LinkedIn公司开发，之后成为Apache项目的一部分。Kafka是一种快速、可扩展的、设计内在就是分布式的，分区的和可复制的提交日志服务。
 Apache Kafka与传统消息系统相比，有以下不同：&lt;/p&gt;
 &lt;ul&gt;
@@ -136,10 +136,10 @@ Apache Kafka与传统消息系统相比，有以下不同：&lt;/p&gt;
     
     <item>
       <title>DelegatingFilterProxy源码分析</title>
-      <link>https://orchidflower.gitee.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</link>
+      <link>https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</link>
       <pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</guid>
+      <guid>https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</guid>
       <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
 &lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-name&amp;gt;&lt;/span&gt;springSecurityFilterChain&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-name&amp;gt;&lt;/span&gt;
@@ -155,20 +155,20 @@ Apache Kafka与传统消息系统相比，有以下不同：&lt;/p&gt;
     
     <item>
       <title>在Tomcat中使用ThreadLocal以及Session</title>
-      <link>https://orchidflower.gitee.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</link>
+      <link>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</link>
       <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</guid>
+      <guid>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</guid>
       <description>&lt;p&gt;最近运营同事在管理平台（生产环境）上碰到一个问题：登录之后会莫名其妙地变成未登录状态，被踢回登录页面。&lt;/p&gt;
 &lt;p&gt;管理平台使用的Spring MVC框架实现的后台接口，React实现的前台页面。之前引入React的时候已经做过前后端分离。但是当时考虑到技术栈的原因，没有对登录体系进行彻底改造，没有引入AccessToken来维护登录状态，依然保留了Java的Session机制。考虑到管理平台属于内部使用，访问量不大，因此直接在Nginx层使用iphash进行了Session粘滞，确保同一个用户的请求总是被同一个的后台Tomcat处理，这样就可以使用传统的session机制保持用户登录状态。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Java SSL握手记录分析</title>
-      <link>https://orchidflower.gitee.io/2017/04/28/Java-SSL-Handshake-Log/</link>
+      <link>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</link>
       <pubDate>Fri, 28 Apr 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://orchidflower.gitee.io/2017/04/28/Java-SSL-Handshake-Log/</guid>
+      <guid>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</guid>
       <description>&lt;p&gt;公司项目当中经常使用CXF库连接WebService服务，而且我们自己提供的服务也是基于CXF的SOAP服务，经常需要指导客户怎么连接我们的服务。CXF库整个体系架构比较庞大，相关的类、知识点都比较多。尤其是连接SSL双向认证服务的时候，经常碰到问题。&lt;/p&gt;
 &lt;p&gt;使用双向SSL认证的时候，在Spring中配置起来非常简单，但是一旦出错就比较难找问题。经过多次尝试，最后发现还是分析SSL握手记录比较靠谱，比较容易找出真正的问题所在。特此记录一下自己的一些心得，以作备忘并希望能够帮到其他人。&lt;/p&gt;</description>
     </item>
