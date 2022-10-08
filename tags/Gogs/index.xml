@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gogs on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Gogs/</link>
+    <description>Recent content in Gogs on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 20 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Gogs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Docker运行Jenkins（二）</title>
+      <link>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</link>
+      <pubDate>Sun, 20 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</guid>
+      <description>&lt;p&gt;Gitea 是一款极易搭建的自助 Git 服务，最初是fork子Gogs项目（Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自助 Git 服务）。Gitea使用 Go 语言开发。使用 Go 语言开发使得 Gitea 能够通过独立的二进制分发，并且支持 Go 语言支持的 所有平台，包括 Linux、Mac OS X、Windows 以及 ARM 平台。&lt;/p&gt;
+&lt;p&gt;Gitea占用资源小，比起Gitlab这种庞然大物来说简直是精致得要命。但是作为小团队的项目管理用来替代Gitlab还是基本能够满足需求的。而且Gitea（包括Gogs）社区还是挺活跃的，新功能也在逐渐增加中，个人很看好它的前景。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

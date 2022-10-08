@@ -1,0 +1,494 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/" itemprop="url">
+        使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-09-04">
+    2020-09-04
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">923 字 ~2分钟</span>
+</span>
+      <span id="/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/" class="leancloud_visitors" data-flag-title="使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>当一次要导出非常多数据的时候，例如100w条，如果使用<code>MyBatis</code>将全部结果都查询到<code>list</code>中，经常会导致内存溢出。这个时候，我们可以使用<code>MyBatis</code>的<code>ResultHandler</code>来使用游标方式访问数据，从而避免<code>OOM</code>。</p>
+<p><code>ResultHandler</code>是MyBatis提供的一个接口，通过该接口可以让<code>MyBatis</code>以流式的方式处理结果集，而不必等待整个结果集全部准备完毕，在准备好一条记录后就调用该接口中的<code>handleResult</code>方法：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#00a8c8">void</span> <span style="color:#75af00">handleResult</span><span style="color:#f92672">(</span><span style="color:#111">ResultContext</span><span style="color:#f92672">&lt;?</span> <span style="color:#00a8c8">extends</span> <span style="color:#111">T</span><span style="color:#f92672">&gt;</span> <span style="color:#111">resultContext</span><span style="color:#f92672">);</span>
+</span></span></code></pre></div><p>要使用<code>ResultHandler</code>需要在<code>Mapper</code>层声明的时候做一定的处理。这里简单描述一下。</p>
+<h1 id="1-基于注解">1. 基于注解</h1>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">public</span> <span style="color:#00a8c8">interface</span> <span style="color:#75af00">OrderMapper</span> <span style="color:#00a8c8">extends</span> <span style="color:#111">BaseMapper</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e">     * 导出订单功能
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e">     * @param wrapper
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e">     * @param handler
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#75af00">@Select</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;select * from tap_order ${ew.customSqlSegment}&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#75af00">@Options</span><span style="color:#f92672">(</span><span style="color:#111">resultSetType</span> <span style="color:#f92672">=</span> <span style="color:#111">ResultSetType</span><span style="color:#f92672">.</span><span style="color:#75af00">FORWARD_ONLY</span><span style="color:#f92672">,</span> <span style="color:#111">fetchSize</span> <span style="color:#f92672">=</span> <span style="color:#111">Integer</span><span style="color:#f92672">.</span><span style="color:#75af00">MIN_VALUE</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#75af00">@ResultType</span><span style="color:#f92672">(</span><span style="color:#111">Order</span><span style="color:#f92672">.</span><span style="color:#75af00">class</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#00a8c8">void</span> <span style="color:#75af00">export</span><span style="color:#f92672">(</span><span style="color:#75af00">@Param</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;ew&#34;</span><span style="color:#f92672">)</span> <span style="color:#111">Wrapper</span> <span style="color:#111">wrapper</span><span style="color:#f92672">,</span> <span style="color:#111">ResultHandler</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#111">handler</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>基于注解的声明方式看上去相当直观：</p>
+<ul>
+<li>使用<code>@Select</code>注解声明<code>sql</code>语句；</li>
+<li>使用<code>@ResultType</code>声明结果集的类型；</li>
+<li>使用<code>@Options</code>声明了两个配置项，其目的是开启<code>MySQL</code>的客户端游标。如果不配置这两项，<code>MySQL</code>默认还是会把整个结果集返回客户端；</li>
+<li>函数声明中增加一个<code>ResultHandler</code>类型的参数，返回值也改成了<code>void</code>类型。</li>
+</ul>
+<h1 id="2-基于xml配置">2. 基于XML配置</h1>
+<p>基于<code>XML</code>的配置在<code>XML</code>文件中与之前的传统方式配置一个查询是一样的，只是需要增加<code>fetchSize</code>和<code>resultSetType</code>两个配置项以启用<code>MySQL</code>的客户端游标：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#75715e">&lt;!DOCTYPE mapper PUBLIC &#34;-//mybatis.org//DTD Mapper 3.0//EN&#34; &#34;http://mybatis.org/dtd/mybatis-3-mapper.dtd&#34;&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#f92672">&lt;mapper</span> <span style="color:#75af00">namespace=</span><span style="color:#d88200">&#34;com.eveus.tap.trade.mapper.OrderMapper&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#f92672">&lt;select</span> <span style="color:#75af00">id=</span><span style="color:#d88200">&#34;export&#34;</span> <span style="color:#75af00">fetchSize=</span><span style="color:#d88200">&#34;-2147483648&#34;</span> <span style="color:#75af00">resultSetType=</span><span style="color:#d88200">&#34;FORWARD_ONLY&#34;</span> <span style="color:#75af00">resultType=</span><span style="color:#d88200">&#34;com.eveus.tap.trade.po.Order&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>        SELECT * FROM `tap_order` ${ew.customSqlSegment}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#f92672">&lt;/select&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#f92672">&lt;/mapper&gt;</span>
+</span></span></code></pre></div><p>在<code>Mapper</code>类中，定义函数接口和基于注解的一样，只是不需要注解声明。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">public</span> <span style="color:#00a8c8">interface</span> <span style="color:#75af00">OrderMapper</span> <span style="color:#00a8c8">extends</span> <span style="color:#111">BaseMapper</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e">     * 导出订单功能
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#75715e">     * @param wrapper
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e">     * @param handler
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#75715e">//@Select(&#34;select * from tap_order ${ew.customSqlSegment}&#34;)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">//@Options(resultSetType = ResultSetType.FORWARD_ONLY, fetchSize = Integer.MIN_VALUE)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">//@ResultType(Order.class)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">void</span> <span style="color:#75af00">export</span><span style="color:#f92672">(</span><span style="color:#75af00">@Param</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;ew&#34;</span><span style="color:#f92672">)</span> <span style="color:#111">Wrapper</span> <span style="color:#111">wrapper</span><span style="color:#f92672">,</span> <span style="color:#111">ResultHandler</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#111">handler</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="3-使用方法">3. 使用方法</h1>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">class</span> <span style="color:#75af00">OrderServiceImpl</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">ServiceResult</span><span style="color:#f92672">&lt;</span><span style="color:#111">ExcelByte</span><span style="color:#f92672">&gt;</span> <span style="color:#75af00">export</span><span style="color:#f92672">(</span><span style="color:#111">Wrapper</span><span style="color:#f92672">&lt;</span><span style="color:#111">Order</span><span style="color:#f92672">&gt;</span> <span style="color:#111">wrapper</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#111">ExcelExporter</span> <span style="color:#111">exporter</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ExcelExporter</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#111">exporter</span><span style="color:#f92672">.</span><span style="color:#75af00">addColumn</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;订单号&#34;</span><span style="color:#f92672">).</span><span style="color:#75af00">withWidth</span><span style="color:#f92672">(</span><span style="color:#111">40</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#75715e">// 此时使用的就是ResultHandler对结果集进行处理
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"></span>        <span style="color:#00a8c8">this</span><span style="color:#f92672">.</span><span style="color:#75af00">getBaseMapper</span><span style="color:#f92672">().</span><span style="color:#75af00">export</span><span style="color:#f92672">(</span><span style="color:#111">wrapper</span><span style="color:#f92672">,</span> <span style="color:#111">resultContext</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>            <span style="color:#111">Order</span> <span style="color:#111">order</span> <span style="color:#f92672">=</span> <span style="color:#111">resultContext</span><span style="color:#f92672">.</span><span style="color:#75af00">getResultObject</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>            <span style="color:#111">List</span> <span style="color:#111">values</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            <span style="color:#111">values</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">order</span><span style="color:#f92672">.</span><span style="color:#75af00">getId</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>            <span style="color:#111">exporter</span><span style="color:#f92672">.</span><span style="color:#75af00">addRow</span><span style="color:#f92672">(</span><span style="color:#111">values</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">exporter</span><span style="color:#f92672">.</span><span style="color:#75af00">getTotalRows</span><span style="color:#f92672">()==</span><span style="color:#111">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>            <span style="color:#00a8c8">return</span> <span style="color:#111">ServiceResult</span><span style="color:#f92672">.</span><span style="color:#75af00">fail</span><span style="color:#f92672">(</span><span style="color:#111">ResultCode</span><span style="color:#f92672">.</span><span style="color:#75af00">EXCEL_NO_ROWS</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#75715e">// 转化为byte数组
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"></span>        <span style="color:#111">ExcelByte</span> <span style="color:#111">excelByte</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ExcelByte</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        <span style="color:#111">excelByte</span><span style="color:#f92672">.</span><span style="color:#75af00">setContent</span><span style="color:#f92672">(</span><span style="color:#111">exporter</span><span style="color:#f92672">.</span><span style="color:#75af00">toBytes</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        <span style="color:#111">exporter</span><span style="color:#f92672">.</span><span style="color:#75af00">dispose</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">ServiceResult</span><span style="color:#f92672">.</span><span style="color:#75af00">ok</span><span style="color:#f92672">(</span><span style="color:#111">excelByte</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000022167975">Mybatis流式查询避免OOM</a></li>
+<li><a href="https://www.cnblogs.com/51life/p/9633002.html">ResultHandler的用法</a></li>
+<li><a href="https://www.cnblogs.com/zhjh256/p/11516881.html">mybatis ResultHandler vs ResultSetHandler及自定义扩展</a></li>
+<li><a href="https://baomidou.com/guide/wrapper.html#and">MyBatis Plus条件构造器</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Java" rel="tag" title="Java">#Java#</a>
+    
+    <a href="https://orchidflower.github.io/tags/MyBatis" rel="tag" title="MyBatis">#MyBatis#</a>
+    
+    <a href="https://orchidflower.github.io/tags/OOM" rel="tag" title="OOM">#OOM#</a>
+    
+    <a href="https://orchidflower.github.io/tags/ResultHandler" rel="tag" title="ResultHandler">#ResultHandler#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA" rel="tag" title="内存溢出">#内存溢出#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/" rel="next" title="禁用CleanMyMacX HealthMonitor">
+        <i class="fa fa-chevron-left"></i> 禁用CleanMyMacX HealthMonitor
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/" rel="prev" title="使用Python写一个Alfred Workflow">
+        使用Python写一个Alfred Workflow <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-基于注解">1. 基于注解</a></li>
+    <li><a href="#2-基于xml配置">2. 基于XML配置</a></li>
+    <li><a href="#3-使用方法">3. 使用方法</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

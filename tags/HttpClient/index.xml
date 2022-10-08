@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HttpClient on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/HttpClient/</link>
+    <description>Recent content in HttpClient on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 23 Apr 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/HttpClient/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Apache HttpClient 使用（上）</title>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</guid>
+      <description>&lt;p&gt;HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。HttpClient已经应用在很多的项目中，比如Apache Jakarta上很著名的另外两个开源项目Cactus和HTMLUnit都使用了HttpClient。&lt;/p&gt;
+&lt;p&gt;目前最新的版本是4.5，支持HTTP 1.0/HTTP 1.1协议。正在开发中的5.0版本（还在Beta阶段）支持HTTP/2协议。&lt;/p&gt;
+&lt;h1 id=&#34;1-特性&#34;&gt;1. 特性&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;基于标准、纯净的java语言。实现了Http1.0和Http1.1&lt;/li&gt;
+&lt;li&gt;以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）。&lt;/li&gt;
+&lt;li&gt;支持HTTPS协议。&lt;/li&gt;
+&lt;li&gt;通过Http代理建立透明的连接。&lt;/li&gt;
+&lt;li&gt;利用CONNECT方法通过Http代理建立隧道的https连接。&lt;/li&gt;
+&lt;li&gt;Basic, Digest, NTLMv1, NTLMv2, NTLM2 Session, SNPNEGO/Kerberos认证方案。&lt;/li&gt;
+&lt;li&gt;插件式的自定义认证方案。&lt;/li&gt;
+&lt;li&gt;便携可靠的套接字工厂使它更容易的使用第三方解决方案。&lt;/li&gt;
+&lt;li&gt;连接管理器支持多线程应用。支持设置最大连接数，同时支持设置每个主机的最大连接数，发现并关闭过期的连接。&lt;/li&gt;
+&lt;li&gt;自动处理Set-Cookie中的Cookie。&lt;/li&gt;
+&lt;li&gt;插件式的自定义Cookie策略。&lt;/li&gt;
+&lt;li&gt;Request的输出流可以避免流中内容直接缓冲到socket服务器。&lt;/li&gt;
+&lt;li&gt;Response的输入流可以有效的从socket服务器直接读取相应内容。&lt;/li&gt;
+&lt;li&gt;在http1.0和http1.1中利用KeepAlive保持持久连接。&lt;/li&gt;
+&lt;li&gt;直接获取服务器发送的response code和 headers。&lt;/li&gt;
+&lt;li&gt;设置连接超时的能力。&lt;/li&gt;
+&lt;li&gt;实验性的支持http1.1 response caching。&lt;/li&gt;
+&lt;li&gt;源代码基于Apache License 可免费获取。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apache HttpClient 使用（下）</title>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</guid>
+      <description>&lt;h1 id=&#34;4-链接池&#34;&gt;4. 链接池&lt;/h1&gt;
+&lt;p&gt;通常我们可以使用&lt;code&gt;PoolingHttpClientConnectionManager&lt;/code&gt;来创建一个链接池。&lt;/p&gt;
+&lt;h2 id=&#34;41-对于链接池的管理&#34;&gt;4.1 对于链接池的管理&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span&gt;PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span&gt;// 设置最大连接数  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span&gt;cm.setMaxTotal(200);  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;&lt;span&gt;// 设置每个主机地址的并发数  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;&lt;span&gt;cm.setDefaultMaxPerRoute(20);  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;&lt;span&gt;// 通过PoolingHttpClientConnectionManager，来获取CloseableHttpClient  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;&lt;span&gt;CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;&lt;span&gt;// 创建http GET请求  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span&gt;HttpGet httpGet = new HttpGet(&amp;#34;http://www.baidu.com/&amp;#34;);    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;&lt;span&gt;// 执行请求  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;&lt;span&gt;response = httpClient.execute(httpGet);    
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

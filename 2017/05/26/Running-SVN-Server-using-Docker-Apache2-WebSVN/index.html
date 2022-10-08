@@ -1,0 +1,633 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/" itemprop="url">
+        使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-05-26">
+    2017-05-26
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">1922 字 ~4分钟</span>
+</span>
+      <span id="/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/" class="leancloud_visitors" data-flag-title="使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-背景">1. 背景</h1>
+<p>虽然现在的SVN已经用的越来越少，很多人都切换到了Git上。但是以前的一些历史项目还是需要SVN支持的。
+之前的SVN服务器是直接搭建在一台Ubuntu服务器上的。当时一起搭建了WebSVN。也曾经研究过怎么搭建WebSVN，但是现在也不能够工作了，时间长久了也忘了怎么搭建了。所以想研究一下怎么使用Docker来完成一样的工作。</p>
+<h1 id="2-构建过程">2. 构建过程</h1>
+<p>SVN搭建需要Apache配合。而WebSVN需要PHP的配合。这次构建镜像是以Ubuntu 14.04.5为基础的。然后在镜像基础上安装<code>Apache2</code>,<code>Subversion</code>,<code>WebSVN</code>等内容。</p>
+<h2 id="21-dockerfile">2.1 Dockerfile</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>FROM ubuntu:14.04.5
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>RUN sed -i &#34;s/archive/cn.archive/g&#34; /etc/apt/sources.list \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    &amp;&amp; apt-get update \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    &amp;&amp; apt-get install -y apache2 subversion libapache2-svn websvn \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    &amp;&amp; sed -i &#34;s/&#39;UTF-8&#39;, &#39;ISO/&#39;GBK&#39;, &#39;UTF-8&#39;, &#39;ISO/g&#34; /usr/share/websvn/include/command.php \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    &amp;&amp; apt-get autoclean &amp;&amp; apt-get clean &amp;&amp; apt-get autoremove \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    &amp;&amp; a2enmod auth_digest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>ENV SERVER_NAME=localhost \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    APACHE_RUN_USER=www-data \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    APACHE_RUN_GROUP=www-data \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    APACHE_PID_FILE=/var/run/apache2/apache2.pid \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    APACHE_RUN_DIR=/var/run/apache2 \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    APACHE_LOCK_DIR=/var/lock/apache2 \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    APACHE_LOG_DIR=/var/log/apache2 \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    APACHE_LOG_LEVEL=warn
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>COPY buildtime/apache2-foreground /usr/local/bin/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>COPY buildtime/default.conf /etc/apache2/sites-available/000-default.conf
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>CMD [&#34;apache2-foreground&#34;]
+</span></span></code></pre></div><p>构建命令：<code>docker build . -t svnbase</code></p>
+<h2 id="22-解读">2.2 解读</h2>
+<ul>
+<li>FROM 指定了基础镜像</li>
+<li>RUN 指定了构建过程中需要执行的指令</li>
+<li>ENV 设置了运行Apache所需要的一些环境变量</li>
+<li>COPY 将一些预先写好的配置文件复制到镜像中；</li>
+<li>CMD 指定了镜像的启动命令。</li>
+</ul>
+<p>其中的RUN命令最复杂，完成了最重要的一部分工作。我们逐条解读。</p>
+<h3 id="221-修改ubuntu源地址">2.2.1 修改Ubuntu源地址</h3>
+<p>国内的网络环境导致了直接使用基础镜像中的源下载包会非常慢，因此有必要切换到国内的镜像地址。这个是通过编辑<code>/etc/apt/sources.list</code>文件完成的。使用命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>sed -i &#34;s/archive/cn.archive/g&#34; /etc/apt/sources.list
+</span></span></code></pre></div><p>完成了对这个文件的修改。其做法就是将<code>archive.ubuntu.com</code>这个域名替换为：<code>cn.archive.ubuntu.com</code>。</p>
+<h3 id="222-安装相关组件">2.2.2 安装相关组件</h3>
+<p>这部分包含如下几条指令，这部分比较基础，不做过多解读。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>apt-get update \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    &amp;&amp; apt-get install -y apache2 subversion libapache2-svn websvn
+</span></span></code></pre></div><h3 id="223-修复websvn的中文编码问题">2.2.3 修复WebSVN的中文编码问题</h3>
+<p>默认情况下，WebSVN只支持UTF-8编码的源文件。如果源码中有GBK编码的，会显示为乱码。通过网上查找，可以通过修改源码解决。参考资料：中文解决办法<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>sed -i &#34;s/&#39;UTF-8&#39;, &#39;ISO/&#39;GBK&#39;, &#39;UTF-8&#39;, &#39;ISO/g&#34; /usr/share/websvn/include/command.php
+</span></span></code></pre></div><h3 id="224-清理缓存减小镜像体积">2.2.4 清理缓存，减小镜像体积</h3>
+<p>下面的命令清理apt-get生成的缓存，从而减小镜像的体积。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>apt-get autoclean &amp;&amp; apt-get clean &amp;&amp; apt-get autoremove
+</span></span></code></pre></div><h2 id="23-其他文件">2.3 其他文件</h2>
+<h3 id="231-apache2-foreground">2.3.1 apache2-foreground</h3>
+<p>使用下面的脚本启动Apache服务，并显示log文件内容。注意：单纯的使用service start会导致镜像很快退出。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e">#!/bin/bash
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#75715e"></span><span style="color:#111">set</span> -e
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"># Apache gets grumpy about PID files pre-existing</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>rm -f /var/run/apache2/apache2.pid <span style="color:#f92672">&amp;&amp;</span> service apache2 start <span style="color:#f92672">&amp;&amp;</span> tail -f /var/log/apache2/access.log <span style="color:#f92672">&amp;&amp;</span> service apache2 stop
+</span></span></code></pre></div><h3 id="232-defaultconf">2.3.2 default.conf</h3>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;VirtualHost *:80&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>        ServerName 127.0.0.1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        ServerAdmin webmaster@localhost
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        DocumentRoot /var/www/html
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        &lt;Location /svnrep&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>                DAV svn
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>                SVNParentPath /opt/scmroot/svn/svnrep
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                SVNListParentPath on
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>                AuthType Digest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                AuthName &#34;SVN Access&#34;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>                AuthUserFile /opt/scmroot/svndigest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>                Require valid-user
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        &lt;/Location&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        Alias /websvn /usr/share/websvn
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>        &lt;Directory /usr/share/websvn&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>                DirectoryIndex index.php
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>                Options FollowSymLinks
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>                Order allow,deny
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>                Allow from all
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>                &lt;IfModule mod_php5.c&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>                        php_flag magic_quotes_gpc Off
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>                        php_flag track_vars On
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>                &lt;/IfModule&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>                AuthType Digest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>                AuthName &#34;SVN Access&#34;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>                AuthUserFile /opt/scmroot/svndigest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>                Require valid-user
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>        &lt;/Directory&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>        ErrorLog ${APACHE_LOG_DIR}/error.log
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>&lt;/VirtualHost&gt;
+</span></span></code></pre></div><p>在这个配置文件中我们指定了几个特定的路径，这几个路径需要在运行镜像的时候挂载覆盖：</p>
+<ul>
+<li>/opt/scmroot/svnrep  SVN仓库存放的路径；</li>
+<li>/opt/scmroot/svndigest 访问SVN仓库的用户配置文件。需要使用htdigest文件生成。</li>
+<li>AuthName 指定了Digest认证中的realm。在创建svndigest的时候需要使用同样的值“SVN Access”。</li>
+</ul>
+<h1 id="3-使用">3. 使用</h1>
+<h2 id="31-docker-composeyaml">3.1 docker-compose.yaml</h2>
+<p>我们使用Docker-compose来使用这个镜像。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>version: &#39;2&#39;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>services:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  apache:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    image: svnbox
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    volumes:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>      # let container use same timezone as host
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>      - /etc/localtime:/etc/localtime
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>      - /opt/docker/svnbox/runtime/svnrep:/opt/scmroot/svnrep
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>      - /opt/docker/svnbox/runtime/svndigest:/opt/scmroot/svndigest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>      - /opt/docker/svnbox/runtime/svn_deb_conf.inc:/etc/websvn/svn_deb_conf.inc
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>      - /opt/docker/svnbox/runtime/index.html:/var/www/index.html
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    ports:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>      - &#34;85:80&#34;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    restart: always
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    hostname: apache
+</span></span></code></pre></div><h2 id="32-解读">3.2 解读</h2>
+<ul>
+<li>image 指定了镜像；</li>
+<li>volumes 指定了要挂载的本地目录。其中：
+svnrep 是存放所有SVN仓库的目录；
+svndigest 是存放用户信息的文件。使用htdigest命令创建（考虑到安全性，选择了Digest认证，而不采用Basic认证）。</li>
+<li>svn_deb_conf.inc WebSVN配置文件。主要可以用来添加SVN仓库，以供WebSVN访问。</li>
+<li>index.html 是这个Apache需要的首页文件。</li>
+</ul>
+<h2 id="33-其他文件">3.3 其他文件</h2>
+<h3 id="331-svn_deb_confinc">3.3.1 svn_deb_conf.inc</h3>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;?php
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>// 使用日志替代显示Age。缺省情况下WebSVN显示一个Age信息，包括修改人，修改时间（是距今多少天这种修改时间）
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$config-&gt;setShowAgeInsteadOfDate(false);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>// flatView 模式只显示当前目录的文件。而默认情况下是先是一个目录树，点击目录将在当前页面展开当前目录的内容。
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>//$config-&gt;useFlatView();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>// 扩展Tab键为4个空格
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>$config-&gt;expandTabsBy(4);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>// 在日志视图显示修改的内容（哪些文件被修改了）
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>$config-&gt;setLogsShowChanges(true);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>// 添加要被WebSVN浏览的SVN仓库。不添加的就不显示。
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>$config-&gt;addRepository(&#34;AuthServer&#34;, &#34;file:///opt/scmroot/svn/svnrep/AuthServer&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>$config-&gt;addRepository(&#34;CodeConvert&#34;, &#34;file:///opt/scmroot/svn/svnrep/CodeConvert&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>$config-&gt;addRepository(&#34;eCodeHSM&#34;, &#34;file:///opt/scmroot/svn/svnrep/eCodeHSM&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>$config-&gt;addRepository(&#34;eCodeHSM_ezTokenPIN&#34;, &#34;file:///opt/scmroot/svn/svnrep/eCodeHSM_ezTokenPIN&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>$config-&gt;addRepository(&#34;HSMCardManager&#34;, &#34;file:///opt/scmroot/svn/svnrep/HSMCardManager&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>$config-&gt;addRepository(&#34;Software&#34;, &#34;file:///opt/scmroot/svn/svnrep/Software&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>$config-&gt;addRepository(&#34;vcproj&#34;, &#34;file:///opt/scmroot/svn/svnrep/vcproj&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>$config-&gt;setEnscriptPath(&#34;/usr/bin&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>$config-&gt;setSedPath(&#34;/bin&#34;);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>$config-&gt;useEnscript();
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>?&gt;
+</span></span></code></pre></div><p>这个配置文件中对WebSVN进行了进一步的配置。其中最主要的是使用<code>addRepository</code>添加本地SVN仓库（如果不添加，WebSVN是无法浏览SVN仓库的）。另外一些配置可以看源码中的注释。</p>
+<h3 id="332-indexhtml">3.3.2 index.html</h3>
+<p>这个是首页，可以随便编辑内容。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;html&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>&lt;head&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>&lt;/head&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>&lt;body&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>&lt;/body&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>&lt;/html&gt;
+</span></span></code></pre></div><h3 id="333-svndigest">3.3.3 svndigest</h3>
+<p>使用htdigest命令创建。例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ htdigest -c svndigest &#34;SVN Access&#34; test
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Adding user test in realm SVN Access
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>New password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Re-type new password: 
+</span></span></code></pre></div><h1 id="4-怎么访问">4. 怎么访问</h1>
+<p>启动之后，使用：</p>
+<ul>
+<li>http://[server-ip]:85/svnre/&hellip; 访问SVN；</li>
+<li>http://[server-ip]:85/websvn 访问WebSVN。</li>
+</ul>
+<h1 id="附录-参考资料">附录. 参考资料</h1>
+<ul>
+<li><a href="https://github.com/orchidflower/docker-svnbox">docker-svnbox on Github</a></li>
+<li><a href="http://blog.csdn.net/csj50/article/details/7241579">WebSVN(2.3.3)查看文件中文乱码解决方法</a></li>
+<li><a href="http://blog.csdn.net/flydream0/article/details/8620396">apt-get指令的autoclean,clean,autoremove的区别</a></li>
+<li><a href="https://help.ubuntu.com/community/AptGet/Howto">Package management with APT</a></li>
+</ul>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p><a href="http://blog.csdn.net/csj50/article/details/7241579">WebSVN(2.3.3)查看文件中文乱码解决方法</a>&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Docker" rel="tag" title="Docker">#Docker#</a>
+    
+    <a href="https://orchidflower.github.io/tags/SVN" rel="tag" title="SVN">#SVN#</a>
+    
+    <a href="https://orchidflower.github.io/tags/WebSVN" rel="tag" title="WebSVN">#WebSVN#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/" rel="next" title="DelegatingFilterProxy源码分析">
+        <i class="fa fa-chevron-left"></i> DelegatingFilterProxy源码分析
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/" rel="prev" title="在Tomcat中使用ThreadLocal以及Session">
+        在Tomcat中使用ThreadLocal以及Session <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-背景">1. 背景</a></li>
+    <li><a href="#2-构建过程">2. 构建过程</a>
+      <ul>
+        <li><a href="#21-dockerfile">2.1 Dockerfile</a></li>
+        <li><a href="#22-解读">2.2 解读</a>
+          <ul>
+            <li><a href="#221-修改ubuntu源地址">2.2.1 修改Ubuntu源地址</a></li>
+            <li><a href="#222-安装相关组件">2.2.2 安装相关组件</a></li>
+            <li><a href="#223-修复websvn的中文编码问题">2.2.3 修复WebSVN的中文编码问题</a></li>
+            <li><a href="#224-清理缓存减小镜像体积">2.2.4 清理缓存，减小镜像体积</a></li>
+          </ul>
+        </li>
+        <li><a href="#23-其他文件">2.3 其他文件</a>
+          <ul>
+            <li><a href="#231-apache2-foreground">2.3.1 apache2-foreground</a></li>
+            <li><a href="#232-defaultconf">2.3.2 default.conf</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#3-使用">3. 使用</a>
+      <ul>
+        <li><a href="#31-docker-composeyaml">3.1 docker-compose.yaml</a></li>
+        <li><a href="#32-解读">3.2 解读</a></li>
+        <li><a href="#33-其他文件">3.3 其他文件</a>
+          <ul>
+            <li><a href="#331-svn_deb_confinc">3.3.1 svn_deb_conf.inc</a></li>
+            <li><a href="#332-indexhtml">3.3.2 index.html</a></li>
+            <li><a href="#333-svndigest">3.3.3 svndigest</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#4-怎么访问">4. 怎么访问</a></li>
+    <li><a href="#附录-参考资料">附录. 参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

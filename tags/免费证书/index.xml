@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>免费证书 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E5%85%8D%E8%B4%B9%E8%AF%81%E4%B9%A6/</link>
+    <description>Recent content in 免费证书 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 02 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E5%85%8D%E8%B4%B9%E8%AF%81%E4%B9%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Let&#39;s Encrypt免费证书的使用</title>
+      <link>https://orchidflower.github.io/2017/07/02/How-to-use-Let-s-Encrypt/</link>
+      <pubDate>Sun, 02 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/07/02/How-to-use-Let-s-Encrypt/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;因为云认证服务的商户认证体系是基于双向&lt;code&gt;SSL&lt;/code&gt;的，如果服务器端没有启用&lt;code&gt;SSL&lt;/code&gt;证书，则整个认证体系必须重构。目前的现状是申请&lt;code&gt;SSL&lt;/code&gt;证书费用比较高（一年2-3w），而且周期比较长，赶不上目前的测试进度。所以只能使用免费证书来支撑一下了。&lt;/p&gt;
+&lt;p&gt;免费证书服务提供商据我所知有几个：&lt;code&gt;Let&#39;s Encrypt&lt;/code&gt;, &lt;code&gt;StartSSL&lt;/code&gt;, &lt;code&gt;StarCom&lt;/code&gt;。但是&lt;code&gt;StartSSL&lt;/code&gt;, &lt;code&gt;StarCom&lt;/code&gt;前一阵子被&lt;code&gt;Chrome&lt;/code&gt;、&lt;code&gt;Firefox&lt;/code&gt;等设置为不可信（签名流程不规范，不符合安全监管要求之类的原因），因此目前可选的只有&lt;code&gt;let&#39;s encrypt&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Let&#39;s Encrypt&lt;/code&gt;是国外一个公共的免费 &lt;code&gt;SSL&lt;/code&gt; 项目，由 &lt;code&gt;Linux&lt;/code&gt; 基金会托管，它的来头不小，由&lt;code&gt;Mozilla&lt;/code&gt;、思科、&lt;code&gt;Akamai&lt;/code&gt;、&lt;code&gt;IdenTrust&lt;/code&gt;和&lt;code&gt;EFF&lt;/code&gt;等组织发起，目的就是向网站自动签发和管理免费证书，以便加速互联网由 &lt;code&gt;HTTP&lt;/code&gt; 过渡到 &lt;code&gt;HTTPS&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

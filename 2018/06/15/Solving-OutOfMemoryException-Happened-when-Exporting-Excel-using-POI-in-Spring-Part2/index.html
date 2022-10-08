@@ -1,0 +1,622 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>Spring使用POI导出Excel内存溢出问题的解决（续） - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="Spring使用POI导出Excel内存溢出问题的解决（续）">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="Spring使用POI导出Excel内存溢出问题的解决（续） - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/" itemprop="url">
+        Spring使用POI导出Excel内存溢出问题的解决（续）
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-06-15">
+    2018-06-15
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">3349 字 ~7分钟</span>
+</span>
+      <span id="/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/" class="leancloud_visitors" data-flag-title="Spring使用POI导出Excel内存溢出问题的解决（续）">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>上篇文章介绍了一个方法，解决了导出Excel过程中内存溢出的问题。但是有些问题还没有搞明白，那就是为什么要这样打开数据库游标？为什么fetchSize必须为：-2147483648？这里面涉及到数据库游标的更多信息，这一篇文章将深入介绍这方面内容。</p>
+<p>在数据库中，游标是一个十分重要的概念。游标提供了一种对从表中检索出的数据进行操作的灵活手段，就本质而言，游标实际上是一种能从包括多条数据记录的结果集中每次提取一条记录的机制。游标总是与一条SQL 选择语句相关联因为游标由结果集（可以是零条、一条或由相关的选择语句检索出的多条记录）和结果集中指向特定记录的游标位置组成。</p>
+<p>MySQL数据库游标通常有两种形式：Client Side Cursor（客户端游标）和Server Side Cursor（服务器端游标）。默认情况下，客户端游标会把整个结果集获取到客户端内存中，如果结果集太大，就会引发Out Of Memory错误；而服务器端游标会将结果集缓存在服务器端，客户端从服务器端分批获得结果集。</p>
+<p>MySQL默认是使用客户端游标的，因为通常情况下，程序处理的结果集不会特别大，对小结果集使用客户端游标效率更高：结果集一次性传输到客户端，客户端可以自行处理，服务器端也可以为其他客户端提供服务。但是针对大结果集，默认的客户端游标处理方式满足不了要求，针对这种情况，MySQL的Java客户端做了一个特殊的处理。下面参照官方帮助看一下。</p>
+<h1 id="1-官方帮助说明">1. 官方帮助说明</h1>
+<h2 id="11-客户端游标">1.1 客户端游标</h2>
+<blockquote>
+<p>By default, ResultSets are completely retrieved and stored in memory. In most cases this is the most efficient way to operate and, due to the design of the MySQL network protocol, is easier to implement. If you are working with ResultSets that have a large number of rows or large values and cannot allocate heap space in your JVM for the memory required, you can tell the driver to stream the results back one row at a time.
+To enable this functionality, create a Statement instance in the following manner:</p>
+</blockquote>
+<blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"></code></pre></div></blockquote>
+<p>stmt = conn.createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY,
+java.sql.ResultSet.CONCUR_READ_ONLY);
+stmt.setFetchSize(Integer.MIN_VALUE);</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">&gt;</span><span style="color:#111">The</span> <span style="color:#111">combination</span> <span style="color:#111">of</span> <span style="color:#111">a</span> <span style="color:#111">forward</span><span style="color:#f92672">-</span><span style="color:#111">only</span><span style="color:#111">,</span> <span style="color:#00a8c8">read</span><span style="color:#f92672">-</span><span style="color:#111">only</span> <span style="color:#111">result</span> <span style="color:#00a8c8">set</span><span style="color:#111">,</span> <span style="color:#00a8c8">with</span> <span style="color:#111">a</span> <span style="color:#00a8c8">fetch</span> <span style="color:#111">size</span> <span style="color:#111">of</span> <span style="color:#00a8c8">Integer</span><span style="color:#111">.</span><span style="color:#f92672">`</span><span style="color:#111">MIN_VALUE</span><span style="color:#f92672">`</span> <span style="color:#111">serves</span> <span style="color:#00a8c8">as</span> <span style="color:#111">a</span> <span style="color:#111">signal</span> <span style="color:#00a8c8">to</span> <span style="color:#111">the</span> <span style="color:#111">driver</span> <span style="color:#00a8c8">to</span> <span style="color:#111">stream</span> <span style="color:#111">result</span> <span style="color:#111">sets</span> <span style="color:#111">row</span><span style="color:#f92672">-</span><span style="color:#00a8c8">by</span><span style="color:#f92672">-</span><span style="color:#111">row</span><span style="color:#111">.</span> <span style="color:#111">After</span> <span style="color:#111">this</span><span style="color:#111">,</span> <span style="color:#111">any</span> <span style="color:#111">result</span> <span style="color:#111">sets</span> <span style="color:#111">created</span> <span style="color:#00a8c8">with</span> <span style="color:#111">the</span> <span style="color:#111">statement</span> <span style="color:#111">will</span> <span style="color:#111">be</span> <span style="color:#111">retrieved</span> <span style="color:#111">row</span><span style="color:#f92672">-</span><span style="color:#00a8c8">by</span><span style="color:#f92672">-</span><span style="color:#111">row</span><span style="color:#111">.</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#960050;background-color:#1e0010">简单翻译一下：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#f92672">&gt;</span> <span style="color:#960050;background-color:#1e0010">缺省情况下，结果集会被整个的拉取并保存到客户端内存中。通常情况下，这是这是最有效的方式，可以与</span><span style="color:#111">MySQL的网络协议完美配合</span><span style="color:#960050;background-color:#1e0010">。如果你需要处理一个大数量级的结果集或者你无法在你的</span><span style="color:#111">JVM中申请足够的Heap内存</span><span style="color:#960050;background-color:#1e0010">，你可以告诉驱动使用流方式返回结果集，一次返回一条记录。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#f92672">&gt;</span> <span style="color:#960050;background-color:#1e0010">要开启这个功能，可以按照下面的代码方式创建结果</span><span style="color:#111">Statement</span><span style="color:#960050;background-color:#1e0010">：</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">```</span><span style="color:#111">java</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#111">stmt</span> <span style="color:#f92672">=</span> <span style="color:#111">conn</span><span style="color:#111">.</span><span style="color:#75af00">createStatement</span><span style="color:#111">(</span><span style="color:#111">java</span><span style="color:#111">.</span><span style="color:#00a8c8">sql</span><span style="color:#111">.</span><span style="color:#111">ResultSet</span><span style="color:#111">.</span><span style="color:#111">TYPE_FORWARD_ONLY</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>       <span style="color:#111">java</span><span style="color:#111">.</span><span style="color:#00a8c8">sql</span><span style="color:#111">.</span><span style="color:#111">ResultSet</span><span style="color:#111">.</span><span style="color:#111">CONCUR_READ_ONLY</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#111">stmt</span><span style="color:#111">.</span><span style="color:#75af00">setFetchSize</span><span style="color:#111">(</span><span style="color:#00a8c8">Integer</span><span style="color:#111">.</span><span style="color:#111">MIN_VALUE</span><span style="color:#111">);</span>
+</span></span></code></pre></div><blockquote>
+<p>使用<code>TYPE_FORWARD_ONLY</code>，<code>CONCUR_READER_ONLY</code>的组合创建一个Statement，并且指定fetchSize为Integer.MIN_VALUE，这会告诉MySQL的驱动使用流方式处理结果集，一次返回一条记录。</p>
+</blockquote>
+<h2 id="12--2147483648的来历">1.2 -2147483648的来历</h2>
+<p>那么Integer.MIN_VALUE是多少呢？看一下定义：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75af00">@Native</span> <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">static</span> <span style="color:#00a8c8">final</span> <span style="color:#00a8c8">int</span>   <span style="color:#111">MIN_VALUE</span> <span style="color:#f92672">=</span> <span style="color:#111">0x80000000</span><span style="color:#f92672">;</span>
+</span></span></code></pre></div><p>计算一下，正好是：<code>-2147483648</code>。这就是之前提到的这个数字的来历，MySQL驱动需要这个数字来明确开启流处理方式。回忆一下之前博文说道的修改方式，其中的fetchSize, resultType都是按照上面帮助中提到的要求进行设置的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">&lt;select</span> <span style="color:#75af00">id=</span><span style="color:#d88200">&#34;exportByExample&#34;</span> <span style="color:#75af00">fetchSize=</span><span style="color:#d88200">&#34;-2147483648&#34;</span> <span style="color:#75af00">parameterType=</span><span style="color:#d88200">&#34;com.eveus.admin.po.logs.BankcardAuthNoOTPLogPOExample&#34;</span> <span style="color:#75af00">resultSetType=</span><span style="color:#d88200">&#34;FORWARD_ONLY&#34;</span> <span style="color:#75af00">resultMap=</span><span style="color:#d88200">&#34;BaseResultMap&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  select
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#f92672">&lt;include</span> <span style="color:#75af00">refid=</span><span style="color:#d88200">&#34;Export_Column_List&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  from UID_BANKCARD_AUTH_NO_OTP_LOG 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  <span style="color:#f92672">&lt;if</span> <span style="color:#75af00">test=</span><span style="color:#d88200">&#34;_parameter != null&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#f92672">&lt;include</span> <span style="color:#75af00">refid=</span><span style="color:#d88200">&#34;Example_Where_Clause&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  <span style="color:#f92672">&lt;/if&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>  <span style="color:#f92672">&lt;if</span> <span style="color:#75af00">test=</span><span style="color:#d88200">&#34;orderByClause != null&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    order by ${orderByClause}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  <span style="color:#f92672">&lt;/if&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">&lt;/select&gt;</span>
+</span></span></code></pre></div><h2 id="13-客户端游标的限制">1.3 客户端游标的限制</h2>
+<p>客户端游标在使用中还是有一些限制或者不足的地方的。我们继续看官方帮助文档：</p>
+<blockquote>
+<p>There are some caveats with this approach. You must read all of the rows in the result set (or close it) before you can issue any other queries on the connection, or an exception will be thrown.</p>
+<p>The earliest the locks these statements hold can be released (whether they be MyISAM table-level locks or row-level locks in some other storage engine such as InnoDB) is when the statement completes.</p>
+<p>If the statement is within scope of a transaction, then locks are released when the transaction completes (which implies that the statement needs to complete first). As with most other databases, statements are not complete until all the results pending on the statement are read or the active result set for the statement is closed.</p>
+<p>Therefore, if using streaming results, process them as quickly as possible if you want to maintain concurrent access to the tables referenced by the statement producing the result set.</p>
+</blockquote>
+<p>翻译一下：</p>
+<blockquote>
+<p>使用这种机制有一些事情需要注意：使用同一个数据库链接，你必须读取结果集中的全部记录（或者关掉结果集）才能够执行新的查询语句，否则会有异常抛出。
+只有当Statement执行完毕的时候，其持有的锁才能够被释放（无论是MyISAM的表级锁还是其他存储引擎，例如InnoDB，的行级锁）。
+如果该Statement位于一个事务当中，只有当事务完成的时候，Statement持有的锁才会被释放。这同时意味着Statement必须先于事务完成。与大多数数据库一样，只有读取了Statement上的所有结果或关闭了语句的活动结果集，Statement才会关闭。
+因此，如果要使用流方式处理结果集，一定要记住尽可能快的处理结果集，以保证对产生结果集的表的并发访问能力。</p>
+</blockquote>
+<p>总结一下就是使用流方式的时候，结果集没有处理完或者Statement没有关闭的时候，是有锁存在的，因此处理速度一定要快，否则会影响并发性能。</p>
+<h2 id="13-服务器端游标">1.3 服务器端游标</h2>
+<blockquote>
+<p>Another alternative is to use cursor-based streaming to retrieve a set number of rows each time. This can be done by setting the connection property useCursorFetch to true, and then calling setFetchSize(int) with int being the desired number of rows to be fetched each time:
+另一个可行的方法是使用基于游标的流处理方式来每次获取指定数量的记录。可以通过在MySQL链接字符串中设置<code>useCursorFetch=true</code>这种参数，然后调用<code>setFetchSize(int)</code>函数来设置期望的每次返回的记录条数。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#111">conn</span> <span style="color:#f92672">=</span> <span style="color:#111">DriverManager</span><span style="color:#f92672">.</span><span style="color:#75af00">getConnection</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;jdbc:mysql://localhost/?useCursorFetch=true&#34;</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;user&#34;</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;s3cr3t&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#111">stmt</span> <span style="color:#f92672">=</span> <span style="color:#111">conn</span><span style="color:#f92672">.</span><span style="color:#75af00">createStatement</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#111">stmt</span><span style="color:#f92672">.</span><span style="color:#75af00">setFetchSize</span><span style="color:#f92672">(</span><span style="color:#111">100</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#111">rs</span> <span style="color:#f92672">=</span> <span style="color:#111">stmt</span><span style="color:#f92672">.</span><span style="color:#75af00">executeQuery</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;SELECT * FROM your_table_here&#34;</span><span style="color:#f92672">);</span>
+</span></span></code></pre></div><p>这就是服务器端游标的使用方法：在MySQL连接字符串中增加<code>useCursorFetch=true</code>参数，然后在Statement上执行<code>setFetchSize</code>设置期望每次处理的记录数。就这么简单。使用MyBatis的话，还是需要在Mapper XML文件中使用fetchSize参数来设置期望的记录条数。例如：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;select id=&#34;exportByExample&#34; fetchSize=&#34;100&#34; parameterType=&#34;com.eveus.admin.po.logs.BankcardAuthNoOTPLogPOExample&#34; resultMap=&#34;BaseResultMap&#34;&gt;
+</span></span></code></pre></div><h1 id="2-性能测试">2. 性能测试</h1>
+<p>看过官方文档，针对大结果集，实际上有两种方式可以用来解决JVM内存溢出的问题：</p>
+<ol>
+<li>使用客户端游标方式的流处理方式；</li>
+<li>使用服务器端游标方式处理。</li>
+</ol>
+<p>那究竟哪种方式效率更高，速度更快呢？写个测试跑一下就知道了：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#111">Date</span> <span style="color:#111">d1</span><span style="color:#f92672">,</span> <span style="color:#111">d2</span><span style="color:#f92672">,</span> <span style="color:#111">d3</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#111">BankcardAuthNoOTPLogPOExample</span> <span style="color:#111">example</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">BankcardAuthNoOTPLogPOExample</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#111">BankcardAuthNoOTPLogPOExample</span><span style="color:#f92672">.</span><span style="color:#75af00">Criteria</span> <span style="color:#111">criteria</span> <span style="color:#f92672">=</span> <span style="color:#111">example</span><span style="color:#f92672">.</span><span style="color:#75af00">createCriteria</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#111">criteria</span><span style="color:#f92672">.</span><span style="color:#75af00">andIdGreaterThan</span><span style="color:#f92672">(</span><span style="color:#111">0L</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#111">Map</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">,</span> <span style="color:#111">Object</span><span style="color:#f92672">&gt;</span> <span style="color:#111">readerParams</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">HashMap</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">,</span> <span style="color:#111">Object</span><span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#111">readerParams</span><span style="color:#f92672">.</span><span style="color:#75af00">put</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;oredCriteria&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">example</span><span style="color:#f92672">.</span><span style="color:#75af00">getOredCriteria</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#111">MyBatisCursorItemReader</span><span style="color:#f92672">&lt;</span><span style="color:#111">BankcardAuthNoOTPLogPO</span><span style="color:#f92672">&gt;</span> <span style="color:#111">reader</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">MyBatisCursorItemReader</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#111">reader</span><span style="color:#f92672">.</span><span style="color:#75af00">setSqlSessionFactory</span><span style="color:#f92672">(</span><span style="color:#111">sqlSessionFactory</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#111">reader</span><span style="color:#f92672">.</span><span style="color:#75af00">setQueryId</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;com.eveus.admin.mapper.logs.BankcardAuthNoOTPLogPOCustMapper.exportByExample&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#111">reader</span><span style="color:#f92672">.</span><span style="color:#75af00">setParameterValues</span><span style="color:#f92672">(</span><span style="color:#111">readerParams</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#111">d1</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Date</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#111">reader</span><span style="color:#f92672">.</span><span style="color:#75af00">open</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">ExecutionContext</span><span style="color:#f92672">());</span>    <span style="color:#75715e">// 打开游标
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"></span><span style="color:#111">d2</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Date</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#111">BankcardAuthNoOTPLogPO</span> <span style="color:#111">logPO</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#00a8c8">int</span> <span style="color:#111">rows</span> <span style="color:#f92672">=</span> <span style="color:#111">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#00a8c8">while</span> <span style="color:#f92672">((</span> <span style="color:#111">logPO</span> <span style="color:#f92672">=</span> <span style="color:#111">reader</span><span style="color:#f92672">.</span><span style="color:#75af00">read</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#111">rows</span><span style="color:#f92672">++;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">rows</span><span style="color:#f92672">%</span><span style="color:#111">10000</span><span style="color:#f92672">==</span><span style="color:#111">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        <span style="color:#111">System</span><span style="color:#f92672">.</span><span style="color:#75af00">out</span><span style="color:#f92672">.</span><span style="color:#75af00">println</span><span style="color:#f92672">(</span><span style="color:#111">rows</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#111">d3</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Date</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#111">System</span><span style="color:#f92672">.</span><span style="color:#75af00">out</span><span style="color:#f92672">.</span><span style="color:#75af00">printf</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Test Result:\n Open Cursor: %d, Read all records: %d\n&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">d2</span><span style="color:#f92672">.</span><span style="color:#75af00">getTime</span><span style="color:#f92672">()-</span><span style="color:#111">d1</span><span style="color:#f92672">.</span><span style="color:#75af00">getTime</span><span style="color:#f92672">(),</span> <span style="color:#111">d3</span><span style="color:#f92672">.</span><span style="color:#75af00">getTime</span><span style="color:#f92672">()-</span><span style="color:#111">d2</span><span style="color:#f92672">.</span><span style="color:#75af00">getTime</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#111">System</span><span style="color:#f92672">.</span><span style="color:#75af00">out</span><span style="color:#f92672">.</span><span style="color:#75af00">println</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Done&#34;</span><span style="color:#f92672">);</span>
+</span></span></code></pre></div><p>上面的例子，分别记录了游标打开时间，所有记录全部遍历一遍的时间。下面是测试结果：</p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th style="text-align:left">fetchSize</th>
+<th style="text-align:left">useCursorFetch</th>
+<th style="text-align:left">打开游标时间（ms)</th>
+<th style="text-align:left">遍历结果集时间(ms)</th>
+<th style="text-align:left">内存占用(G)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td style="text-align:left">-2147483648</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">82</td>
+<td style="text-align:left">46466</td>
+<td style="text-align:left">1.53</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">51641</td>
+<td style="text-align:left">24835</td>
+<td style="text-align:left">3.12</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:left">2000</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">51193</td>
+<td style="text-align:left">29519</td>
+<td style="text-align:left">3.09</td>
+</tr>
+<tr>
+<td>4</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">true</td>
+<td style="text-align:left">48955</td>
+<td style="text-align:left">23013</td>
+<td style="text-align:left">2.88</td>
+</tr>
+<tr>
+<td>5</td>
+<td style="text-align:left">-2147483648</td>
+<td style="text-align:left">true</td>
+<td style="text-align:left">90</td>
+<td style="text-align:left">43334</td>
+<td style="text-align:left">1.37</td>
+</tr>
+<tr>
+<td>6</td>
+<td style="text-align:left">1000</td>
+<td style="text-align:left">true</td>
+<td style="text-align:left">13162</td>
+<td style="text-align:left">65851</td>
+<td style="text-align:left">1.49</td>
+</tr>
+</tbody>
+</table>
+<p>注1：以上结果基于一个总记录数为2954671的表进行测试所得；
+注2：fetchSize参数在MyBatis Mapper文件中设置；
+注3：useCursorFetch参数在MySQL链接字符串中设置；</p>
+<p>通过结果可以简单分析出来：</p>
+<ol>
+<li>fetchSize如果是Integer.MIN_VALUE，则强制进行客户端游标的流处理模式（无论是否指定useCursorFetch参数）；</li>
+<li>要使用客户端游标的流处理模式，则fetchSize必须为Integer.MIN_VALUE；</li>
+<li>要使用服务器端游标，则必须启用useCursorFetch参数，并指定fetchSize。</li>
+</ol>
+<h1 id="3-如何选择">3. 如何选择？</h1>
+<p><strong>测试结果分析</strong>：
+根据结果，我们实际上可以将六种测试场景情形归结成三种模式（猜测性质）：</p>
+<p>a. 客户端游标的流处理模式，对应测试用例1，5；
+b. 服务器端游标处理模式，对应测试用例6；
+c. 传统客户端游标处理模式，对应其他三种测试用例。</p>
+<p>游标打开速度：客户端游标的流处理模式耗时最短，不到100ms；其次是服务器端游标，10秒+左右；而对传统的客户端游标处理方式，需要把整个结果集缓冲到客户端，不只是容易引起内存溢出，首次打开游标的时间也非常长，50+秒左右。</p>
+<p>记录集遍历速度：传统模式c速度最快，在20-30秒之间；而模式a次之，在40+秒左右；而服务器端游标模式b最慢，65秒了。</p>
+<p>内存耗用：内存好用则是模式a、b差不太多，模式c好用内存太多。</p>
+<p>所以最终的结论是什么呢？还真是没有完美的方案，最好还是根据自己的场景进行抉择了。另外的方式就是自己也写个测试程序多测测，结合自己的场景才能够选择合适的方案了。</p>
+<p>对认证云的问题来说（导出Excel），最终选择的是模式a（客户端游标的流处理方式）：其总体处理速度最快（打开游标和记录遍历时间相加之和最小），占用内存也不大，对我来说是最恰当的方案了。</p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html">JDBC API Implementation Notes</a></li>
+<li><a href="https://stackoverflow.com/questions/8851044/how-to-set-fetchsize-for-ibatis-select-statement">How to set fetchSize for iBatis select statement</a></li>
+<li><a href="https://venkatsadasivam.com/2009/02/01/jdbc-performance-tuning-with-optimal-fetch-size/">JDBC performance tuning with optimal fetch size</a></li>
+<li><a href="https://www.cnblogs.com/logicbaby/p/4281100.html">MySQL JDBC/MyBatis Stream方式读取SELECT超大结果集</a></li>
+<li><a href="http://mail-archives.apache.org/mod_mbox/ibatis-user-java/200803.mbox/%3C16178eb10803181045q23920950l90a2ef7ee112e98@mail.gmail.com%3E">select * causing &quot; OutOfMemoryError: Java heap space&quot;</a></li>
+<li><a href="http://knes1.github.io/blog/2015/2015-10-19-streaming-mysql-results-using-java8-streams-and-spring-data.html">Streaming MySQL Results Using Java 8 Streams and Spring Data JPA</a></li>
+<li><a href="http://www.zhenchao.org/2017/10/15/mybatis-mechanism/">MyBatis 源码解析：SQL 语句的执行机制</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Spring" rel="tag" title="Spring">#Spring#</a>
+    
+    <a href="https://orchidflower.github.io/tags/POI" rel="tag" title="POI">#POI#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E5%AF%BC%E5%87%BAExcel" rel="tag" title="导出Excel">#导出Excel#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2018/06/22/Handling-Bigint-using-Jackson-in-Springboot/" rel="next" title="SpringBoot中使用Jackson导致Long型数据精度丢失问题">
+        <i class="fa fa-chevron-left"></i> SpringBoot中使用Jackson导致Long型数据精度丢失问题
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2018/06/11/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring/" rel="prev" title="Spring使用POI导出Excel内存溢出问题的解决">
+        Spring使用POI导出Excel内存溢出问题的解决 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-官方帮助说明">1. 官方帮助说明</a>
+      <ul>
+        <li><a href="#11-客户端游标">1.1 客户端游标</a></li>
+        <li><a href="#12--2147483648的来历">1.2 -2147483648的来历</a></li>
+        <li><a href="#13-客户端游标的限制">1.3 客户端游标的限制</a></li>
+        <li><a href="#13-服务器端游标">1.3 服务器端游标</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-性能测试">2. 性能测试</a></li>
+    <li><a href="#3-如何选择">3. 如何选择？</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

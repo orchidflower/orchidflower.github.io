@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Flex on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Flex/</link>
+    <description>Recent content in Flex on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 02 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Flex/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flex布局添加滚动条需要注意的规则</title>
+      <link>https://orchidflower.github.io/2022/03/02/Adding-Scrollbar-In-Flex-Layout/</link>
+      <pubDate>Wed, 02 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2022/03/02/Adding-Scrollbar-In-Flex-Layout/</guid>
+      <description>&lt;p&gt;好久不写前端代码了，有些生疏了。最近用Electron写了一个客户端程序，碰到了Flex布局添加滚动条的问题，耗费了不少时间，所以总结一下要点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;根据滚动条的方向，确定好父元素的&lt;code&gt;flex-flow&lt;/code&gt;方向：&lt;/strong&gt; 如果要设置水平滚动条，那么父元素的&lt;code&gt;flex-flow&lt;/code&gt;要设置为&lt;code&gt;row&lt;/code&gt;；如果要设置纵向滚动条，那么父元素的&lt;code&gt;flex-flow&lt;/code&gt;要设置为&lt;code&gt;column&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;元素本身&lt;code&gt;flex&lt;/code&gt;设置为1；&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;滚动方向的大小（宽度或者高度）设置为0&lt;/strong&gt;，非滚动方向大小设置为&lt;code&gt;100%&lt;/code&gt;或者一个你喜欢的宽度；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;如果元素本身还有子元素，需要特别注意子元素的高度需要设置为&lt;code&gt;100%&lt;/code&gt;&lt;/strong&gt;。如果没有设置，则会导致子元素本身的高度不受限制，从而撑爆了元素本身。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;特别需要注意的就是第4点：布局的时候经常使用到&lt;code&gt;el-row/el-col&lt;/code&gt;，其最后生成的html代码就会出现嵌套的&lt;code&gt;div&lt;/code&gt;组合，是一个典型的父子结构。这时就要注意在&lt;code&gt;el-col&lt;/code&gt;上设置相应的高度为&lt;code&gt;100%&lt;/code&gt;，否则就会出现撑爆了的结果。&lt;/p&gt;
+&lt;p&gt;下面是最终的代码，相关要点添加了注释：&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

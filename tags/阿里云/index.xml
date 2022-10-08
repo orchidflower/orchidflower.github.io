@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>阿里云 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E9%98%BF%E9%87%8C%E4%BA%91/</link>
+    <description>Recent content in 阿里云 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 12 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E9%98%BF%E9%87%8C%E4%BA%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>从一台没有外网连接的阿里云主机上访问微信API</title>
+      <link>https://orchidflower.github.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</link>
+      <pubDate>Sun, 12 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/02/12/access-weixin-qyapi-from-one-server-without-internet-on-aliyun/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;公司的生产环境是部署在阿里云上的。Zabbix最初装在一台没有外网连接的ECS上，通过Nginx进行访问。但是后来发现如果需要报警，需要从Zabbix这台主机访问微信公众号服务器（qyapi.weixin.qq.com）。运维的兄弟最初选择了固定带宽的网络，但是考虑到费用问题，后期想切换到按量付费的网络，但是阿里云居然不支持这种切换（这里吐槽一下阿里的设计）。&lt;/p&gt;
+&lt;p&gt;由于该主机是按照包月包年方式购买的，退掉重新申请主机安装Zabbix显然不划算。在主机到期之前，必须想办法实现在没有外网的情况下访问微信服务器（考虑到费用问题，原先固定带宽已经被修改成了0M，也就没有费用了）。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

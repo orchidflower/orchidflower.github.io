@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>file on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/file/</link>
+    <description>Recent content in file on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/file/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mac上面的文件比较功能</title>
+      <link>https://orchidflower.github.io/2020/03/20/How-to-compare-file-on-mac/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/03/20/How-to-compare-file-on-mac/</guid>
+      <description>&lt;p&gt;以前在Windows上一直使用TotalCmd，它的比较功能非常棒。不论是目录还是文件，只要按下F10，就能够比较，还能够同步，非常方便。切换到Mac也有好几年了，一直没有找到完全匹配上的替代品。现在用的是ForkLift，常用功能还可以，但是比较功能差距很大。目前正在想办法自己写一些脚本增强一下功能。&lt;/p&gt;
+&lt;p&gt;目前实现了一个脚本，通过&lt;code&gt;ForkLift&lt;/code&gt;调用，可以满足基本的比较功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;file&lt;/code&gt;判断文件类型，对文本类型调用&lt;code&gt;FileMerge&lt;/code&gt;进行源码比较；&lt;/li&gt;
+&lt;li&gt;如果不是，则只用&lt;code&gt;cmp&lt;/code&gt;功能比较内容是否相等；&lt;/li&gt;
+&lt;li&gt;后期考虑增加对目录类型的支持，引入目录比较工具。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

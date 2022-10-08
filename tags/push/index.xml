@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>push on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/push/</link>
+    <description>Recent content in push on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 04 Sep 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/push/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>iOS证书及推送相关概念</title>
+      <link>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</link>
+      <pubDate>Tue, 04 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</guid>
+      <description>&lt;h1 id=&#34;1i-os开发中碰到的概念&#34;&gt;1.i OS开发中碰到的概念&lt;/h1&gt;
+&lt;h2 id=&#34;11-开发者账号&#34;&gt;1.1 开发者账号&lt;/h2&gt;
+&lt;p&gt;苹果对开发者账号分为如下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人 Individual  （$99/year，可以上架Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;组织 Organizations。又可以写分为两类：
+&lt;ul&gt;
+&lt;li&gt;组织 Organization  （普通账号，$99/year，能够上传Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;企业账号 Enterprise Program  （企业账号，$299/year，能够进行企业发布，不能够发布到Apple Store，不限制UUID数目）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;教育机构（Educational Institutions）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/15264592291888.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

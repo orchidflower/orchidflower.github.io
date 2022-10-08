@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Nginx/</link>
+    <description>Recent content in Nginx on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用KeepAlived配置Nginx高可用</title>
+      <link>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;最近为一个传统行业的客户开发了一个生产调度系统。但是他的生产环境是自己搭建的，不是购买的云服务，因此碰到了一些问题。&lt;/p&gt;
+&lt;p&gt;客户购买了多台高性能的物理机，在上面自行搭建虚拟机。但是只有虚拟机，没有提供类似负载均衡、数据库等基础服务。为了解决负载均衡问题，我们自行安装了 &lt;code&gt;Nginx&lt;/code&gt; 。为了保证系统健壮和性能，安装 &lt;code&gt;Nginx&lt;/code&gt; 的两台虚拟机（Ubuntu 18.04.3 LTS，172.16.45.22，172.16.45.26）分别部署在两台不同的物理机上（172.16.45.11， 172.168.45.12）。然后 &lt;code&gt;DNS&lt;/code&gt; 解析到两台 &lt;code&gt;Nginx&lt;/code&gt; 主机上。&lt;/p&gt;
+&lt;p&gt;现在的问题是：客户的要求是任何一台物理机出现问题都要能够保证系统可用，验证的方式是测试的时候会直接断开物理机的网线，这将导致通过 &lt;code&gt;DNS&lt;/code&gt; 解析出来的 &lt;code&gt;Nginx&lt;/code&gt; 主机必然有一台是无法使用的。访问显然会出问题。&lt;/p&gt;
+&lt;p&gt;经过考虑，最后选定解决办法是：使用 &lt;code&gt;KeepAlived&lt;/code&gt; 做高可用，两台 &lt;code&gt;Nginx&lt;/code&gt; 共同维护一个虚拟IP（172.16.45.50），&lt;code&gt;DNS&lt;/code&gt; 解析到这个虚拟IP上。&lt;/p&gt;
+&lt;p&gt;这里简单记录一下安装 &lt;code&gt;KeepAlived&lt;/code&gt; 的过程以及碰到的一些问题及解决方案。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx配置导致的SSL证书认证失败</title>
+      <link>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</link>
+      <pubDate>Sat, 03 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;注： 这是在之前博客上发过的文章，在实际使用中经常会有人碰到，特意转贴过来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;目前公司对外开放了一个云服务平台，提供一些功能供商户接入使用。整个项目的架构是基于Spring + MyBatis的。另外，商户端的服务接口是基于SOAP WebService的，这部分使用CXF实现。
+安全方面采用了Spring Security，可以对商户提供证书认证或密码认证。但是出于安全考虑，目前只开放了证书认证。为了使用证书认证商户，我们创建了一个自签名的CA，用来生成商户使用的客户端证书。在验证上，使用Nginx验证客户端证书是否是指定CA产生的。另外，为了防止被作废的证书（例如给商户颁发了新证书后，原证书应该作废，但是原证书也是由指定CA产生的）再次使用，在代码层面对证书进行了进一步的验证（这一点是通过Nginx将客户端证书作为Header传递到Java后台实现的，有时间以后再讲）。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

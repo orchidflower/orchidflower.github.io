@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>并发 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E5%B9%B6%E5%8F%91/</link>
+    <description>Recent content in 并发 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 04 May 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E5%B9%B6%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Tomcat中使用ThreadLocal以及Session</title>
+      <link>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</guid>
+      <description>&lt;p&gt;最近运营同事在管理平台（生产环境）上碰到一个问题：登录之后会莫名其妙地变成未登录状态，被踢回登录页面。&lt;/p&gt;
+&lt;p&gt;管理平台使用的Spring MVC框架实现的后台接口，React实现的前台页面。之前引入React的时候已经做过前后端分离。但是当时考虑到技术栈的原因，没有对登录体系进行彻底改造，没有引入AccessToken来维护登录状态，依然保留了Java的Session机制。考虑到管理平台属于内部使用，访问量不大，因此直接在Nginx层使用iphash进行了Session粘滞，确保同一个用户的请求总是被同一个的后台Tomcat处理，这样就可以使用传统的session机制保持用户登录状态。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

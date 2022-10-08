@@ -1,0 +1,575 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>MySQL如何保存emoji字符 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="MySQL如何保存emoji字符">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="MySQL如何保存emoji字符 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2021/07/22/How-Could-MySQL-Save-emoji/" itemprop="url">
+        MySQL如何保存emoji字符
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2021-07-22">
+    2021-07-22
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">2227 字 ~5分钟</span>
+</span>
+      <span id="/2021/07/22/How-Could-MySQL-Save-emoji/" class="leancloud_visitors" data-flag-title="MySQL如何保存emoji字符">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-问题">1. 问题</h1>
+<h2 id="11-发现问题">1.1 发现问题</h2>
+<p>最近生产环境日志中报了一个异常：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>2021-07-11 20:54:41.632 ERROR 26289 --- [XNIO-1 task-11] c.e.t.s.t.mp.WxMpMessageRouterService    :
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>### The error may exist in com/eveus/tap/account/mapper/AccountMapper.java (best guess)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>### The error may involve com.eveus.tap.account.mapper.AccountMapper.insert-Inline
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>### The error occurred while setting parameters
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>### SQL: INSERT INTO tap_account  ( open_id, avatar, nick_name, country, province, city, gender, secret,         status, IS_DISABLED,     is_subscribe, create_time, update_time )  VALUES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  ( ?, ?, ?, ?, ?, ?, ?, ?,         ?, ?,     ?, ?, ? )
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>### Cause: java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1; nested exception is java.sql.SQLException:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span> Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>org.springframework.jdbc.UncategorizedSQLException:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>### The error may exist in com/eveus/tap/account/mapper/AccountMapper.java (best guess)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>### The error may involve com.eveus.tap.account.mapper.AccountMapper.insert-Inline
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>### The error occurred while setting parameters
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>### SQL: INSERT INTO tap_account  ( open_id, avatar, nick_name, country, province, city, gender, secret,         status, IS_DISABLED,     is_subscribe, create_time, update_time )  VALUES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>  ( ?, ?, ?, ?, ?, ?, ?, ?,         ?, ?,     ?, ?, ? )
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>### Cause: java.sql.SQLException: Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1; nested exception is java.sql.SQLException:
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span> Incorrect string value: &#39;\xF0\x9F\xA6\x84&#39; for column &#39;NICK_NAME&#39; at row 1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:89)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>        at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:88)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>        at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:440)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>        at com.sun.proxy.$Proxy134.insert(Unknown Source)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:271)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:60)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:96)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>        at com.sun.proxy.$Proxy186.insert(Unknown Source)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>        at com.baomidou.mybatisplus.extension.service.IService.save(IService.java:59)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>        at com.eveus.tap.account.service.impl.AccountServiceImpl.addAccount(AccountServiceImpl.java:151)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>        at com.eveus.tap.account.service.impl.AccountServiceImpl.ensureLoad(AccountServiceImpl.java:226)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>        at com.eveus.tap.account.service.impl.AccountServiceImpl$$FastClassBySpringCGLIB$$34fe95c8.invoke(&lt;generated&gt;)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>        at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>        at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>        at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>        at com.eveus.tap.account.service.impl.AccountServiceImpl$$EnhancerBySpringCGLIB$$cbb1e26b.ensureLoad(&lt;generated&gt;)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>        at com.eveus.tap.server.taxer.mp.handler.SubscribeHandler.handle(SubscribeHandler.java:54)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>        at me.chanjar.weixin.mp.api.WxMpMessageRouterRule.service(WxMpMessageRouterRule.java:226)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:203)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:154)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:233)
+</span></span></code></pre></div><p>看错误信息是因为 <code>MySQL</code> 字符编码不正确导致无法保存特殊字符导致的。把字符还原一下，发现 <code>\xF0\x9F\xA6\x84</code> 代表的字符内容是：🦄，是一个 <code>Emoji</code> 字符。</p>
+<p>当使用对 <code>utf8</code> 编码的时候，和一般汉字占用3个字节不同，<code>Emoji</code> 字符的编码会比较特殊一点，占用4个字节。而由于历史的原因，<code>MySQL</code> 使用的 <code>utf8</code> 编码最长支持3个字节，如果要保存4个字节的 <code>unicode</code>，则需要使用 <code>utf8mb4</code> 编码。上述错误应该是因此而出。</p>
+<h2 id="12-寻找原因">1.2 寻找原因</h2>
+<p>让我奇怪的是，这个问题应该不会出现才对啊，因为这个表需要存储从微信获取的用户昵称，当时已经考虑了可能存在 <code>Emoji</code> 字符，因此该表的编码已经被修改成了 <code>utf8mb4</code> 。查看一下表结构，现有的表结构定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#00a8c8">CREATE</span> <span style="color:#00a8c8">TABLE</span> <span style="color:#f92672">`</span><span style="color:#111">tap_account</span><span style="color:#f92672">`</span> <span style="color:#111">(</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#f92672">`</span><span style="color:#111">ID</span><span style="color:#f92672">`</span> <span style="color:#111">bigint</span><span style="color:#111">(</span><span style="color:#ae81ff">20</span><span style="color:#111">)</span> <span style="color:#111">unsigned</span> <span style="color:#00a8c8">NOT</span> <span style="color:#00a8c8">NULL</span> <span style="color:#111">AUTO_INCREMENT</span> <span style="color:#00a8c8">COMMENT</span> <span style="color:#d88200">&#39;主键&#39;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#f92672">`</span><span style="color:#111">AVATAR</span><span style="color:#f92672">`</span> <span style="color:#111">varchar</span><span style="color:#111">(</span><span style="color:#ae81ff">256</span><span style="color:#111">)</span> <span style="color:#00a8c8">DEFAULT</span> <span style="color:#00a8c8">NULL</span> <span style="color:#00a8c8">COMMENT</span> <span style="color:#d88200">&#39;头像,微信授权,用户头像，最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像）&#39;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>  <span style="color:#f92672">`</span><span style="color:#111">NICK_NAME</span><span style="color:#f92672">`</span> <span style="color:#111">varchar</span><span style="color:#111">(</span><span style="color:#ae81ff">32</span><span style="color:#111">)</span> <span style="color:#111">CHARACTER</span> <span style="color:#00a8c8">SET</span> <span style="color:#111">utf8mb4</span> <span style="color:#00a8c8">COLLATE</span> <span style="color:#111">utf8mb4_unicode_ci</span> <span style="color:#00a8c8">DEFAULT</span> <span style="color:#00a8c8">NULL</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>  <span style="color:#111">...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>  <span style="color:#00a8c8">PRIMARY</span> <span style="color:#00a8c8">KEY</span> <span style="color:#111">(</span><span style="color:#f92672">`</span><span style="color:#111">ID</span><span style="color:#f92672">`</span><span style="color:#111">),</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>  <span style="color:#00a8c8">UNIQUE</span> <span style="color:#00a8c8">KEY</span> <span style="color:#f92672">`</span><span style="color:#111">tap_account_OPEN_ID_uindex</span><span style="color:#f92672">`</span> <span style="color:#111">(</span><span style="color:#f92672">`</span><span style="color:#111">OPEN_ID</span><span style="color:#f92672">`</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#111">)</span> <span style="color:#111">ENGINE</span><span style="color:#f92672">=</span><span style="color:#111">InnoDB</span> <span style="color:#111">AUTO_INCREMENT</span><span style="color:#f92672">=</span><span style="color:#ae81ff">72</span> <span style="color:#00a8c8">DEFAULT</span> <span style="color:#111">CHARSET</span><span style="color:#f92672">=</span><span style="color:#111">utf8mb4</span> <span style="color:#00a8c8">COMMENT</span><span style="color:#f92672">=</span><span style="color:#d88200">&#39;自然人账号表&#39;</span><span style="color:#111">;</span>
+</span></span></code></pre></div><p>可以看到目前的字符集已经配置成了 <code>utf8mb4</code> ，按理说应该能够保存成功才对。</p>
+<p>为了验证一下数据库是否修改正确，直接使用sql修改记录试试：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#00a8c8">update</span> <span style="color:#111">tap_account</span> <span style="color:#00a8c8">set</span> <span style="color:#111">nick_name</span><span style="color:#f92672">=</span><span style="color:#d88200">&#39;千面怪🦄&#39;</span> <span style="color:#00a8c8">where</span> <span style="color:#111">id</span><span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#111">;</span>
+</span></span></code></pre></div><p>发现更新确实可以成功，没有错误发生；而且也可以正常查询到的修改后的结果。这说明表方面应该没有问题。</p>
+<p>因为之前考虑到其他表没有存储 <code>Emoji</code> 表情的需要，所以没有在数据库层面整体修改编码。也就是有一部分表还是使用 <code>utf8</code> 编码，只有这个表 <code>tap_account</code> 使用了 <code>utf8mb4</code> 编码。看一下 <code>MySQL</code> 的系统变量：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#111">MySQL</span> <span style="color:#111">[</span><span style="color:#111">tap_admin</span><span style="color:#111">]</span><span style="color:#f92672">&gt;</span> <span style="color:#00a8c8">show</span> <span style="color:#111">variables</span> <span style="color:#00a8c8">like</span> <span style="color:#d88200">&#39;%character%&#39;</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+---------+
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#111">Variable_name</span>            <span style="color:#f92672">|</span> <span style="color:#111">Value</span>   <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+---------+
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#111">character_set_client</span>     <span style="color:#f92672">|</span> <span style="color:#111">utf8mb4</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_connection</span> <span style="color:#f92672">|</span> <span style="color:#111">utf8mb4</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_database</span>   <span style="color:#f92672">|</span> <span style="color:#111">utf8</span>    <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_filesystem</span> <span style="color:#f92672">|</span> <span style="color:#111">binary</span>  <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_results</span>    <span style="color:#f92672">|</span> <span style="color:#111">utf8mb4</span> <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_server</span>     <span style="color:#f92672">|</span> <span style="color:#111">utf8</span>    <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_set_system</span>     <span style="color:#f92672">|</span> <span style="color:#111">utf8</span>    <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#f92672">|</span> <span style="color:#111">character_sets_dir</span>       <span style="color:#f92672">|</span>         <span style="color:#f92672">|</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#f92672">+</span><span style="color:#75715e">--------------------------+---------+
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#75715e"></span><span style="color:#ae81ff">8</span> <span style="color:#00a8c8">rows</span> <span style="color:#00a8c8">in</span> <span style="color:#00a8c8">set</span> <span style="color:#111">(</span><span style="color:#ae81ff">0</span><span style="color:#111">.</span><span style="color:#ae81ff">001</span> <span style="color:#111">sec</span><span style="color:#111">)</span>
+</span></span></code></pre></div><p>可以看到服务器默认的编码（character_set_server）为 <code>utf8</code> 。</p>
+<p><strong>是不是因为这个原因导致的问题呢？</strong></p>
+<h1 id="2-关于编码自动检测">2. 关于编码自动检测</h1>
+<p>我使用的 <code>MySQL</code> 库为 <code>mysql-connector-java</code>，版本为 <code>8.0.19</code>。配置的连接字符串如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">spring</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#f92672">datasource</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#f92672">url</span><span style="color:#111">:</span> <span style="color:#ae81ff">jdbc:mysql://rm-uecp.mysql.rds.aliyuncs.com:3306/tap_admin?useUnicode=true&amp;serverTimezone=GMT%2b8:00</span>
+</span></span></code></pre></div><p>连接字符串中只是使用了<code>useUnicode</code>开启了<code>unicode</code>支持，并没有指定具体的字符编码。这时会用到 <code>mysql-connector-java</code> 的自动检测机制。根据 <code>MySQL</code> 官方文档的说明，这个检测机制会用到 <code>character_set_server</code> 这个参数。</p>
+<blockquote>
+<p>The character encoding between client and server is automatically detected upon connection (provided that the Connector/J connection properties characterEncoding and connectionCollation are not set). <strong>You specify the encoding on the server using the system variable character_set_server</strong> (for more information, see Server Character Set and Collation). The driver automatically uses the encoding specified by the server. For example, to use the 4-byte UTF-8 character set with Connector/J, configure the MySQL server with character_set_server=utf8mb4, and leave characterEncoding and connectionCollation out of the Connector/J connection string. Connector/J will then autodetect the UTF-8 setting.</p>
+</blockquote>
+<p>当在连接字符串中没有设置 <code>charcterEncoding</code> 的时候，将自动使用MySQL系统变量 <code>character_set_server</code> 中指定的字符集。如果需要覆盖以上检测机制，可以指定 <code>characterEncoding</code> 变量：</p>
+<blockquote>
+<p>To override the automatically detected encoding on the client side, use the <strong>characterEncoding</strong> property in the connection URL to the server. Use Java-style names when specifying character encodings. The following table lists MySQL character set names and their corresponding Java-style names:</p>
+</blockquote>
+<p>特别的对于 <code>characterEncoding=utf8</code> ，不同版本的 <code>mysql-connector-java</code> 处理上是有些区别的：
+<img src="http://blog-cache.orchidflower.cn/mweb/16260766129131.jpg" alt="-w1063">
+简单来说：<strong>8.0.13及以上版本，会自动使用 <code>utf8mb4</code>；而之前版本使用的则是 <code>utf8mb3</code>（也就是通常的<code>utf8</code>编码）</strong>。</p>
+<h1 id="3-原因分析">3. 原因分析</h1>
+<p>现在来看一下为什么数据库能够保存 <code>Emoji</code> 字符，但是通过 <code>Java</code> 却无法保存。</p>
+<h2 id="31-utf8mb4-支持条件">3.1 <code>utf8mb4</code> 支持条件</h2>
+<p>首先总结一下支持 <code>utf8mb4</code> 需要的前置条件。</p>
+<h3 id="311-数据库版本">3.1.1 数据库版本</h3>
+<p><code>utf8mb4</code> 需要的最低mysql版本为 <code>5.5.3+</code>，若不是，则需要升级。可以使用以下 <code>SQL</code> 查询一下当前的版本号：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#00a8c8">select</span> <span style="color:#00a8c8">version</span><span style="color:#111">();</span>
+</span></span></code></pre></div><h3 id="312-修改数据库表或字段的字符集">3.1.2 修改数据库、表或字段的字符集</h3>
+<p>可以使用以下SQL修改数据库、表或字段支持 <code>utf8mb4</code> 编码：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e">-- 修改数据库编码
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#75715e"></span><span style="color:#00a8c8">ALTER</span> <span style="color:#00a8c8">DATABASE</span> <span style="color:#111">database_name</span> <span style="color:#111">CHARACTER</span> <span style="color:#00a8c8">SET</span> <span style="color:#f92672">=</span> <span style="color:#111">utf8mb4</span> <span style="color:#00a8c8">COLLATE</span> <span style="color:#f92672">=</span> <span style="color:#111">utf8mb4_unicode_ci</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e">-- 修改表编码
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#75715e"></span><span style="color:#00a8c8">ALTER</span> <span style="color:#00a8c8">TABLE</span> <span style="color:#00a8c8">table_name</span> <span style="color:#00a8c8">CONVERT</span> <span style="color:#00a8c8">TO</span> <span style="color:#111">CHARACTER</span> <span style="color:#00a8c8">SET</span> <span style="color:#111">utf8mb4</span> <span style="color:#00a8c8">COLLATE</span> <span style="color:#111">utf8mb4_unicode_ci</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#75715e">-- 修改字段编码
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#75715e"></span><span style="color:#00a8c8">ALTER</span> <span style="color:#00a8c8">TABLE</span> <span style="color:#00a8c8">table_name</span> <span style="color:#111">CHANGE</span> <span style="color:#00a8c8">column_name</span> <span style="color:#111">VARCHAR</span><span style="color:#111">(</span><span style="color:#ae81ff">191</span><span style="color:#111">)</span> <span style="color:#111">CHARACTER</span> <span style="color:#00a8c8">SET</span> <span style="color:#111">utf8mb4</span> <span style="color:#00a8c8">COLLATE</span> <span style="color:#111">utf8mb4_unicode_ci</span><span style="color:#111">;</span>
+</span></span></code></pre></div><p>经过实验，确认可以只修改表支持 <code>utf8mb4</code> 即可，数据库层面可以保持 <code>utf8</code> 编码不用修改。</p>
+<h2 id="313-mysql客户端">3.1.3 MySQL客户端</h2>
+<p><code>mysql connector</code>需要至少大于5.1.13，否则无法支持 <code>utf8mb4</code>。另外还要注意8.0.13前后支持形式有所区别。</p>
+<h2 id="314-链接字符串">3.1.4 链接字符串</h2>
+<p>需要在 <code>mysql-connector-java</code> 链接字符串中增加 <code>useUnicode=true&amp;characterEncoding=utf8mb4</code> 来开启 <code>utf8mb4</code> 支持。</p>
+<h1 id="32-结论">3.2 结论</h1>
+<p>我用的<code>mysql-connector-java</code>版本是 <code>8.0.19</code>，大于<code>8.0.13</code>，所以使用 <code>characterEncoding=utf8</code> 就相当于支持了 <code>utf8mb4</code> 编码。</p>
+<p>但是因为我没有将整个数据库的编码改为 <code>utf8mb4</code> ，所以不指定该参数的时候会被自动检测为 <code>utf8</code> 编码，导致保存失败。</p>
+<p>最后将连接字符串改成这样问题就解决了：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">spring</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#f92672">datasource</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#f92672">url</span><span style="color:#111">:</span> <span style="color:#ae81ff">jdbc:mysql://rm-uecp.mysql.rds.aliyuncs.com:3306/tap_admin?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Shanghai</span>
+</span></span></code></pre></div><h1 id="4-总结">4. 总结</h1>
+<p>总结一下，这个问题出现的原因是因为没有更改数据库的字符编码，导致 <code>mysql-connector-java</code> 的自动检测机制做出了错误的假设，没有设置为需要的 <code>utf8mb4</code> 编码。</p>
+<p>另外从网上查到的资料一般说的都是同时修改数据库、表的字符集，没有我这种只修改表的字符集，而数据库字符集没更改的情况。遇到这种特殊情况还是要自己多做实验，实践出真知。</p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000000616820">mysql/Java服务端对emoji的支持</a></li>
+<li><a href="https://help.aliyun.com/document_detail/41706.htm?spm=a2c4g.11186623.2.9.41611b90ZRzNSO">RDS MySQL字符集相关说明</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/charset.html?spm=a2c4g.11186623.2.23.4c15749fyFCFbA">Chapter 10 Character Sets, Collations, Unicode</a></li>
+<li><a href="https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-charsets.html">6.7 Using Character Sets and Unicode</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Spring" rel="tag" title="Spring">#Spring#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Java" rel="tag" title="Java">#Java#</a>
+    
+    <a href="https://orchidflower.github.io/tags/MyBatis" rel="tag" title="MyBatis">#MyBatis#</a>
+    
+    <a href="https://orchidflower.github.io/tags/MySQL" rel="tag" title="MySQL">#MySQL#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2021/09/24/Vue-compile-on-condition/" rel="next" title="Vue进行条件编译发布">
+        <i class="fa fa-chevron-left"></i> Vue进行条件编译发布
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/" rel="prev" title="MyBatis Plus中主键生成方式ASSIGN_ID的算法分析">
+        MyBatis Plus中主键生成方式ASSIGN_ID的算法分析 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-问题">1. 问题</a>
+      <ul>
+        <li><a href="#11-发现问题">1.1 发现问题</a></li>
+        <li><a href="#12-寻找原因">1.2 寻找原因</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-关于编码自动检测">2. 关于编码自动检测</a></li>
+    <li><a href="#3-原因分析">3. 原因分析</a>
+      <ul>
+        <li><a href="#31-utf8mb4-支持条件">3.1 <code>utf8mb4</code> 支持条件</a>
+          <ul>
+            <li><a href="#311-数据库版本">3.1.1 数据库版本</a></li>
+            <li><a href="#312-修改数据库表或字段的字符集">3.1.2 修改数据库、表或字段的字符集</a></li>
+          </ul>
+        </li>
+        <li><a href="#313-mysql客户端">3.1.3 MySQL客户端</a></li>
+        <li><a href="#314-链接字符串">3.1.4 链接字符串</a></li>
+      </ul>
+    </li>
+    <li><a href="#32-结论">3.2 结论</a></li>
+    <li><a href="#4-总结">4. 总结</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

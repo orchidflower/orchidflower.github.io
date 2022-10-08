@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Docker/</link>
+    <description>Recent content in Docker on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 20 Aug 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Docker运行Jenkins（二）</title>
+      <link>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</link>
+      <pubDate>Sun, 20 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</guid>
+      <description>&lt;p&gt;Gitea 是一款极易搭建的自助 Git 服务，最初是fork子Gogs项目（Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自助 Git 服务）。Gitea使用 Go 语言开发。使用 Go 语言开发使得 Gitea 能够通过独立的二进制分发，并且支持 Go 语言支持的 所有平台，包括 Linux、Mac OS X、Windows 以及 ARM 平台。&lt;/p&gt;
+&lt;p&gt;Gitea占用资源小，比起Gitlab这种庞然大物来说简直是精致得要命。但是作为小团队的项目管理用来替代Gitlab还是基本能够满足需求的。而且Gitea（包括Gogs）社区还是挺活跃的，新功能也在逐渐增加中，个人很看好它的前景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Docker运行Jenkins服务（一）</title>
+      <link>https://orchidflower.github.io/2017/08/13/How-to-setup-Jenkins-in-Docker/</link>
+      <pubDate>Sun, 13 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/13/How-to-setup-Jenkins-in-Docker/</guid>
+      <description>&lt;h1 id=&#34;1-jenkins是什么&#34;&gt;1. Jenkins是什么？&lt;/h1&gt;
+&lt;p&gt;某百科的解释是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这个解释大体上是靠谱的，Jenkins的核心作用就是一个CI（持续集成）工具。CI的概念是：持续集成指的是，频繁地（一天多次）将代码集成到主干。持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。而Jenkins能够完成这些自动化构建、测试的大部分工作。&lt;/p&gt;
+&lt;p&gt;Jenkins的前身是Hudson。这其中的渊源涉及到Oracle收购Java引起的版权纷争。有兴趣的可以看附录里面的相关链接。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Ubuntu 16.04 LTS上设置DOCKER_OPTS</title>
+      <link>https://orchidflower.github.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</link>
+      <pubDate>Thu, 22 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/22/Using-DOCKER-OPTS-on-Ubuntu-16-04-LTS/</guid>
+      <description>&lt;p&gt;之前一直使用&lt;code&gt;Ubuntu 14.04&lt;/code&gt;来跑Docker。今天在16.04 LTS上跑Docker的时候发现设置&lt;code&gt;DOCKER_OPTS&lt;/code&gt;的时候有些区别，特此记录一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器</title>
+      <link>https://orchidflower.github.io/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/</link>
+      <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;虽然现在的SVN已经用的越来越少，很多人都切换到了Git上。但是以前的一些历史项目还是需要SVN支持的。
+之前的SVN服务器是直接搭建在一台Ubuntu服务器上的。当时一起搭建了WebSVN。也曾经研究过怎么搭建WebSVN，但是现在也不能够工作了，时间长久了也忘了怎么搭建了。所以想研究一下怎么使用Docker来完成一样的工作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Docker for Mac磁盘性能低下的解决办法</title>
+      <link>https://orchidflower.github.io/2017/03/29/Performance-regression-on-Docker-for-Mac/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/03/29/Performance-regression-on-Docker-for-Mac/</guid>
+      <description>&lt;p&gt;最近备份恢复Gogs的时候，发现同样的配置参数在Mac上访问Gogs的用户首页特别慢，大概耗时8秒，而在Linux上面运行的时候不到1秒钟。后来就上网搜索，加上自己试验，最后找到了原因应该是Gogs镜像本身的问题（可能是采用了alpine这一内核，但是具体原因不详，有待进一步实验）。&lt;/p&gt;
+&lt;p&gt;这个过程中曾经怀疑是Docker运行MySQL过慢的原因，虽然最终发现不是，但是搜索过程中发现了Docker for Mac确实有性能问题，那就是对大量磁盘IO的操作性能会非常差，大概会差10倍。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Ubuntu 14.04上安装Docker 17.03.0-ce</title>
+      <link>https://orchidflower.github.io/2017/03/28/install-docker-17-03-0-ce-on-ubuntu-14-04/</link>
+      <pubDate>Tue, 28 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/03/28/install-docker-17-03-0-ce-on-ubuntu-14-04/</guid>
+      <description>&lt;h1 id=&#34;0-概述&#34;&gt;0. 概述&lt;/h1&gt;
+&lt;p&gt;Docker在1.13.x版本之后更新了版本号规则，区分了社区版和企业版。这导致了安装方式有所变化。所以特意参考官方的帮助重新整理了一下安装步骤。&lt;/p&gt;
+&lt;p&gt;适应范围：Ubuntu 14.04。安装版本：17.03.0-ce（社区版）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Mac上启用Docker的Bash Completion</title>
+      <link>https://orchidflower.github.io/2017/02/12/enable-docker-bash-completion-on-mac/</link>
+      <pubDate>Sun, 12 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/02/12/enable-docker-bash-completion-on-mac/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;在Ubuntu上使用Docker的时候，使用tab键自动完成docker命令感觉非常方便，例如：只需要输入image或者container ID的前几位就可以使用Tab键补齐整个命令行。但是在Mac上却没有办法实现相同的操作。&lt;/p&gt;
+&lt;p&gt;经过搜索终于找到了原因：原来是因为没有启用Bash completion功能导致的。而实际上Docker安装包内已经提供了针对Docker的&lt;code&gt;Bash Completion&lt;/code&gt;脚本，只需要启用即可。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

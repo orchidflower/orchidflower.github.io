@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>静态编译 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E9%9D%99%E6%80%81%E7%BC%96%E8%AF%91/</link>
+    <description>Recent content in 静态编译 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 18 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E9%9D%99%E6%80%81%E7%BC%96%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何在Ubuntu上静态编译Golang&#43;GoCV程序</title>
+      <link>https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/</link>
+      <pubDate>Fri, 18 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/</guid>
+      <description>&lt;p&gt;最近做了一个图像增强程序，用到了OpenCV。为了方便发布，我将代码使用&lt;code&gt;Golang&lt;/code&gt;+&lt;code&gt;GoCV&lt;/code&gt;重写，但是编译的时候发现比较麻烦，特别记录一下，以备后查。
+本文对应版本如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ubuntu 18.04.5 LTS&lt;/li&gt;
+&lt;li&gt;Golang 1.15.6&lt;/li&gt;
+&lt;li&gt;OpenCV 4.5.0&lt;/li&gt;
+&lt;li&gt;GoCV 0.2.5&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;1-golang环境准备&#34;&gt;1. Golang环境准备&lt;/h1&gt;
+&lt;h2 id=&#34;11-安装golang&#34;&gt;1.1 安装Golang&lt;/h2&gt;
+&lt;p&gt;下载对应的包，然后解压，设置&lt;code&gt;PATH&lt;/code&gt;路径即可，不多说了。&lt;/p&gt;
+&lt;h2 id=&#34;12-设置gopath&#34;&gt;1.2 设置GOPATH&lt;/h2&gt;
+&lt;p&gt;使用&lt;code&gt;go get&lt;/code&gt;下载的包将下载到&lt;code&gt;$GOPATH&lt;/code&gt;目录中。
+这里设置成&lt;code&gt;/home/ubuntu/.go&lt;/code&gt;。不设置的话将自动设置成&lt;code&gt;~/go&lt;/code&gt;目录。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;cd&lt;/span&gt; /home/ubuntu/.go
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;GOPATH&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;/home/ubuntu/.go
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;13-下载gocv源码&#34;&gt;1.3 下载GoCV源码&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 设置代理翻墙，要不然下载不了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span&gt;git config --global http.proxy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;&lt;span&gt;git config --global https.proxy&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;http_proxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;https_proxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;http://127.0.0.1:12346
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span&gt;go get -v -u -d gocv.io/x/gocv
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

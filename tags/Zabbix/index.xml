@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zabbix on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Zabbix/</link>
+    <description>Recent content in Zabbix on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 20 Apr 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Zabbix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>通过Zabbix监控业务数据（续）</title>
+      <link>https://orchidflower.github.io/2017/04/20/Monitoring-data-in-mysql-using-Zabbixpart2/</link>
+      <pubDate>Thu, 20 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/04/20/Monitoring-data-in-mysql-using-Zabbixpart2/</guid>
+      <description>&lt;p&gt;昨天配置好报警条件之后，今天早上检查发现昨天晚上发出了报警。但是看上去像是误报。
+在凌晨2:44:02触发了警报，然后在2:44:32警报解除，持续时间30秒。如下两图：
+&lt;img src=&#34;http://blog-cache.orchidflower.cn/14926526126564.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/14926526236724.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;从感觉上像是误报。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>通过Zabbix监控业务数据</title>
+      <link>https://orchidflower.github.io/2017/04/19/Monitoring-data-in-mysql-in-Zabbix/</link>
+      <pubDate>Wed, 19 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/04/19/Monitoring-data-in-mysql-in-Zabbix/</guid>
+      <description>&lt;p&gt;为了事后分析服务质量，我们的云认证系统将商户访问记录保存到了数据库中（MySQL）。在日志中我们记录了商户每次访问的返回结果，耗费时间等信息。通过这些信息我们可以分析发现服务什么时候性能比较低，什么时候处理效果比较差。&lt;/p&gt;
+&lt;p&gt;之前通过写脚本，每小时对这些信息进行一次统计，并根据情况（如错误比例过高等）发送邮件通知给相关人员。但是这存在两个问题：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;响应不及时：因为一小时才统计一次，所以滞后效应太明显，经常问题已经发生很久报警才发送出来；&lt;/li&gt;
+&lt;li&gt;报警条件更新不方便：报警条件只能通过脚本编写人员实现，修改起来不方便。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;鉴于此，一直想对这个报警体系进行改造，最后选择通过Zabbix实现这个功能。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

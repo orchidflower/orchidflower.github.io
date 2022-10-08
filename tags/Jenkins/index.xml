@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jenkins on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Jenkins/</link>
+    <description>Recent content in Jenkins on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 22 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Jenkins/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jenkins工作空间页面崩溃问题解决</title>
+      <link>https://orchidflower.github.io/2021/10/22/Jenkins-crashed-in-workspace-page/</link>
+      <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/10/22/Jenkins-crashed-in-workspace-page/</guid>
+      <description>&lt;h1 id=&#34;1-问题&#34;&gt;1. 问题&lt;/h1&gt;
+&lt;p&gt;最近发现一个问题：在 &lt;code&gt;Jenkins&lt;/code&gt; 中打开某些项目的工作空间（&lt;code&gt;WorkSpace&lt;/code&gt;）的时候，页面会崩溃，显示如下的错误信息：
+&lt;img src=&#34;http://blog-cache.orchidflower.cn/mweb/16317740172888.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;查看 &lt;code&gt;Jenkins&lt;/code&gt; 日志发现如下错误信息，提示的是路径无效错误（&lt;code&gt;InvalidPathException&lt;/code&gt;），该目录应该是中文名字，猜测是编码转换出了错误。
+&lt;img src=&#34;http://blog-cache.orchidflower.cn/mweb/16317740902097.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h1 id=&#34;2-解决&#34;&gt;2. 解决&lt;/h1&gt;
+&lt;p&gt;由于是使用 &lt;code&gt;Docker&lt;/code&gt; 运行的 &lt;code&gt;Jenkins&lt;/code&gt;，登录进 &lt;code&gt;Jenkins&lt;/code&gt; 容器内部，查看对应的目录：
+&lt;img src=&#34;http://blog-cache.orchidflower.cn/mweb/16317741870998.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;发现在容器内部看到的目录就是乱码了。而在外部环境可以正常显示目录：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/mweb/16317743090169.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Docker运行Jenkins（二）</title>
+      <link>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</link>
+      <pubDate>Sun, 20 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/</guid>
+      <description>&lt;p&gt;Gitea 是一款极易搭建的自助 Git 服务，最初是fork子Gogs项目（Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自助 Git 服务）。Gitea使用 Go 语言开发。使用 Go 语言开发使得 Gitea 能够通过独立的二进制分发，并且支持 Go 语言支持的 所有平台，包括 Linux、Mac OS X、Windows 以及 ARM 平台。&lt;/p&gt;
+&lt;p&gt;Gitea占用资源小，比起Gitlab这种庞然大物来说简直是精致得要命。但是作为小团队的项目管理用来替代Gitlab还是基本能够满足需求的。而且Gitea（包括Gogs）社区还是挺活跃的，新功能也在逐渐增加中，个人很看好它的前景。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Docker运行Jenkins服务（一）</title>
+      <link>https://orchidflower.github.io/2017/08/13/How-to-setup-Jenkins-in-Docker/</link>
+      <pubDate>Sun, 13 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/13/How-to-setup-Jenkins-in-Docker/</guid>
+      <description>&lt;h1 id=&#34;1-jenkins是什么&#34;&gt;1. Jenkins是什么？&lt;/h1&gt;
+&lt;p&gt;某百科的解释是：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Jenkins是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这个解释大体上是靠谱的，Jenkins的核心作用就是一个CI（持续集成）工具。CI的概念是：持续集成指的是，频繁地（一天多次）将代码集成到主干。持续集成的目的，就是让产品可以快速迭代，同时还能保持高质量。它的核心措施是，代码集成到主干之前，必须通过自动化测试。只要有一个测试用例失败，就不能集成。而Jenkins能够完成这些自动化构建、测试的大部分工作。&lt;/p&gt;
+&lt;p&gt;Jenkins的前身是Hudson。这其中的渊源涉及到Oracle收购Java引起的版权纷争。有兴趣的可以看附录里面的相关链接。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

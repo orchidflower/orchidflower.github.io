@@ -1,0 +1,546 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>在Mac上编译RedisDesktopManager（1）国际化处理 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="在Mac上编译RedisDesktopManager（1）国际化处理">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="在Mac上编译RedisDesktopManager（1）国际化处理 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" itemprop="url">
+        在Mac上编译RedisDesktopManager（1）国际化处理
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-07-01">
+    2020-07-01
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">1573 字 ~4分钟</span>
+</span>
+      <span id="/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/" class="leancloud_visitors" data-flag-title="在Mac上编译RedisDesktopManager（1）国际化处理">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-概述">1. 概述</h1>
+<blockquote>
+<p>Redis Desktop Manager（RedisDesktopManager，RDM）是一个快速、简单、支持跨平台的 Redis 桌面管理工具，基于 Qt 5 开发，支持通过 SSH Tunnel 连接。</p>
+</blockquote>
+<p>&ndash; 开源中国上面对项目的介绍</p>
+<p><code>RedisDesktopManager</code> 是一款优秀的 <code>Redis</code> 客户端。最初是作为开源项目发布的，官方也会发布编译好的版本。后来，作者做了一些商业化处理，上架了<code>App Store</code>，从此不再发布编译后的版本，也在开源版本中阉割掉了 <code>SSH Tunnel</code> 功能。有鉴于此，网上有很多人写教程来说明如何从源码构建一个发行版本，但是目前见到的教程多多少少都有一些问题。最近花了一些时间尝试完善整个编译过程，目前进展不错。以后会陆续说明编译过程中碰到的问题以及对应的解决办法。</p>
+<p>今天首先来说一下国际化的问题。</p>
+<p>目前网上流行的 <code>RedisDesktopManager</code> 编译方法都没有对国际化文件进行处理，所以编译后的版本没有国际化功能，界面只显示英文，语言切换功能无效。经过对相关源码的分析，终于找到了正确的编译处理方法，现在可以完美切换语言。效果如图：</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-07-02-15936592204991.jpg" alt="-w800"></p>
+<h1 id="2-源码分析">2. 源码分析</h1>
+<p>国际化有关的文件主要包括以下这些：</p>
+<ul>
+<li><code>src/app/app.cpp</code></li>
+<li><code>src/rdm.pro</code></li>
+<li><code>src/resources/tr.qrc</code></li>
+<li><code>src/resources/translations/*.ts</code></li>
+</ul>
+<p>下面逐个分析。</p>
+<h2 id="21-appcpp">2.1 app.cpp</h2>
+<p><code>app.cpp</code> 是整个源码的起始，<code>RedisDesktopManager</code>启动相关的源码基本都在该文件中。里面与国际化有关的主要是 <code>installTranslator</code> 这个函数。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">void</span> <span style="color:#111">Application</span><span style="color:#f92672">::</span><span style="color:#111">installTranslator</span><span style="color:#111">()</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#111">QSettings</span> <span style="color:#111">settings</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#111">QString</span> <span style="color:#111">preferredLocale</span> <span style="color:#f92672">=</span> <span style="color:#111">settings</span><span style="color:#111">.</span><span style="color:#111">value</span><span style="color:#111">(</span><span style="color:#d88200">&#34;app/locale&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;system&#34;</span><span style="color:#111">).</span><span style="color:#111">toString</span><span style="color:#111">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  <span style="color:#111">QString</span> <span style="color:#111">locale</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>  <span style="color:#75715e">// 如果首选语言是system，则从系统中获取当前语言。在中文版Mac上，获取到的值是 zh-Hans-CN
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 这导致了在中文版Mac上如果选择system，界面显示的还是英文，而不是中文。详细内容请看下面的介绍
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"></span>  <span style="color:#00a8c8">if</span> <span style="color:#111">(</span><span style="color:#111">preferredLocale</span> <span style="color:#f92672">==</span> <span style="color:#d88200">&#34;system&#34;</span><span style="color:#111">)</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#111">settings</span><span style="color:#111">.</span><span style="color:#111">setValue</span><span style="color:#111">(</span><span style="color:#d88200">&#34;app/locale&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;system&#34;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#111">locale</span> <span style="color:#f92672">=</span> <span style="color:#111">QLocale</span><span style="color:#f92672">::</span><span style="color:#111">system</span><span style="color:#111">().</span><span style="color:#111">uiLanguages</span><span style="color:#111">().</span><span style="color:#111">first</span><span style="color:#111">().</span><span style="color:#111">replace</span><span style="color:#111">(</span><span style="color:#d88200">&#34;-&#34;</span><span style="color:#111">,</span> <span style="color:#d88200">&#34;_&#34;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#111">qDebug</span><span style="color:#111">()</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#111">QLocale</span><span style="color:#f92672">::</span><span style="color:#111">system</span><span style="color:#111">().</span><span style="color:#111">uiLanguages</span><span style="color:#111">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#00a8c8">if</span> <span style="color:#111">(</span><span style="color:#111">locale</span><span style="color:#111">.</span><span style="color:#111">isEmpty</span><span style="color:#111">()</span> <span style="color:#f92672">||</span> <span style="color:#111">locale</span> <span style="color:#f92672">==</span> <span style="color:#d88200">&#34;C&#34;</span><span style="color:#111">)</span> <span style="color:#111">locale</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;en_US&#34;</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#111">qDebug</span><span style="color:#111">()</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#d88200">&#34;Detected locale:&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#111">locale</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>  <span style="color:#111">}</span> <span style="color:#00a8c8">else</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#111">locale</span> <span style="color:#f92672">=</span> <span style="color:#111">preferredLocale</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  <span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>  <span style="color:#75715e">// 使用locale加载语言包。&#34;:/translations/rdm_&#34;中的&#34;:&#34;是QT中的用法，含义是从资源文件中加载
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#75715e"></span>  <span style="color:#75715e">// 这个资源文件应该已经打包在可执行文件内部了。
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#75715e"></span>  <span style="color:#111">QTranslator</span><span style="color:#f92672">*</span> <span style="color:#111">translator</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">QTranslator</span><span style="color:#111">((</span><span style="color:#111">QObject</span><span style="color:#f92672">*</span><span style="color:#111">)</span><span style="color:#00a8c8">this</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>  <span style="color:#00a8c8">if</span> <span style="color:#111">(</span><span style="color:#111">translator</span><span style="color:#f92672">-&gt;</span><span style="color:#111">load</span><span style="color:#111">(</span><span style="color:#111">QString</span><span style="color:#111">(</span><span style="color:#d88200">&#34;:/translations/rdm_&#34;</span><span style="color:#111">)</span> <span style="color:#f92672">+</span> <span style="color:#111">locale</span><span style="color:#111">))</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    <span style="color:#111">qDebug</span><span style="color:#111">()</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#d88200">&#34;Load translations file for locale:&#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#111">locale</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    <span style="color:#111">QCoreApplication</span><span style="color:#f92672">::</span><span style="color:#111">installTranslator</span><span style="color:#111">(</span><span style="color:#111">translator</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>  <span style="color:#111">}</span> <span style="color:#00a8c8">else</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>    <span style="color:#00a8c8">delete</span> <span style="color:#111">translator</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>  <span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#111">}</span>
+</span></span></code></pre></div><h2 id="22-rdmpro">2.2 rdm.pro</h2>
+<p><code>rdm.pro</code> 文件是 <code>RedisDesktopManager</code> 项目的主工程文件，里面定义了整个项目的结构。其中也定义了国际化相关的内容，主要内容节选如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span># 此处首先判断是否存在rdm.qm这个文件，如果存在，则添加tr.qrc文件为资源文件
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>exists( $$PWD/resources/translations/rdm.qm ) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    message(&#34;Translations found&#34;)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    RESOURCES += $$PWD/resources/tr.qrc
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span># 这里指定了相关的语言包文件
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>TRANSLATIONS = \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    $$PWD/resources/translations/rdm.ts \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    $$PWD/resources/translations/rdm_zh_CN.ts \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    $$PWD/resources/translations/rdm_zh_TW.ts \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    $$PWD/resources/translations/rdm_ru_RU.ts \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    $$PWD/resources/translations/rdm_es_ES.ts \
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    $$PWD/resources/translations/rdm_ja_JP.ts \
+</span></span></code></pre></div><h2 id="23-trqrc">2.3 tr.qrc</h2>
+<p><code>.qrc</code> 文件是 <code>QT</code> 的资源定义文件，在编译过程中，资源文件会被打包到可执行文件中（个人猜测，尚未确定，但应该准确）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;RCC&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    &lt;qresource prefix=&#34;/&#34;&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>        &lt;file&gt;translations/rdm_zh_CN.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>        &lt;file&gt;translations/rdm_zh_TW.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>        &lt;file&gt;translations/rdm_ru_RU.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>        &lt;file&gt;translations/rdm_es_ES.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>        &lt;file&gt;translations/rdm_ja_JP.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>    &lt;/qresource&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>&lt;/RCC&gt;
+</span></span></code></pre></div><p>可以看到在资源文件中定义了需要引入的qm文件列表。</p>
+<h2 id="24-translations">2.4 translations</h2>
+<p>刚下载好的源码中 <code>src/resources/translations</code> 目录下面只有 <code>.ts</code> 文件，ts的含义是 <code>translation source</code> ，也就是翻译源码文件的意思。</p>
+<h1 id="3-编译问题分析及解决">3. 编译问题分析及解决</h1>
+<p>从 <code>rdm.pro</code> 文件中内容来看，编译时只有存在 <code>src/resources/translations/rdm.qm</code> 这个文件的时候才会把 <code>tr.qrc</code> 文件作为资源文件包含进来编译。而实际上下载的源码中目录 <code>src/resources/translations</code> 中只有 <code>.ts</code> 文件没有对应的 <code>.qm</code> 文件，这导致了编译过程中跳过了对语言包的处理，因此编译后的文件失去了国际化的功能。</p>
+<p>解决办法就是在正式编译源码之前，首先将ts文件编译成qm文件。方法如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#111">cd</span> src/resources/translations
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#00a8c8">for</span> file in <span style="color:#d88200">`</span>ls -1 *.ts<span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#00a8c8">do</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	<span style="color:#111">echo</span> <span style="color:#d88200">&#34;Convert </span><span style="color:#111">$file</span><span style="color:#d88200">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    lconvert -i <span style="color:#111">$file</span> -o <span style="color:#d88200">${</span><span style="color:#111">file</span><span style="color:#111">%.*</span><span style="color:#d88200">}</span>.qm
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#00a8c8">done</span>
+</span></span></code></pre></div><p>说明： <code>lconvert</code>是QT带的一个工具，用于在语言包相关各种格式之间转换。需要首先安装qt。（<code>brew install qt</code>）</p>
+<h1 id="4-剩余问题">4. 剩余问题</h1>
+<p>上面提到，如果语言选择<code>system</code>，在中文版Mac上面是不能够正确显示中文的。其原因是从系统获得的语言名称是<code>zh-Hans-CN</code>，由此期待的语言包文件名是：<code>rdm_zh_Hans_CN.qm</code>，而实际语言包文件名是 <code>rdm_zh_CN.qm</code> ，显然无法找到。</p>
+<p>解决办法是多复制一份文件即可：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#111">cd</span> src/resources/translations
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#00a8c8">for</span> file in <span style="color:#d88200">`</span>ls -1 *.ts<span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#00a8c8">do</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	<span style="color:#111">echo</span> <span style="color:#d88200">&#34;Convert </span><span style="color:#111">$file</span><span style="color:#d88200">&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    lconvert -i <span style="color:#111">$file</span> -o <span style="color:#d88200">${</span><span style="color:#111">file</span><span style="color:#111">%.*</span><span style="color:#d88200">}</span>.qm
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#00a8c8">done</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>cp rdm_zh_CN.qm rdm_zh_Hans_CN.qm
+</span></span></code></pre></div><p>同时修改<code>tr.qrc</code>文件，添加这个qm文件：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;RCC&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    &lt;qresource prefix=&#34;/&#34;&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        &lt;file&gt;translations/rdm_zh_CN.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        &lt;file&gt;translations/rdm_zh_Hans_CN.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        &lt;file&gt;translations/rdm_zh_TW.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        &lt;file&gt;translations/rdm_ru_RU.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        &lt;file&gt;translations/rdm_es_ES.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        &lt;file&gt;translations/rdm_ja_JP.qm&lt;/file&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    &lt;/qresource&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>&lt;/RCC&gt;
+</span></span></code></pre></div><h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://github.com/uglide/RedisDesktopManager">RedisDesktopManager source on Github</a></li>
+<li><a href="http://garyqiang.com/post/how-to-build-redis-desktop-manager-on-mac">Mac下一键编译RedisDesktopManager</a></li>
+<li><a href="https://stackoverflow.com/questions/32373449/how-can-i-convert-qm-to-ts-file">How can I convert qm to ts file?</a></li>
+<li><a href="https://blog.csdn.net/happyrabbit456/article/details/51721763">Qt国际化多国语言和发布例子</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Mac" rel="tag" title="Mac">#Mac#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Redis" rel="tag" title="Redis">#Redis#</a>
+    
+    <a href="https://orchidflower.github.io/tags/RDM" rel="tag" title="RDM">#RDM#</a>
+    
+    <a href="https://orchidflower.github.io/tags/RedisDesktopManager" rel="tag" title="RedisDesktopManager">#RedisDesktopManager#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/" rel="next" title="如何修改Ubuntu服务器上的DNS设置">
+        <i class="fa fa-chevron-left"></i> 如何修改Ubuntu服务器上的DNS设置
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/06/26/How-to-build-vcmi-on-mac-part3/" rel="prev" title="如何在Mac上编译vcmi（续）-cpack打包后异常退出">
+        如何在Mac上编译vcmi（续）-cpack打包后异常退出 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-概述">1. 概述</a></li>
+    <li><a href="#2-源码分析">2. 源码分析</a>
+      <ul>
+        <li><a href="#21-appcpp">2.1 app.cpp</a></li>
+        <li><a href="#22-rdmpro">2.2 rdm.pro</a></li>
+        <li><a href="#23-trqrc">2.3 tr.qrc</a></li>
+        <li><a href="#24-translations">2.4 translations</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-编译问题分析及解决">3. 编译问题分析及解决</a></li>
+    <li><a href="#4-剩余问题">4. 剩余问题</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

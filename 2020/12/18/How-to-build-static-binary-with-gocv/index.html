@@ -1,0 +1,551 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>如何在Ubuntu上静态编译Golang&#43;GoCV程序 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="如何在Ubuntu上静态编译Golang&#43;GoCV程序">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="如何在Ubuntu上静态编译Golang&#43;GoCV程序 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2020/12/18/How-to-build-static-binary-with-gocv/" itemprop="url">
+        如何在Ubuntu上静态编译Golang&#43;GoCV程序
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-12-18">
+    2020-12-18
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">1869 字 ~4分钟</span>
+</span>
+      <span id="/2020/12/18/How-to-build-static-binary-with-gocv/" class="leancloud_visitors" data-flag-title="如何在Ubuntu上静态编译Golang&#43;GoCV程序">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>最近做了一个图像增强程序，用到了OpenCV。为了方便发布，我将代码使用<code>Golang</code>+<code>GoCV</code>重写，但是编译的时候发现比较麻烦，特别记录一下，以备后查。
+本文对应版本如下：</p>
+<ul>
+<li>Ubuntu 18.04.5 LTS</li>
+<li>Golang 1.15.6</li>
+<li>OpenCV 4.5.0</li>
+<li>GoCV 0.2.5</li>
+</ul>
+<h1 id="1-golang环境准备">1. Golang环境准备</h1>
+<h2 id="11-安装golang">1.1 安装Golang</h2>
+<p>下载对应的包，然后解压，设置<code>PATH</code>路径即可，不多说了。</p>
+<h2 id="12-设置gopath">1.2 设置GOPATH</h2>
+<p>使用<code>go get</code>下载的包将下载到<code>$GOPATH</code>目录中。
+这里设置成<code>/home/ubuntu/.go</code>。不设置的话将自动设置成<code>~/go</code>目录。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#111">cd</span> /home/ubuntu/.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#111">export</span> <span style="color:#111">GOPATH</span><span style="color:#f92672">=</span>/home/ubuntu/.go
+</span></span></code></pre></div><h2 id="13-下载gocv源码">1.3 下载GoCV源码</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 设置代理翻墙，要不然下载不了</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>git config --global http.proxy<span style="color:#f92672">=</span>http://127.0.0.1:12346
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>git config --global https.proxy<span style="color:#f92672">=</span>http://127.0.0.1:12346
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#111">export</span> <span style="color:#111">http_proxy</span><span style="color:#f92672">=</span>http://127.0.0.1:12346
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#111">export</span> <span style="color:#111">https_proxy</span><span style="color:#f92672">=</span>http://127.0.0.1:12346
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>go get -v -u -d gocv.io/x/gocv
+</span></span></code></pre></div><h1 id="2-开始编译">2. 开始编译</h1>
+<p>在GoCV的源码中，有一个Makefile文件，使用该Makefile可以简化OpenCV的编译过程。我是以此文件为基础编译的。</p>
+<h2 id="21-安装依赖库">2.1 安装依赖库</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 切换到源码目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ubuntu@testserver:~$ <span style="color:#111">cd</span> <span style="color:#111">$GOPATH</span>/src/gocv.io/x/gocv
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e"># 安装依赖库</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>ubuntu@testserver:~/.go/src/gocv.io/x/gocv$ make deps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>sudo apt-get -y update
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>sudo apt-get -y install unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+</span></span></code></pre></div><h2 id="22-下载相关源码">2.2 下载相关源码</h2>
+<p>下载<code>OpenCV</code>相关源码。记得挂代理。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>ubuntu@testserver:~/.go/src/gocv.io/x/gocv$ make download
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>rm -rf /tmp/opencv
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>mkdir /tmp/opencv
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#111">cd</span> /tmp/opencv
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>curl -Lo opencv.zip https://github.com/opencv/opencv/archive/4.5.0.zip
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>unzip -q opencv.zip
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>curl -Lo opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.5.0.zip
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>unzip -q opencv_contrib.zip
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>rm opencv.zip opencv_contrib.zip
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#111">cd</span> -
+</span></span></code></pre></div><h2 id="23-编译">2.3 编译</h2>
+<p>在编译之前需要对<code>Makefile</code>进行一些修改。因为<code>FFMpeg</code>、<code>GTK</code>、<code>DC1394</code>这几个功能的依赖库特别复杂，要实现静态编译非常麻烦，可能需要自己手工裁减编译这几个库。因为目前程序没有用到窗口、视频等方面的功能，所以直接裁减掉这几个功能。
+修改方法是修改<code>$GOPATH/src/gocv.io/x/gocv/Makefile</code>这个文件。添加<code>-D WITH_FFMPEG=OFF -D WITH_GTK=OFF -D WITH_1394=OFF -D WITH_TIFF=OFF</code>这几个参数到目标<code>build</code>里面的<code>cmake</code>命令中即可。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># Build OpenCV.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"></span><span style="color:#75af00">build</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#111">cd</span> <span style="color:#00a8c8">$(</span>TMP_DIR<span style="color:#00a8c8">)</span>opencv/opencv-<span style="color:#00a8c8">$(</span>OPENCV_VERSION<span style="color:#00a8c8">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        mkdir build
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#111">cd</span> build
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        rm -rf *
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#75715e">#cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} -D OPENCV_EXTRA_MODULES_PATH=$(TMP_DIR)opencv/opencv_contrib-$(OPENCV_VERSION)/modules -D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=NO -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO -D WITH_JASPER=OFF -DOPENCV_GENERATE_PKGCONFIG=ON ..</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        cmake -D <span style="color:#111">CMAKE_BUILD_TYPE</span><span style="color:#f92672">=</span>RELEASE -D <span style="color:#111">CMAKE_INSTALL_PREFIX</span><span style="color:#f92672">=</span>/usr/local -D <span style="color:#111">BUILD_SHARED_LIBS</span><span style="color:#f92672">=</span><span style="color:#d88200">${</span><span style="color:#111">BUILD_SHARED_LIBS</span><span style="color:#d88200">}</span> -D <span style="color:#111">OPENCV_EXTRA_MODULES_PATH</span><span style="color:#f92672">=</span><span style="color:#00a8c8">$(</span>TMP_DIR<span style="color:#00a8c8">)</span>opencv/opencv_contrib-<span style="color:#00a8c8">$(</span>OPENCV_VERSION<span style="color:#00a8c8">)</span>/modules -D <span style="color:#111">BUILD_DOCS</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">BUILD_EXAMPLES</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">BUILD_TESTS</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">BUILD_PERF_TESTS</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">BUILD_opencv_java</span><span style="color:#f92672">=</span>NO -D <span style="color:#111">BUILD_opencv_python</span><span style="color:#f92672">=</span>NO -D <span style="color:#111">BUILD_opencv_python2</span><span style="color:#f92672">=</span>NO -D <span style="color:#111">BUILD_opencv_python3</span><span style="color:#f92672">=</span>NO -D <span style="color:#111">WITH_JASPER</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">WITH_FFMPEG</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">WITH_GTK</span><span style="color:#f92672">=</span>OFF -D <span style="color:#111">WITH_1394</span><span style="color:#f92672">=</span>OFF -DOPENCV_GENERATE_PKGCONFIG<span style="color:#f92672">=</span>ON ..
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#00a8c8">$(</span>MAKE<span style="color:#00a8c8">)</span> -j <span style="color:#00a8c8">$(</span>shell nproc --all<span style="color:#00a8c8">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#00a8c8">$(</span>MAKE<span style="color:#00a8c8">)</span> preinstall
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#111">cd</span> -
+</span></span></code></pre></div><p>注意<code>WITH_TIFF=OFF</code>这个参数也可以不添加，不过要修改后面提到的<code>CGO_LDFLAGS</code>。具体看下面的介绍。</p>
+<p>然后可以执行编译了。这个编译耗费时间会比较长。我这边花了20+分钟。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 默认方式编译，编译出来动态库。我不用这种方式。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ubuntu@testserver:~/.go/src/gocv.io/x/gocv$ make build
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e">#  我要编译静态库，所以添加BUILD_SHARED_LIBS=OFF</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>ubuntu@testserver:~/.go/src/gocv.io/x/gocv$ make build <span style="color:#111">BUILD_SHARED_LIBS</span><span style="color:#f92672">=</span>OFF
+</span></span></code></pre></div><p>漫长的等待。</p>
+<h2 id="24-安装">2.4 安装</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 将编译好的库安装到系统中</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ubuntu@testserver:~/.go/src/gocv.io/x/gocv$ make sudo_install
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#111">cd</span> /tmp/opencv/opencv-4.5.0/build
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>sudo make install
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>sudo ldconfig
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#111">cd</span> -
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#00a8c8">for</span> ubuntu: 
+</span></span></code></pre></div><h1 id="25-编译golang程序">2.5 编译Golang程序</h1>
+<p>直接编译是无法通过的，需要设置<code>CGO_CPPFLAGS</code>, <code>CGO_LDFLAGS</code>两个环境变量，然后使用<code>go build -tags customenv</code>编译。</p>
+<p><code>CGO_CPPFLAGS</code>这个环境变量用于指定include文件的路径；可以通过<code>pkg-config --cflags</code>这个命令获得其内容。
+<code>CGO_LDFLAGS</code>这个环境变量用于连接时期，主要指定lib文件路径及需要连接的库。可以通过<code>pkg-config --libs</code>获得其主要内容。见下面的注释。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e"># 使用`pkg-config --cflags opencv4`获得</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#111">export</span> <span style="color:#111">CGO_CPPFLAGS</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;-I/usr/local/include/opencv4&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#75715e"># 使用`pkg-config --libs --static opencv4`获得主要内容。然后添加上`--static`这个参数。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#111">export</span> <span style="color:#111">CGO_LDFLAGS</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;--static -L/usr/local/lib -L/usr/local/lib/opencv4/3rdparty -L/tmp/opencv/opencv-4.5.0/build/lib -lopencv_gapi -lopencv_stitching -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dnn_superres -lopencv_dpm -lopencv_highgui -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_hfs -lopencv_img_hash -lopencv_intensity_transform -lopencv_line_descriptor -lopencv_mcc -lopencv_quality -lopencv_rapid -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_superres -lopencv_optflow -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_videostab -lopencv_videoio -lopencv_xfeatures2d -lopencv_shape -lopencv_ml -lopencv_ximgproc -lopencv_video -lopencv_xobjdetect -lopencv_objdetect -lopencv_calib3d -lopencv_imgcodecs -lopencv_features2d -lopencv_flann -lopencv_xphoto -lopencv_photo -lopencv_imgproc -lopencv_core -littnotify -llibprotobuf -llibwebp -llibopenjp2 -lIlmImf -lquirc -lippiw -lippicv -lade -ljpeg -lpng -lz -ltiff -lfreetype -lharfbuzz -ljbig -llzma -lm -lpthread -lrt -lc -ldl&#34;</span>
+</span></span></code></pre></div><p>另外，如果要支持<code>TIFF</code>格式（前面<code>Makefile</code>中没有添加<code>WITH_TIFF=OFF</code>选项），则<code>CPP_LDFLAGS</code>中还要加上：<code>-ljbig -llzma</code>这两个参数，否则编译Go代码的时候会报错。</p>
+<p>最后使用<code>go build -v -tags customenv .</code>命令就可以编译了。</p>
+<h1 id="3-编译中碰到的一些错误">3. 编译中碰到的一些错误</h1>
+<p>编译Go代码的时候经常碰到各种<code>undefined reference to</code>错误，这都是因为要链接的库没有在CPP_LDFLAGS中指定。找到对应的库，添加到参数中就好了。</p>
+<h2 id="31-jbg">3.1 jbg</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>(.text+0x45): undefined reference to `jbg_enc_init&#39;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>(.text+0x4d): undefined reference to `jbg_enc_out&#39;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>(.text+0x55): undefined reference to `jbg_enc_free&#39;
+</span></span></code></pre></div><p>以上错误是需要<code>libjbig</code>这个库，应该是TIFF格式需要的。如果关闭了TIFF格式支持，应该不会报上面的错误。添加<code>-ljbig</code>就可以了。</p>
+<h2 id="32-lzma">3.2 lzma</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>(.text+0x1a0): undefined reference to `lzma_code&#39;
+</span></span></code></pre></div><p>以上错误是需要<code>liblzma</code>这个库，应该也是TIFF格式需要的。添加上<code>-llzma</code>参数解决。</p>
+<h2 id="33-dlopengetaddrinfo">3.3 dlopen、getaddrinfo</h2>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>warning: Using &#39;dlopen&#39; in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+</span></span></code></pre></div><p>libc</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Using &#39;getaddrinfo&#39; in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
+</span></span></code></pre></div><p>这两个警告信息暂时找不到解决办法。</p>
+<h1 id="4-其他一些cgo编译相关的指令">4. 其他一些CGO编译相关的指令</h1>
+<p><code>go clean -cache</code> 可以清除已经编译的缓存。</p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://gocv.io">GoCV Home</a></li>
+<li><a href="https://github.com/hybridgroup/gocv">GoCV @Github</a></li>
+<li><a href="https://stackoverflow.com/questions/57022152/building-opencv-as-a-static-library-leads-to-thousands-of-undefined-references">Building OpenCV as a static library leads to thousands of undefined references</a></li>
+<li><a href="https://github.com/hybridgroup/gocv/issues/217">Pls add static link opencv #217</a></li>
+<li><a href="https://github.com/golang/go/issues/21421">Golang 1.9 build warning : Using &lsquo;getaddrinfo&rsquo; in statically linked applications requires at runtime the shared libraries from the glibc version used for linking #21421</a></li>
+<li><a href="https://docs.opencv.org/master/db/d05/tutorial_config_reference.html">OpenCV configuration options reference</a></li>
+<li><a href="https://blog.csdn.net/gadwgdsk/article/details/107423625">ubuntu安装opencv无法下载IPPICV的问题 ippicv_2020_lnx_intel64_20191018_general.tgz</a></li>
+<li><a href="https://github.com/opencv/opencv/wiki/Compact-build-advice">How to build more compact OpenCV applications on Linux</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Ubuntu" rel="tag" title="Ubuntu">#Ubuntu#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Golang" rel="tag" title="Golang">#Golang#</a>
+    
+    <a href="https://orchidflower.github.io/tags/GoCV" rel="tag" title="GoCV">#GoCV#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E9%9D%99%E6%80%81%E7%BC%96%E8%AF%91" rel="tag" title="静态编译">#静态编译#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2021/02/26/linux-command-introduction-05-unzip/" rel="next" title="Linux常用命令介绍 05 - unzip">
+        <i class="fa fa-chevron-left"></i> Linux常用命令介绍 05 - unzip
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/" rel="prev" title="删除启动台Launchpad上无效的图标">
+        删除启动台Launchpad上无效的图标 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-golang环境准备">1. Golang环境准备</a>
+      <ul>
+        <li><a href="#11-安装golang">1.1 安装Golang</a></li>
+        <li><a href="#12-设置gopath">1.2 设置GOPATH</a></li>
+        <li><a href="#13-下载gocv源码">1.3 下载GoCV源码</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-开始编译">2. 开始编译</a>
+      <ul>
+        <li><a href="#21-安装依赖库">2.1 安装依赖库</a></li>
+        <li><a href="#22-下载相关源码">2.2 下载相关源码</a></li>
+        <li><a href="#23-编译">2.3 编译</a></li>
+        <li><a href="#24-安装">2.4 安装</a></li>
+      </ul>
+    </li>
+    <li><a href="#25-编译golang程序">2.5 编译Golang程序</a></li>
+    <li><a href="#3-编译中碰到的一些错误">3. 编译中碰到的一些错误</a>
+      <ul>
+        <li><a href="#31-jbg">3.1 jbg</a></li>
+        <li><a href="#32-lzma">3.2 lzma</a></li>
+        <li><a href="#33-dlopengetaddrinfo">3.3 dlopen、getaddrinfo</a></li>
+      </ul>
+    </li>
+    <li><a href="#4-其他一些cgo编译相关的指令">4. 其他一些CGO编译相关的指令</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

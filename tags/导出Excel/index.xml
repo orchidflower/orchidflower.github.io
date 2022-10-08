@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>导出Excel on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E5%AF%BC%E5%87%BAExcel/</link>
+    <description>Recent content in 导出Excel on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 15 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E5%AF%BC%E5%87%BAExcel/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Spring使用POI导出Excel内存溢出问题的解决（续）</title>
+      <link>https://orchidflower.github.io/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/</link>
+      <pubDate>Fri, 15 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/06/15/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring-Part2/</guid>
+      <description>&lt;p&gt;上篇文章介绍了一个方法，解决了导出Excel过程中内存溢出的问题。但是有些问题还没有搞明白，那就是为什么要这样打开数据库游标？为什么fetchSize必须为：-2147483648？这里面涉及到数据库游标的更多信息，这一篇文章将深入介绍这方面内容。&lt;/p&gt;
+&lt;p&gt;在数据库中，游标是一个十分重要的概念。游标提供了一种对从表中检索出的数据进行操作的灵活手段，就本质而言，游标实际上是一种能从包括多条数据记录的结果集中每次提取一条记录的机制。游标总是与一条SQL 选择语句相关联因为游标由结果集（可以是零条、一条或由相关的选择语句检索出的多条记录）和结果集中指向特定记录的游标位置组成。&lt;/p&gt;
+&lt;p&gt;MySQL数据库游标通常有两种形式：Client Side Cursor（客户端游标）和Server Side Cursor（服务器端游标）。默认情况下，客户端游标会把整个结果集获取到客户端内存中，如果结果集太大，就会引发Out Of Memory错误；而服务器端游标会将结果集缓存在服务器端，客户端从服务器端分批获得结果集。&lt;/p&gt;
+&lt;p&gt;MySQL默认是使用客户端游标的，因为通常情况下，程序处理的结果集不会特别大，对小结果集使用客户端游标效率更高：结果集一次性传输到客户端，客户端可以自行处理，服务器端也可以为其他客户端提供服务。但是针对大结果集，默认的客户端游标处理方式满足不了要求，针对这种情况，MySQL的Java客户端做了一个特殊的处理。下面参照官方帮助看一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spring使用POI导出Excel内存溢出问题的解决</title>
+      <link>https://orchidflower.github.io/2018/06/11/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring/</link>
+      <pubDate>Mon, 11 Jun 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/06/11/Solving-OutOfMemoryException-Happened-when-Exporting-Excel-using-POI-in-Spring/</guid>
+      <description>&lt;p&gt;云认证平台提供将认证记录导出为Excel的功能。但是当业务量慢慢发展起来以后，就碰到一个比较棘手的问题：需要导出的认证记录太多，导出Excel的时候经常碰到服务器内存溢出问题。例如当要导出30w条记录的时候，服务端内存占用会超过2G，继续增加Heap空间不是一个非常合适的方案，因为无法预知一共需要多少内存。&lt;/p&gt;
+&lt;p&gt;因此，这两天特意找了一下解决方案，终于有了解决方案。最终方案导出256w条记录的时候，服务器内战占用1.6G，不再继续增加。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

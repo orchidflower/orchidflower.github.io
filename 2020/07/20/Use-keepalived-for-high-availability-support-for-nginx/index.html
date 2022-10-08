@@ -1,0 +1,569 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>使用KeepAlived配置Nginx高可用 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="使用KeepAlived配置Nginx高可用">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="使用KeepAlived配置Nginx高可用 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/" itemprop="url">
+        使用KeepAlived配置Nginx高可用
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-07-20">
+    2020-07-20
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">2202 字 ~5分钟</span>
+</span>
+      <span id="/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/" class="leancloud_visitors" data-flag-title="使用KeepAlived配置Nginx高可用">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-背景">1. 背景</h1>
+<p>最近为一个传统行业的客户开发了一个生产调度系统。但是他的生产环境是自己搭建的，不是购买的云服务，因此碰到了一些问题。</p>
+<p>客户购买了多台高性能的物理机，在上面自行搭建虚拟机。但是只有虚拟机，没有提供类似负载均衡、数据库等基础服务。为了解决负载均衡问题，我们自行安装了 <code>Nginx</code> 。为了保证系统健壮和性能，安装 <code>Nginx</code> 的两台虚拟机（Ubuntu 18.04.3 LTS，172.16.45.22，172.16.45.26）分别部署在两台不同的物理机上（172.16.45.11， 172.168.45.12）。然后 <code>DNS</code> 解析到两台 <code>Nginx</code> 主机上。</p>
+<p>现在的问题是：客户的要求是任何一台物理机出现问题都要能够保证系统可用，验证的方式是测试的时候会直接断开物理机的网线，这将导致通过 <code>DNS</code> 解析出来的 <code>Nginx</code> 主机必然有一台是无法使用的。访问显然会出问题。</p>
+<p>经过考虑，最后选定解决办法是：使用 <code>KeepAlived</code> 做高可用，两台 <code>Nginx</code> 共同维护一个虚拟IP（172.16.45.50），<code>DNS</code> 解析到这个虚拟IP上。</p>
+<p>这里简单记录一下安装 <code>KeepAlived</code> 的过程以及碰到的一些问题及解决方案。</p>
+<h1 id="2安装keepalived">2.安装KeepAlived</h1>
+<p>在 <code>Ubuntu</code> 上安装 <code>KeepAlived</code> 非常简单：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>apt install keepalived
+</span></span></code></pre></div><p>安装的版本是1.3.9。不算新，但是应该够用。</p>
+<h1 id="3-配置文件">3. 配置文件</h1>
+<p>配置文件名位置为：<code>/etc/keepalived/keepalived.conf</code>，如果文件不存在，<code>KeepAlived</code> 将不能够启动，请自行创建该文件。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">!</span> <span style="color:#d88200">Configuration</span> <span style="color:#d88200">File</span> <span style="color:#d88200">for</span> <span style="color:#d88200">keepalived</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"># Global definitions configuration block
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"></span><span style="color:#d88200">global_defs</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#75715e">#  String identifying the machine (doesn&#39;t have to be hostname).
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># (default: local host name)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"></span>    <span style="color:#f92672">router_id</span> <span style="color:#d88200">server01</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># A VRRP Instance is the VRRP protocol key feature. It defines and con-
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># figures VRRP behaviour to run on a specific interface. Each VRRP
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e"># Instances are related to a uniq interface.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#75715e"></span><span style="color:#d88200">vrrp_instance</span> <span style="color:#d88200">VI_1</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    <span style="color:#75715e"># Initial state, MASTER|BACKUP
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># As soon as the other machine(s) come up,
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># an election will be held and the machine
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># with the highest priority will become MASTER.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># So the entry here doesn&#39;t matter a whole lot.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#75715e"></span>    <span style="color:#f92672">state</span> <span style="color:#d88200">MASTER</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#75715e"># interface for inside_network, bound by vrrp
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">interface</span> <span style="color:#d88200">eth0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#75715e"># arbitrary unique number from 1 to 255
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># used to differentiate multiple instances of vrrpd
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># running on the same NIC (and hence same socket).
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">virtual_router_id</span> <span style="color:#ae81ff">50</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>    <span style="color:#75715e">#  for electing MASTER, highest priority wins.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># to be MASTER, make this 50 more than on other machines.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">priority</span> <span style="color:#ae81ff">100</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>    <span style="color:#75715e"># VRRP Advert interval in seconds (e.g. 0.92) (use default)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">advert_int</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>    <span style="color:#75715e"># Note: authentication was removed from the VRRPv2 specification by
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># RFC3768 in 2004.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   Use of this option is non-compliant and can cause problems; avoid
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   using if possible, except when using unicast, where it can be helpful.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">authentication</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>            <span style="color:#75715e"># PASS|AH
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span><span style="color:#75715e"></span>            <span style="color:#75715e"># PASS - Simple password (suggested)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span><span style="color:#75715e"></span>            <span style="color:#75715e"># AH - IPSEC (not recommended))    
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span><span style="color:#75715e"></span>            <span style="color:#f92672">auth_type</span> <span style="color:#d88200">PASS</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>            <span style="color:#75715e"># Password for accessing vrrpd.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span><span style="color:#75715e"></span>            <span style="color:#75715e"># should be the same on all machines.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span><span style="color:#75715e"></span>            <span style="color:#75715e"># Only the first eight (8) characters are used.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span><span style="color:#75715e"></span>            <span style="color:#d88200">auth_pass</span> <span style="color:#d88200">Password@123</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>    <span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>    <span style="color:#75715e"># addresses add|del on change to MASTER, to BACKUP.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># With the same entries on other machines,
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># the opposite transition will be occurring.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># For virutal_ipaddress, virtual_ipaddress_excluded,
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   virtual_routes and virtual_rules most of the options
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   match the options of the command ip address/route/rule add.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   The track_group option only applies to static addresses/routes/rules.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   no_track is specific to keepalived and means that the
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   vrrp_instance will not transition out of master state
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   if the address/route/rule is deleted and the address/route/rule
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   will not be reinstated until the vrrp instance next transitions
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span><span style="color:#75715e"></span>    <span style="color:#75715e">#   to master.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span><span style="color:#75715e"></span>    <span style="color:#75715e"># &lt;LABEL&gt;: is optional and creates a name for the alias.
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span><span style="color:#75715e"></span>              <span style="color:#d88200">For</span> <span style="color:#d88200">compatibility</span> <span style="color:#d88200">with</span> <span style="color:#d88200">&#34;ifconfig&#34;,</span> <span style="color:#d88200">it</span> <span style="color:#d88200">should</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span>              <span style="color:#d88200">be</span> <span style="color:#d88200">of</span> <span style="color:#d88200">the</span> <span style="color:#d88200">form</span> <span style="color:#d88200">&lt;realdev&gt;:&lt;anytext&gt;,</span> <span style="color:#d88200">for</span> <span style="color:#d88200">example</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>              <span style="color:#111">eth0</span><span style="color:#111">:</span><span style="color:#ae81ff">1</span> <span style="color:#d88200">for</span> <span style="color:#d88200">an</span> <span style="color:#d88200">alias</span> <span style="color:#00a8c8">on</span> <span style="color:#d88200">eth0.</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span>    <span style="color:#75715e"># &lt;SCOPE&gt;: (&#34;site&#34;|&#34;link&#34;|&#34;host&#34;|&#34;nowhere&#34;|&#34;global&#34;)    
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span><span style="color:#75715e"></span>    <span style="color:#d88200">virtual_ipaddress</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>            <span style="color:#f92672">172.16.45.50</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span>    <span style="color:#960050;background-color:#1e0010">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span><span style="color:#960050;background-color:#1e0010">}</span>
+</span></span></code></pre></div><p>主要配置参数可以参考其中的注释说明。几个关键参数简单说一下：</p>
+<ul>
+<li><code>state</code> 用于指定当前主机的在 <code>KeepAlived</code> 中的初始状态。可以为 <code>MASTER</code> 和 <code>BACKUP</code> 。虚拟IP将绑定在 <code>MASTER</code> 上；</li>
+<li><code>interface</code> 指定绑定的网卡；</li>
+<li><code>vrrp_instance</code> 定义一个虚拟网络，这是 <code>KeepAlived</code> 定义的一个基本单位；</li>
+<li><code>virtual_ipaddress</code>  指定绑定的虚拟IP。虚拟IP会根据网络情况在 <code>MASTER</code> 和 <code>BACKUP</code> 之间漂移；</li>
+</ul>
+<p>改完配置文件之后使用命令：<code>service keepalived restart</code>重启服务即可。</p>
+<h1 id="4-验证">4. 验证</h1>
+<p>使用<code>ip addr show eth0</code>查看网卡的IP地址。默认情况下，只有MASTER上面会有新增的虚拟IP。
+<img src="http://blog-cache.orchidflower.cn/2020-07-20-15785626549112.jpg" alt="-w727"></p>
+<p>使用<code>service keepalived stop</code>停掉主节点的 <code>KeepAlived</code>，然后就会发现虚拟IP出现在 <code>BACKUP</code> 节点上来。再次启动 <code>MASTER</code> 上的 <code>KeepAlived</code> ，虚拟IP又会出现在 <code>MASTER</code> 节点上。
+日志如下：
+<code>MASTER</code> 节点：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>Jan 09 16:56:18 server01 systemd[1]: Stopping Keepalive Daemon (LVS and VRRP)...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Jan 09 16:56:18 server01 Keepalived[2360]: Stopping
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>Jan 09 16:56:18 server01 Keepalived_vrrp[2367]: VRRP_Instance(VI_1) sent 0 priority
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>Jan 09 16:56:18 server01 Keepalived_healthcheckers[2366]: Stopped
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2367]: Stopped
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>Jan 09 16:56:19 server01 Keepalived[2360]: Stopped Keepalived v1.3.9 (10/21,2017)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>Jan 09 16:56:19 server01 systemd[1]: Stopped Keepalive Daemon (LVS and VRRP).
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Jan 09 16:56:19 server01 systemd[1]: Starting Keepalive Daemon (LVS and VRRP)...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>Jan 09 16:56:19 server01 Keepalived[2408]: Starting Keepalived v1.3.9 (10/21,2017)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Jan 09 16:56:19 server01 Keepalived[2408]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Jan 09 16:56:19 server01 systemd[1]: Started Keepalive Daemon (LVS and VRRP).
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Jan 09 16:56:19 server01 Keepalived[2412]: Starting Healthcheck child process, pid=2416
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Jan 09 16:56:19 server01 Keepalived_healthcheckers[2416]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>Jan 09 16:56:19 server01 Keepalived[2412]: Starting VRRP child process, pid=2418
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: Registering Kernel netlink reflector
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: Registering Kernel netlink command channel
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: Registering gratuitous ARP shared channel
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: Using LinkWatch kernel netlink reflector...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>Jan 09 16:56:19 server01 Keepalived_vrrp[2418]: VRRP_Instance(VI_1) Transition to MASTER STATE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>Jan 09 16:56:20 server01 Keepalived_vrrp[2418]: VRRP_Instance(VI_1) Entering MASTER STATE
+</span></span></code></pre></div><p><code>BACKUP</code> 节点：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>Jan 09 16:55:16 server02 systemd[1]: Starting Keepalive Daemon (LVS and VRRP)...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Jan 09 16:55:16 server02 Keepalived[96635]: Starting Keepalived v1.3.9 (10/21,2017)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>Jan 09 16:55:16 server02 Keepalived[96635]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>Jan 09 16:55:16 server02 systemd[1]: Started Keepalive Daemon (LVS and VRRP).
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>Jan 09 16:55:16 server02 Keepalived[96644]: Starting Healthcheck child process, pid=96650
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>Jan 09 16:55:16 server02 Keepalived_healthcheckers[96650]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>Jan 09 16:55:16 server02 Keepalived[96644]: Starting VRRP child process, pid=96651
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Registering Kernel netlink reflector
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Registering Kernel netlink command channel
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Registering gratuitous ARP shared channel
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Opening file &#39;/etc/keepalived/keepalived.conf&#39;.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Truncating auth_pass to 8 characters
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: Using LinkWatch kernel netlink reflector...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>Jan 09 16:55:16 server02 Keepalived_vrrp[96651]: VRRP_Instance(VI_1) Entering BACKUP STATE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>Jan 09 16:56:18 server02 Keepalived_vrrp[96651]: VRRP_Instance(VI_1) Transition to MASTER STATE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>Jan 09 16:56:19 server02 Keepalived_vrrp[96651]: VRRP_Instance(VI_1) Entering MASTER STATE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>Jan 09 16:56:19 server02 Keepalived_vrrp[96651]: VRRP_Instance(VI_1) Received advert with higher priority 100, ours 50
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>Jan 09 16:56:19 server02 Keepalived_vrrp[96651]: VRRP_Instance(VI_1) Entering BACKUP STATE
+</span></span></code></pre></div><h1 id="5-剩余问题">5. 剩余问题</h1>
+<p>观察可以发现，上面方案实行后会导致只有一台 <code>Nginx</code> 生效，另一台上因为没有绑定虚拟IP，不会被访问到，这相当于将两台同等地位的 <code>Nginx</code> 变成了主从模式。</p>
+<p>一个可行的解决办法是采用双主模式部署 <code>KeepAlived</code>。方法是配置两个<code>vrrp_instance</code>，两台主机分别作为两个<code>vrrp_instance</code>的 <code>MASTER/BACKUP</code> 。</p>
+<p>例如：第一个<code>vrrp_instance</code>中 <code>server01</code> 作为 <code>MASTER</code>，<code>server02</code> 作为 <code>BACKUP</code>，第二个<code>vrrp_instance</code>中 <code>server01</code> 作为 <code>BACKUP</code>，<code>server02</code> 作为 <code>MASTER</code>.这样正常情况下，两个虚拟IP分别指向 <code>server01</code> 和 <code>server02</code>，达到了负载均衡的目的。当网络出现状况的时候 - 例如 <code>server02</code> 出现故障，<code>server01</code> 就变成了两个 <code>vrrp_instance</code> 的<code>MASTER</code>，接管了所有的网络通讯，从而实现了高可用。具体的配置就不贴了，可以自行阅读参考资料。</p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://www.keepalived.org/index.html">KeepAlived Homepage</a></li>
+<li><a href="https://www.keepalived.org/manpage.html">KeepAlived Documentation</a></li>
+<li><a href="https://www.jianshu.com/p/4b46586e79aa">VRRP原理和分析</a></li>
+<li><a href="https://blog.csdn.net/qq_24336773/article/details/82143367">Keepalived原理</a></li>
+<li><a href="https://www.keepalived.org/doc/index.html">KeepAlived introduction</a></li>
+<li><a href="https://tecadmin.net/setup-ip-failover-on-ubuntu-with-keepalived/">How to Setup IP Failover with KeepAlived on Ubuntu &amp; Debian</a></li>
+<li><a href="https://medium.com/@xmikex83/how-to-setup-an-highly-available-load-balancer-with-keepalived-and-haproxy-on-ubuntu-18-04-8bab7b77f715">How to setup a highly available load balancer with keepalived and HAProxy on Ubuntu 18.04</a></li>
+<li><a href="https://www.cnblogs.com/cynchanpin/p/7010408.html">Linux Virtual Server技术</a></li>
+<li><a href="https://blog.csdn.net/u012599988/article/details/82152224">Nginx+keepalived 高可用双机热备（主从模式/双主模式）</a></li>
+<li><a href="https://www.cnblogs.com/yanjieli/p/10682064.html">Nginx-keepalived+Nginx实现高可用集群</a></li>
+<li><a href="https://blog.csdn.net/l1028386804/article/details/72801492">Keepalived之——Keepalived + Nginx 实现高可用 Web 负载均衡</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Ubuntu" rel="tag" title="Ubuntu">#Ubuntu#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Nginx" rel="tag" title="Nginx">#Nginx#</a>
+    
+    <a href="https://orchidflower.github.io/tags/KeepAlived" rel="tag" title="KeepAlived">#KeepAlived#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8" rel="tag" title="高可用">#高可用#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/08/11/How-to-change-hibernate-mod-for-Mac/" rel="next" title="Mac休眠模式调整">
+        <i class="fa fa-chevron-left"></i> Mac休眠模式调整
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/07/10/How-to-Change-DNS-on-Ubuntu/" rel="prev" title="如何修改Ubuntu服务器上的DNS设置">
+        如何修改Ubuntu服务器上的DNS设置 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-背景">1. 背景</a></li>
+    <li><a href="#2安装keepalived">2.安装KeepAlived</a></li>
+    <li><a href="#3-配置文件">3. 配置文件</a></li>
+    <li><a href="#4-验证">4. 验证</a></li>
+    <li><a href="#5-剩余问题">5. 剩余问题</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

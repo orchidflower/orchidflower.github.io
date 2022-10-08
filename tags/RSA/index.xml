@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RSA on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/RSA/</link>
+    <description>Recent content in RSA on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 26 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/RSA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RSA证书格式</title>
+      <link>https://orchidflower.github.io/2021/11/26/RSA-certificate-format/</link>
+      <pubDate>Fri, 26 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/11/26/RSA-certificate-format/</guid>
+      <description>&lt;h1 id=&#34;1-tldr&#34;&gt;1. TL;DR&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN CERTIFICATE-----&lt;/code&gt; 开头的是证书。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN RSA PRIVATE KEY-----&lt;/code&gt; 开头是遵循的&lt;code&gt;PKCS#1&lt;/code&gt;规范，其内容只是一个RSA私钥。它本质上只是来自PKCS#8的关键对象，但前面没有版本或算法标识符。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN PRIVATE KEY-----&lt;/code&gt; 开头遵循的是&lt;code&gt;PKCS#8&lt;/code&gt;规范，并指示密钥类型包含在密钥数据本身中。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

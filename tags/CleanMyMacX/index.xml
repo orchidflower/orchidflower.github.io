@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CleanMyMacX on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/CleanMyMacX/</link>
+    <description>Recent content in CleanMyMacX on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 27 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/CleanMyMacX/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>禁用CleanMyMacX HealthMonitor</title>
+      <link>https://orchidflower.github.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</link>
+      <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</guid>
+      <description>&lt;p&gt;&lt;code&gt;CleanMyMacX&lt;/code&gt; 是&lt;code&gt;Mac&lt;/code&gt;平台上优秀的卸载工具。虽然&lt;code&gt;Mac&lt;/code&gt;上的应用安装卸载比&lt;code&gt;Windows&lt;/code&gt;上简单很多，&lt;code&gt;AppStore&lt;/code&gt;上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非&lt;code&gt;AppStore&lt;/code&gt;软件在删除对应的app之后不会同时删除对应的数据。 &lt;code&gt;CleanMyMacX&lt;/code&gt; 这种类型的软件会扫描这些相关的数据并一起删除。&lt;/p&gt;
+&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Java/</link>
+    <description>Recent content in Java on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 22 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MySQL如何保存emoji字符</title>
+      <link>https://orchidflower.github.io/2021/07/22/How-Could-MySQL-Save-emoji/</link>
+      <pubDate>Thu, 22 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/07/22/How-Could-MySQL-Save-emoji/</guid>
+      <description>&lt;h1 id=&#34;1-问题&#34;&gt;1. 问题&lt;/h1&gt;
+&lt;h2 id=&#34;11-发现问题&#34;&gt;1.1 发现问题&lt;/h2&gt;
+&lt;p&gt;最近生产环境日志中报了一个异常：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span&gt;2021-07-11 20:54:41.632 ERROR 26289 --- [XNIO-1 task-11] c.e.t.s.t.mp.WxMpMessageRouterService    :
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span&gt;### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span&gt;### The error may exist in com/eveus/tap/account/mapper/AccountMapper.java (best guess)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;&lt;span&gt;### The error may involve com.eveus.tap.account.mapper.AccountMapper.insert-Inline
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;&lt;span&gt;### The error occurred while setting parameters
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;&lt;span&gt;### SQL: INSERT INTO tap_account  ( open_id, avatar, nick_name, country, province, city, gender, secret,         status, IS_DISABLED,     is_subscribe, create_time, update_time )  VALUES
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;&lt;span&gt;  ( ?, ?, ?, ?, ?, ?, ?, ?,         ?, ?,     ?, ?, ? )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;&lt;span&gt;### Cause: java.sql.SQLException: Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;&lt;span&gt;; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1; nested exception is java.sql.SQLException:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span&gt; Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;&lt;span&gt;org.springframework.jdbc.UncategorizedSQLException:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13&lt;/span&gt;&lt;span&gt;### Error updating database.  Cause: java.sql.SQLException: Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14&lt;/span&gt;&lt;span&gt;### The error may exist in com/eveus/tap/account/mapper/AccountMapper.java (best guess)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15&lt;/span&gt;&lt;span&gt;### The error may involve com.eveus.tap.account.mapper.AccountMapper.insert-Inline
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;16&lt;/span&gt;&lt;span&gt;### The error occurred while setting parameters
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;17&lt;/span&gt;&lt;span&gt;### SQL: INSERT INTO tap_account  ( open_id, avatar, nick_name, country, province, city, gender, secret,         status, IS_DISABLED,     is_subscribe, create_time, update_time )  VALUES
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;18&lt;/span&gt;&lt;span&gt;  ( ?, ?, ?, ?, ?, ?, ?, ?,         ?, ?,     ?, ?, ? )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;19&lt;/span&gt;&lt;span&gt;### Cause: java.sql.SQLException: Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;20&lt;/span&gt;&lt;span&gt;; uncategorized SQLException; SQL state [HY000]; error code [1366]; Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1; nested exception is java.sql.SQLException:
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;21&lt;/span&gt;&lt;span&gt; Incorrect string value: &amp;#39;\xF0\x9F\xA6\x84&amp;#39; for column &amp;#39;NICK_NAME&amp;#39; at row 1
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;22&lt;/span&gt;&lt;span&gt;        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:89)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;23&lt;/span&gt;&lt;span&gt;        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;24&lt;/span&gt;&lt;span&gt;        at org.springframework.jdbc.support.AbstractFallbackSQLExceptionTranslator.translate(AbstractFallbackSQLExceptionTranslator.java:81)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;25&lt;/span&gt;&lt;span&gt;        at org.mybatis.spring.MyBatisExceptionTranslator.translateExceptionIfPossible(MyBatisExceptionTranslator.java:88)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;26&lt;/span&gt;&lt;span&gt;        at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:440)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;27&lt;/span&gt;&lt;span&gt;        at com.sun.proxy.$Proxy134.insert(Unknown Source)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;28&lt;/span&gt;&lt;span&gt;        at org.mybatis.spring.SqlSessionTemplate.insert(SqlSessionTemplate.java:271)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;29&lt;/span&gt;&lt;span&gt;        at com.baomidou.mybatisplus.core.override.MybatisMapperMethod.execute(MybatisMapperMethod.java:60)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;30&lt;/span&gt;&lt;span&gt;        at com.baomidou.mybatisplus.core.override.MybatisMapperProxy.invoke(MybatisMapperProxy.java:96)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;31&lt;/span&gt;&lt;span&gt;        at com.sun.proxy.$Proxy186.insert(Unknown Source)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;32&lt;/span&gt;&lt;span&gt;        at com.baomidou.mybatisplus.extension.service.IService.save(IService.java:59)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;33&lt;/span&gt;&lt;span&gt;        at com.eveus.tap.account.service.impl.AccountServiceImpl.addAccount(AccountServiceImpl.java:151)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;34&lt;/span&gt;&lt;span&gt;        at com.eveus.tap.account.service.impl.AccountServiceImpl.ensureLoad(AccountServiceImpl.java:226)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;35&lt;/span&gt;&lt;span&gt;        at com.eveus.tap.account.service.impl.AccountServiceImpl$$FastClassBySpringCGLIB$$34fe95c8.invoke(&amp;lt;generated&amp;gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;36&lt;/span&gt;&lt;span&gt;        at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;37&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:769)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;38&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;39&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;40&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:95)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;41&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;42&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:747)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;43&lt;/span&gt;&lt;span&gt;        at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:689)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;44&lt;/span&gt;&lt;span&gt;        at com.eveus.tap.account.service.impl.AccountServiceImpl$$EnhancerBySpringCGLIB$$cbb1e26b.ensureLoad(&amp;lt;generated&amp;gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;45&lt;/span&gt;&lt;span&gt;        at com.eveus.tap.server.taxer.mp.handler.SubscribeHandler.handle(SubscribeHandler.java:54)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;46&lt;/span&gt;&lt;span&gt;        at me.chanjar.weixin.mp.api.WxMpMessageRouterRule.service(WxMpMessageRouterRule.java:226)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;47&lt;/span&gt;&lt;span&gt;        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:203)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;48&lt;/span&gt;&lt;span&gt;        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:154)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;49&lt;/span&gt;&lt;span&gt;        at me.chanjar.weixin.mp.api.WxMpMessageRouter.route(WxMpMessageRouter.java:233)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;看错误信息是因为 &lt;code&gt;MySQL&lt;/code&gt; 字符编码不正确导致无法保存特殊字符导致的。把字符还原一下，发现 &lt;code&gt;\xF0\x9F\xA6\x84&lt;/code&gt; 代表的字符内容是：🦄，是一个 &lt;code&gt;Emoji&lt;/code&gt; 字符。&lt;/p&gt;
+&lt;p&gt;当使用对 &lt;code&gt;utf8&lt;/code&gt; 编码的时候，和一般汉字占用3个字节不同，&lt;code&gt;Emoji&lt;/code&gt; 字符的编码会比较特殊一点，占用4个字节。而由于历史的原因，&lt;code&gt;MySQL&lt;/code&gt; 使用的 &lt;code&gt;utf8&lt;/code&gt; 编码最长支持3个字节，如果要保存4个字节的 &lt;code&gt;unicode&lt;/code&gt;，则需要使用 &lt;code&gt;utf8mb4&lt;/code&gt; 编码。上述错误应该是因此而出。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MyBatis Plus中主键生成方式ASSIGN_ID的算法分析</title>
+      <link>https://orchidflower.github.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</link>
+      <pubDate>Fri, 02 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/07/02/MyBatis-ASSIGN_ID-Algorithm/</guid>
+      <description>&lt;p&gt;&lt;code&gt;MyBatis Plus&lt;/code&gt; 中提供了 &lt;code&gt;ASSIGN_ID&lt;/code&gt; 这种方式生成主键，使用起来非常方便，只要在&lt;code&gt;PO&lt;/code&gt;上定义一下就可以了，例如：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;Order&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Model&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;Order&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;&lt;span&gt;    &lt;span style=&#34;color:#75af00&#34;&gt;@TableId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;value&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;IdType&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;ASSIGN_ID&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span&gt;    &lt;span style=&#34;color:#00a8c8&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;Long&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;//...
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这样在保存的时候，&lt;code&gt;MyBatis Plus&lt;/code&gt;会负责生成主键值，自动设置到字段&lt;code&gt;id&lt;/code&gt;中。
+一直好奇这个主键是怎么生成的，抽时间查看了一下源码，特意记录一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM</title>
+      <link>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</guid>
+      <description>&lt;p&gt;当一次要导出非常多数据的时候，例如100w条，如果使用&lt;code&gt;MyBatis&lt;/code&gt;将全部结果都查询到&lt;code&gt;list&lt;/code&gt;中，经常会导致内存溢出。这个时候，我们可以使用&lt;code&gt;MyBatis&lt;/code&gt;的&lt;code&gt;ResultHandler&lt;/code&gt;来使用游标方式访问数据，从而避免&lt;code&gt;OOM&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ResultHandler&lt;/code&gt;是MyBatis提供的一个接口，通过该接口可以让&lt;code&gt;MyBatis&lt;/code&gt;以流式的方式处理结果集，而不必等待整个结果集全部准备完毕，在准备好一条记录后就调用该接口中的&lt;code&gt;handleResult&lt;/code&gt;方法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;handleResult&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ResultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;resultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;要使用&lt;code&gt;ResultHandler&lt;/code&gt;需要在&lt;code&gt;Mapper&lt;/code&gt;层声明的时候做一定的处理。这里简单描述一下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用HttpServletRequestWrapper解决无法多次获取request Body的问题</title>
+      <link>https://orchidflower.github.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/04/30/Using-HttpServletRequestWrapper-solve-getInputStream/</guid>
+      <description>&lt;p&gt;在使用AOP编程的时候，经常碰到需要多次获取整个请求的body的情况。例如：典型场景下我们要在AOP切面中做日志记录或权限校验，此时需要调用&lt;code&gt;request.getInputStream&lt;/code&gt;获取输入流，从而读取整个请求的消息体。但是这通常会触发一个异常：&lt;code&gt;java.lang.IllegalStateException: getInputStream() can&#39;t be called after getReader()&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;出现这个问题的原因是默认的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象中的&lt;code&gt;getInputStream&lt;/code&gt;,&lt;code&gt;getReader&lt;/code&gt;函数式只允许调用一次。在一次请求中，除了我们在切面中调用&lt;code&gt;getInputStream&lt;/code&gt;之外，&lt;code&gt;Spring MVC&lt;/code&gt;框架在进行参数转换的时候还需要调用&lt;code&gt;getInputStream&lt;/code&gt;方法读取整个请求的消息体，然后转回为请求参数，这违背了只调用一次的原则，从而触发了以异常，&lt;/p&gt;
+&lt;p&gt;为了解决这个问题，我们可以引入&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;这个对象。这个类封装了&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为，我们可以继承这个类，从而使用一个新类模拟原始&lt;code&gt;HttpServletRequest&lt;/code&gt;的行为。然后使用过滤器（filter）将原始的&lt;code&gt;HttpServletRequest&lt;/code&gt;对象替换为&lt;code&gt;HttpServletRequestWrapper&lt;/code&gt;对象。&lt;/p&gt;
+&lt;p&gt;最近在项目中有需求为API请求增加参数签名校验，使用了AOP切面功能，因此碰到了上面的问题：参数校验切面中需要在读取整个请求报文，然后对报文进行hmac算法从而计算签名值。下面说一下具体的解决办法，以代码为主。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apache HttpClient 使用（上）</title>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual/</guid>
+      <description>&lt;p&gt;HttpClient是Apache Jakarta Common下的子项目，用来提供高效的、最新的、功能丰富的支持HTTP协议的客户端编程工具包，并且它支持HTTP协议最新的版本和建议。HttpClient已经应用在很多的项目中，比如Apache Jakarta上很著名的另外两个开源项目Cactus和HTMLUnit都使用了HttpClient。&lt;/p&gt;
+&lt;p&gt;目前最新的版本是4.5，支持HTTP 1.0/HTTP 1.1协议。正在开发中的5.0版本（还在Beta阶段）支持HTTP/2协议。&lt;/p&gt;
+&lt;h1 id=&#34;1-特性&#34;&gt;1. 特性&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;基于标准、纯净的java语言。实现了Http1.0和Http1.1&lt;/li&gt;
+&lt;li&gt;以可扩展的面向对象的结构实现了Http全部的方法（GET, POST, PUT, DELETE, HEAD, OPTIONS, and TRACE）。&lt;/li&gt;
+&lt;li&gt;支持HTTPS协议。&lt;/li&gt;
+&lt;li&gt;通过Http代理建立透明的连接。&lt;/li&gt;
+&lt;li&gt;利用CONNECT方法通过Http代理建立隧道的https连接。&lt;/li&gt;
+&lt;li&gt;Basic, Digest, NTLMv1, NTLMv2, NTLM2 Session, SNPNEGO/Kerberos认证方案。&lt;/li&gt;
+&lt;li&gt;插件式的自定义认证方案。&lt;/li&gt;
+&lt;li&gt;便携可靠的套接字工厂使它更容易的使用第三方解决方案。&lt;/li&gt;
+&lt;li&gt;连接管理器支持多线程应用。支持设置最大连接数，同时支持设置每个主机的最大连接数，发现并关闭过期的连接。&lt;/li&gt;
+&lt;li&gt;自动处理Set-Cookie中的Cookie。&lt;/li&gt;
+&lt;li&gt;插件式的自定义Cookie策略。&lt;/li&gt;
+&lt;li&gt;Request的输出流可以避免流中内容直接缓冲到socket服务器。&lt;/li&gt;
+&lt;li&gt;Response的输入流可以有效的从socket服务器直接读取相应内容。&lt;/li&gt;
+&lt;li&gt;在http1.0和http1.1中利用KeepAlive保持持久连接。&lt;/li&gt;
+&lt;li&gt;直接获取服务器发送的response code和 headers。&lt;/li&gt;
+&lt;li&gt;设置连接超时的能力。&lt;/li&gt;
+&lt;li&gt;实验性的支持http1.1 response caching。&lt;/li&gt;
+&lt;li&gt;源代码基于Apache License 可免费获取。&lt;/li&gt;
+&lt;/ol&gt;</description>
+    </item>
+    
+    <item>
+      <title>Apache HttpClient 使用（下）</title>
+      <link>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</link>
+      <pubDate>Mon, 23 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/04/23/Apache-HttpClient-Manual-Part2/</guid>
+      <description>&lt;h1 id=&#34;4-链接池&#34;&gt;4. 链接池&lt;/h1&gt;
+&lt;p&gt;通常我们可以使用&lt;code&gt;PoolingHttpClientConnectionManager&lt;/code&gt;来创建一个链接池。&lt;/p&gt;
+&lt;h2 id=&#34;41-对于链接池的管理&#34;&gt;4.1 对于链接池的管理&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span&gt;PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span&gt;// 设置最大连接数  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span&gt;cm.setMaxTotal(200);  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;&lt;span&gt;// 设置每个主机地址的并发数  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;&lt;span&gt;cm.setDefaultMaxPerRoute(20);  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;&lt;span&gt;// 通过PoolingHttpClientConnectionManager，来获取CloseableHttpClient  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;&lt;span&gt;CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm).build();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;&lt;span&gt;// 创建http GET请求  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span&gt;HttpGet httpGet = new HttpGet(&amp;#34;http://www.baidu.com/&amp;#34;);    
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;&lt;span&gt;// 执行请求  
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12&lt;/span&gt;&lt;span&gt;response = httpClient.execute(httpGet);    
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>Spring应用因Session Timeout设置引起的GC问题</title>
+      <link>https://orchidflower.github.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</link>
+      <pubDate>Tue, 29 Aug 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/</guid>
+      <description>&lt;p&gt;最近在客户的要求下，对系统进行了压测。自己压测的时候一切指标都挺正常。但是客户却反馈说压测的时候有时候会碰到性能衰减很厉害，不稳定。于是有了下面这次的排查过程。客户反馈说问题是发生在多次连续压测之后碰到的，所以进行了一系列的测试。&lt;/p&gt;
+&lt;p&gt;先说一下测试环境的一些信息：测试主机是阿里云的ECS，配置是2C + 16G。为了方便，数据库采用的是Docker搭建的，版本是5.6.X。另外，这台机器上还安装了Zookeeper 3.4.X 和Kafka 1.0。系统本身是一个标准的Spring + CXF的应用，提供给客户使用的服务是标准的Restful接口。&lt;/p&gt;
+&lt;h1 id=&#34;1-重现问题&#34;&gt;1. 重现问题&lt;/h1&gt;
+&lt;p&gt;因为客户反馈是多次压测之后碰到的，因此首先尝试连续压测多次看看能不能重现问题。为了可能存在的数据库性能问题，临时申请了RDS作为数据库；另外为了尽快发现问题，将程序占用内存缩小到1G。这次测试测出了客户所说的问题，通过jconsole监控也发现了问题原因，应该是因为GC导致的。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/15035654400984.jpg&#34; alt=&#34;&#34;&gt;
+看图表可以发现，压测5~6分钟之后，Java的GC占用了大量的CPU时间（左上图中的蓝色线），而且内存占用一直居高不下（右上图）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kafka介绍与使用</title>
+      <link>https://orchidflower.github.io/2017/06/25/How-to-use-Kafka/</link>
+      <pubDate>Sun, 25 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/25/How-to-use-Kafka/</guid>
+      <description>&lt;p&gt;Apache Kafka是分布式发布-订阅消息系统。它最初由LinkedIn公司开发，之后成为Apache项目的一部分。Kafka是一种快速、可扩展的、设计内在就是分布式的，分区的和可复制的提交日志服务。
+Apache Kafka与传统消息系统相比，有以下不同：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;它被设计为一个分布式系统，易于向外扩展；&lt;/li&gt;
+&lt;li&gt;它同时为发布和订阅提供高吞吐量；&lt;/li&gt;
+&lt;li&gt;它支持多订阅者，当失败时能自动平衡消费者；&lt;/li&gt;
+&lt;li&gt;它将消息持久化到磁盘，因此可用于批量消费，例如ETL，以及实时应用程序。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>DelegatingFilterProxy源码分析</title>
+      <link>https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</link>
+      <pubDate>Fri, 02 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-name&amp;gt;&lt;/span&gt;springSecurityFilterChain&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;3&lt;/span&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-class&amp;gt;&lt;/span&gt;org.springframework.web.filter.DelegatingFilterProxy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-class&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;4&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;5&lt;/span&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;6&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-mapping&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;7&lt;/span&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;filter-name&amp;gt;&lt;/span&gt;springSecurityFilterChain&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-name&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;8&lt;/span&gt;&lt;span&gt;	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;url-pattern&amp;gt;&lt;/span&gt;/documentation/*&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;9&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/filter-mapping&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;用过Spring Security的人都会熟悉以上代码，一般教程上都会说明，使用Spring Security就需要在web.xml中指定以上代码。从这个配置中，可能会给我们造成一个错觉，以为DelegatingFilterProxy类就是springSecurity的入口，但其实这个类位于spring-web这个jar下面，说明这个类本身是和springSecurity无关。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在Tomcat中使用ThreadLocal以及Session</title>
+      <link>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</link>
+      <pubDate>Thu, 04 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/05/04/ThreadLocal-and-Session-in-Tomcat/</guid>
+      <description>&lt;p&gt;最近运营同事在管理平台（生产环境）上碰到一个问题：登录之后会莫名其妙地变成未登录状态，被踢回登录页面。&lt;/p&gt;
+&lt;p&gt;管理平台使用的Spring MVC框架实现的后台接口，React实现的前台页面。之前引入React的时候已经做过前后端分离。但是当时考虑到技术栈的原因，没有对登录体系进行彻底改造，没有引入AccessToken来维护登录状态，依然保留了Java的Session机制。考虑到管理平台属于内部使用，访问量不大，因此直接在Nginx层使用iphash进行了Session粘滞，确保同一个用户的请求总是被同一个的后台Tomcat处理，这样就可以使用传统的session机制保持用户登录状态。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Java SSL握手记录分析</title>
+      <link>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</link>
+      <pubDate>Fri, 28 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</guid>
+      <description>&lt;p&gt;公司项目当中经常使用CXF库连接WebService服务，而且我们自己提供的服务也是基于CXF的SOAP服务，经常需要指导客户怎么连接我们的服务。CXF库整个体系架构比较庞大，相关的类、知识点都比较多。尤其是连接SSL双向认证服务的时候，经常碰到问题。&lt;/p&gt;
+&lt;p&gt;使用双向SSL认证的时候，在Spring中配置起来非常简单，但是一旦出错就比较难找问题。经过多次尝试，最后发现还是分析SSL握手记录比较靠谱，比较容易找出真正的问题所在。特此记录一下自己的一些心得，以作备忘并希望能够帮到其他人。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

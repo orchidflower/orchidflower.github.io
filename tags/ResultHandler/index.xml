@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ResultHandler on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/ResultHandler/</link>
+    <description>Recent content in ResultHandler on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 04 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/ResultHandler/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM</title>
+      <link>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</link>
+      <pubDate>Fri, 04 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/</guid>
+      <description>&lt;p&gt;当一次要导出非常多数据的时候，例如100w条，如果使用&lt;code&gt;MyBatis&lt;/code&gt;将全部结果都查询到&lt;code&gt;list&lt;/code&gt;中，经常会导致内存溢出。这个时候，我们可以使用&lt;code&gt;MyBatis&lt;/code&gt;的&lt;code&gt;ResultHandler&lt;/code&gt;来使用游标方式访问数据，从而避免&lt;code&gt;OOM&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ResultHandler&lt;/code&gt;是MyBatis提供的一个接口，通过该接口可以让&lt;code&gt;MyBatis&lt;/code&gt;以流式的方式处理结果集，而不必等待整个结果集全部准备完毕，在准备好一条记录后就调用该接口中的&lt;code&gt;handleResult&lt;/code&gt;方法：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#00a8c8&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#75af00&#34;&gt;handleResult&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;ResultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;?&lt;/span&gt; &lt;span style=&#34;color:#00a8c8&#34;&gt;extends&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;T&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#111&#34;&gt;resultContext&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;要使用&lt;code&gt;ResultHandler&lt;/code&gt;需要在&lt;code&gt;Mapper&lt;/code&gt;层声明的时候做一定的处理。这里简单描述一下。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

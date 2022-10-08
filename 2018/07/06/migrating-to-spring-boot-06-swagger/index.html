@@ -1,0 +1,667 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>迁移到SpringBoot 06 - Swagger - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="迁移到SpringBoot 06 - Swagger">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="迁移到SpringBoot 06 - Swagger - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2018/07/06/migrating-to-spring-boot-06-swagger/" itemprop="url">
+        迁移到SpringBoot 06 - Swagger
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-07-06">
+    2018-07-06
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">3559 字 ~8分钟</span>
+</span>
+      <span id="/2018/07/06/migrating-to-spring-boot-06-swagger/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 06 - Swagger">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>随着技术的发展，现在的Web系统架构基本都由原来的后端渲染（例如JSP），变成了：前端渲染、前后端分离的形态。前端和后端的唯一联系，变成了API接口。API文档变成了前后端开发人员联系的纽带，变得越来越重要，swagger就是一款让你更好的书写API文档的框架。没有API文档工具之前，大家都是手写API文档的，在什么地方书写的都有，有在Wiki上写的，有在Word里面写的，也有在对应的项目目录下readme.md上写的，每个公司都有每个公司的玩法，无所谓好坏。另外还有专门针对API文档开发的应用，例如showdoc之类的。</p>
+<p>书写API文档的工具有很多，但是能称之为“框架”的，估计也只有swagger了。使用Swagger有个好处就是文档与代码结合紧密，更新代码的同时也会更新文档，不用担心同步的问题。而且在Java中使用Swagger也比较方便。</p>
+<p>云认证平台提供的Restful接口是基于CXF实现的。网上现有的关于Swagger的文档多数是基于Spring MVC的，并不适用于CXF。下面我将针对CXF+SpringBoot的组合如何使用Swagger进行介绍。</p>
+<h1 id="1-集成方法">1. 集成方法</h1>
+<p>分成后端、前端两部分来介绍。Swagger框架包含前端和后端两部分。前端指的是Swagger中的网页和JS部分，它从后台获取一个json或yaml文件，文件中有接口相关的定义信息；后端则负责扫描代码，根据注解相关信息生成对应的json或yaml文件。</p>
+<h2 id="11-后端">1.1 后端</h2>
+<p>后端指的是如何扫描代码中的swagger标记，生成对应的json格式元数据。这部分使用了CXF库的swagger2Feature这个特性。具体可以参考CXF库的帮助页面。
+其原理是开启Swagger2Feature，由CXF库生成这个json元数据。方法就是<code>JAXRSServerFactoryBean</code>调用setFeatures方法，添加一个Swagger2Feature对象。代码如下（@Configuration类）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75af00">@Bean</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#00a8c8">public</span> <span style="color:#111">ServletRegistrationBean</span> <span style="color:#75af00">cxfServlet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#00a8c8">final</span> <span style="color:#111">ServletRegistrationBean</span> <span style="color:#111">servletRegistrationBean</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ServletRegistrationBean</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">CXFServlet</span><span style="color:#f92672">(),</span> <span style="color:#d88200">&#34;/api/*&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#111">servletRegistrationBean</span><span style="color:#f92672">.</span><span style="color:#75af00">setLoadOnStartup</span><span style="color:#f92672">(</span><span style="color:#111">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#00a8c8">return</span> <span style="color:#111">servletRegistrationBean</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;shutdown&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#00a8c8">public</span> <span style="color:#111">SpringBus</span> <span style="color:#75af00">cxf</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#00a8c8">return</span> <span style="color:#00a8c8">new</span> <span style="color:#111">SpringBus</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#75715e">// 新增代码：定义一个SwaggerFeature
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#75715e"></span><span style="color:#00a8c8">public</span> <span style="color:#111">Swagger2Feature</span> <span style="color:#75af00">createSwaggerFeature</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#111">Swagger2Feature</span> <span style="color:#111">swagger2Feature</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Swagger2Feature</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setPrettyPrint</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setTitle</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;UID API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setContact</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;limin.zhang&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setDescription</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;UID &amp; Admin &amp; CAP API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;1.0.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setBasePath</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>    <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;com.eveus.cloudauth.api&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    <span style="color:#00a8c8">return</span> <span style="color:#111">swagger2Feature</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;destroy&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span><span style="color:#75af00">@DependsOn</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;cxf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span><span style="color:#00a8c8">public</span> <span style="color:#111">Server</span> <span style="color:#75af00">jaxRsServer</span><span style="color:#f92672">()</span> <span style="color:#00a8c8">throws</span> <span style="color:#111">Exception</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>    <span style="color:#111">JAXRSServerFactoryBean</span> <span style="color:#111">factory</span>  <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">JAXRSServerFactoryBean</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setAddress</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setServiceBeans</span><span style="color:#f92672">(</span><span style="color:#111">Arrays</span><span style="color:#f92672">.</span><span style="color:#75af00">asList</span><span style="color:#f92672">(</span><span style="color:#111">uidApiController</span><span style="color:#f92672">,</span> <span style="color:#111">userIdentityApiService</span><span style="color:#f92672">,</span> <span style="color:#111">uidAdminApiService</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    <span style="color:#111">ArrayList</span> <span style="color:#111">providers</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>    <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">corsFilter</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>    <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">fastJsonProvider</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>    <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setProviders</span><span style="color:#f92672">(</span><span style="color:#111">providers</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>    <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setFeatures</span><span style="color:#f92672">(</span><span style="color:#111">Arrays</span><span style="color:#f92672">.</span><span style="color:#75af00">asList</span><span style="color:#f92672">(</span><span style="color:#111">createSwaggerFeature</span><span style="color:#f92672">()));</span> <span style="color:#75715e">// 注入SwaggerFeature
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">return</span> <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>以上功能需要一个库支持，需要添加到pom.xml中：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#f92672">&lt;groupId&gt;</span>io.swagger<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>swagger-jaxrs<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#f92672">&lt;version&gt;</span>1.5.7<span style="color:#f92672">&lt;/version&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><h2 id="12-前端">1.2 前端</h2>
+<p>前端依然使用<code>springfox-swagger-ui</code>。但是单纯的<code>springfox-swagger-ui</code>这个库只是一个前端文件包。其要工作，还需要后台接口配合（从中获取接口定义json文件）：</p>
+<ul>
+<li>/swagger-resources/configuration/security     Configuring swagger-ui security</li>
+<li>/swagger-resources/configuration/ui           Configuring swagger-ui options
+这些接口依赖于springfox其他库。</li>
+</ul>
+<p>因此最终的项目依赖情况如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#75715e">&lt;!-- Springfox Swagger --&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger2<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#f92672">&lt;dependency&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>    <span style="color:#f92672">&lt;groupId&gt;</span>io.springfox<span style="color:#f92672">&lt;/groupId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>    <span style="color:#f92672">&lt;artifactId&gt;</span>springfox-swagger-ui<span style="color:#f92672">&lt;/artifactId&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#f92672">&lt;/dependency&gt;</span>
+</span></span></code></pre></div><p>基本上配置完这些依赖项之后，Swagger就可以工作了。这里不需要再像Spring MVC使用Swagger一样，定义接口之类的。因为Swagger定义文件已经通过Swagger2Feature生成了。</p>
+<p>最后一个问题是json文件的路径问题：springfox-swagger-ui默认访问的后台json地址是 <code>/v2/api-docs</code>，使用swagger2Feature生成的地址为<code>/api/swagger.json</code>（该地址基于CXF监听的地址，上面配置的监听地址是<code>/api/*</code>）。这个路径可以通过 <code>springfox.documentation.swagger.v2.path</code>参数进行配置。例如可以按照下面的方法修改成swagger2Feature生成的地址：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">springfox.documentation.swagger.v2.path</span><span style="color:#111">:</span> <span style="color:#ae81ff">/api/swagger.json</span>
+</span></span></code></pre></div><p>至此可以工作了。访问：<code>http://localhost:8080/swagger-ui.html</code>即可打开swagger文档。</p>
+<h1 id="2-多个jaxrsserverfactorybean">2. 多个JAXRSServerFactoryBean</h1>
+<h2 id="21-更多思考">2.1 更多思考</h2>
+<p>首先总结一下CXF发布Restful接口的流程：
+要使用CXF发布Restful接口，在SpringBoot中首先要定义<code>CXFServlet</code>，这是一个标准的Servlet，一般通过定义：<code>ServletRegistrationBean</code>实现。这一步和之前在Spring中<code>web.xml</code>中的如下配置是一样的：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>	<span style="color:#f92672">&lt;servlet&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>		<span style="color:#f92672">&lt;servlet-name&gt;</span>CXFService<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>		<span style="color:#f92672">&lt;servlet-class&gt;</span>org.apache.cxf.transport.servlet.CXFServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	<span style="color:#f92672">&lt;/servlet&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	<span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>		<span style="color:#f92672">&lt;servlet-name&gt;</span>CXFService<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>		<span style="color:#f92672">&lt;url-pattern&gt;</span>/api/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>	<span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
+</span></span></code></pre></div><p>然后定义一个或多个<code>JAXRSServerFactoryBean</code>，它会创建JaxRsServer，以发布Restful接口。这和如下的xml配置功能类似：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#f92672">&lt;jaxrs:server</span> <span style="color:#75af00">id=</span><span style="color:#d88200">&#34;didApiServiceJsonServer&#34;</span> <span style="color:#75af00">address=</span><span style="color:#d88200">&#34;/rest&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#f92672">&lt;jaxrs:serviceBeans&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>       <span style="color:#f92672">&lt;ref</span> <span style="color:#75af00">bean=</span><span style="color:#d88200">&#34;uidApiService&#34;</span> <span style="color:#f92672">/&gt;</span>            
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#f92672">&lt;/jaxrs:serviceBeans&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="color:#f92672">&lt;jaxrs:providers&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>        <span style="color:#f92672">&lt;ref</span> <span style="color:#75af00">bean=</span><span style="color:#d88200">&#34;jsonProvider&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>        <span style="color:#f92672">&lt;ref</span> <span style="color:#75af00">bean=</span><span style="color:#d88200">&#34;jsonExceptionMapper&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>    <span style="color:#f92672">&lt;/jaxrs:providers&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#f92672">&lt;/jaxrs:server&gt;</span>
+</span></span></code></pre></div><h2 id="22-剩余问题">2.2 剩余问题</h2>
+<p>最初寻找用于CXF的Swagger方案的时候，一直无法解决的一个问题是多个<code>JAXRSServerFactoryBean</code>存在的时候如何管理管理API文档。上面的解决方案有投机取巧的地方：将所有需要发布的内容整合到一个JAXRSServerFactoryBean，通过一个JAXRSServerFactoryBean进行发布，这样就可以只生成一个json文件包含所有接口定义了。</p>
+<p>但是这个方案是有缺陷的：</p>
+<p>首先上述改造方案有个问题就是 <code>/api/</code>这个路径无法查看到CXF已经发布的api列表，会报错。按照传统的Spring中CXF的配置方法，<code>/api/*</code>这个地址是由CXFServlet监听的，这个Servlet可以列出所有使用CXF发布的接口列表，包括SOAP和Restful两种类型的API。但是使用前面的简化配置方案后，将JaxRSServer发布在<code>/api/</code>上。导致不是CXF本身拦截这个路径，而是 <code>JaxRsServer</code>拦截了。所以还是要改成每个Bean单独发布到不同的路径上，例如：<code>/api/rest</code>, <code>/api/admin</code>, <code>/api/v1</code>。</p>
+<p>尝试着创建三个SwaggerFeature，配置到三个<code>JAXRSServerFactoryBean</code>中，却发现生成的三个json文件内容是相同的，都对应最后一个设置的<code>JAXRSServerFactoryBean</code>对应的接口定义。经过查找，原来是因为CXF的Swagger2Feature缓存特性导致的。具体看附录中的链接。</p>
+<blockquote>
+<p>Right, those two approaches are very similar. The &lsquo;basePath&rsquo;-based one does implicit Swagger IDs manipulation (scanner / config / &hellip;) by making base path a part of identifier (it triggers when <code>usePathBasedConfig</code> is set). So I think in this regards, we could make this property true by default and cover quite a large number of collisions (there is no need to set Swagger IDs). However, if I understand Łukasz Dywicki correctly, Swagger caching mechanism causing the issues when endpoints are loaded / unloaded dynamically (like in OSGi), in this case Swagger still exposes the API specs even if there are no running endpoints, the fix for this ticket does not address the issue yet but Łukasz Dywicki has a PR.</p>
+</blockquote>
+<p>也就是说说，如果没有配置<code>usePathBasedConfig</code>参数，会以最后basePath为基准检查是否已经生成过，如果生成过则不再重新生成，直接采用缓存。解决办法是使用usePathBasedConfig这个参数，禁用这种错误的缓存策略。</p>
+<h2 id="23-最终修改方案">2.3 最终修改方案</h2>
+<h3 id="231-apiconfig">2.3.1 ApiConfig</h3>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>    <span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;shutdown&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">SpringBus</span> <span style="color:#75af00">cxf</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#00a8c8">new</span> <span style="color:#111">SpringBus</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#75715e">// 创建SwaggerFeature，指定usePathBasedConfig为true
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Swagger2Feature</span> <span style="color:#75af00">createCapSwaggerFeature</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#111">Swagger2Feature</span> <span style="color:#111">swagger2Feature</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Swagger2Feature</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setPrettyPrint</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setTitle</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;CAP API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setContact</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;limin.zhang&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setDescription</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;CAP API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;1.0.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setBasePath</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        <span style="color:#75715e">// 关键代码：否则swagger2Feature会缓存，不认为这是创建了三个不同的对象
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#75715e"></span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setUsePathBasedConfig</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>  <span style="color:#75715e">// 设置usePathBasedConfig参数
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#75715e"></span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;com.eveus.cloudauth.api.cap&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">swagger2Feature</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Swagger2Feature</span> <span style="color:#75af00">createUidSwaggerFeature</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>        <span style="color:#111">Swagger2Feature</span> <span style="color:#111">swagger2Feature</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Swagger2Feature</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setPrettyPrint</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setTitle</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;UID API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setContact</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;limin.zhang&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setDescription</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;UID API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;1.0.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setBasePath</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setUsePathBasedConfig</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 设置usePathBasedConfig参数
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#75715e"></span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;com.eveus.cloudauth.api.uid&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">swagger2Feature</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Swagger2Feature</span> <span style="color:#75af00">createAdminSwaggerFeature</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>        <span style="color:#111">Swagger2Feature</span> <span style="color:#111">swagger2Feature</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Swagger2Feature</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setPrettyPrint</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setTitle</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Admin API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setContact</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;limin.zhang&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setDescription</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Admin API&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;1.0.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setBasePath</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setUsePathBasedConfig</span><span style="color:#f92672">(</span><span style="color:#00a8c8">true</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 设置usePathBasedConfig参数
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span><span style="color:#75715e"></span>        <span style="color:#111">swagger2Feature</span><span style="color:#f92672">.</span><span style="color:#75af00">setResourcePackage</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;com.eveus.cloudauth.api.admin&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">swagger2Feature</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>    <span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;destroy&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>    <span style="color:#75af00">@DependsOn</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;cxf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Server</span> <span style="color:#75af00">capApiJaxRsServer</span><span style="color:#f92672">()</span> <span style="color:#00a8c8">throws</span> <span style="color:#111">Exception</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>        <span style="color:#111">JAXRSServerFactoryBean</span> <span style="color:#111">factory</span>  <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">JAXRSServerFactoryBean</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setAddress</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/v1&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setServiceBean</span><span style="color:#f92672">(</span><span style="color:#111">uidApiController</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>        <span style="color:#111">ArrayList</span> <span style="color:#111">providers</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">corsFilter</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">fastJsonProvider</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setProviders</span><span style="color:#f92672">(</span><span style="color:#111">providers</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setFeatures</span><span style="color:#f92672">(</span><span style="color:#111">Arrays</span><span style="color:#f92672">.</span><span style="color:#75af00">asList</span><span style="color:#f92672">(</span><span style="color:#111">createUidSwaggerFeature</span><span style="color:#f92672">()));</span>  <span style="color:#75715e">// 指定一个SwaggerFeature
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span><span style="color:#75715e"></span>        <span style="color:#00a8c8">return</span> <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span>    <span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;destroy&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span>    <span style="color:#75af00">@DependsOn</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;cxf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Server</span> <span style="color:#75af00">uidApiJaxRsServer</span><span style="color:#f92672">()</span> <span style="color:#00a8c8">throws</span> <span style="color:#111">Exception</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span><span>        <span style="color:#111">JAXRSServerFactoryBean</span> <span style="color:#111">factory</span>  <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">JAXRSServerFactoryBean</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setAddress</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/rest&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setServiceBean</span><span style="color:#f92672">(</span><span style="color:#111">userIdentityApiService</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69</span><span>        <span style="color:#111">ArrayList</span> <span style="color:#111">providers</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">corsFilter</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">fastJsonProvider</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setProviders</span><span style="color:#f92672">(</span><span style="color:#111">providers</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setFeatures</span><span style="color:#f92672">(</span><span style="color:#111">Arrays</span><span style="color:#f92672">.</span><span style="color:#75af00">asList</span><span style="color:#f92672">(</span><span style="color:#111">createUidSwaggerFeature</span><span style="color:#f92672">()));</span>  <span style="color:#75715e">// 指定一个SwaggerFeature
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74</span><span><span style="color:#75715e"></span>        <span style="color:#00a8c8">return</span> <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75</span><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77</span><span>    <span style="color:#75af00">@Bean</span><span style="color:#f92672">(</span><span style="color:#111">destroyMethod</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;destroy&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78</span><span>    <span style="color:#75af00">@DependsOn</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;cxf&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">Server</span> <span style="color:#75af00">adminApiJaxRsServer</span><span style="color:#f92672">()</span> <span style="color:#00a8c8">throws</span> <span style="color:#111">Exception</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80</span><span>        <span style="color:#111">JAXRSServerFactoryBean</span> <span style="color:#111">factory</span>  <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">JAXRSServerFactoryBean</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setAddress</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/admin&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setServiceBean</span><span style="color:#f92672">(</span><span style="color:#111">uidAdminApiService</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83</span><span>        <span style="color:#111">ArrayList</span> <span style="color:#111">providers</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">corsFilter</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85</span><span>        <span style="color:#111">providers</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">fastJsonProvider</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setProviders</span><span style="color:#f92672">(</span><span style="color:#111">providers</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87</span><span>        <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">setFeatures</span><span style="color:#f92672">(</span><span style="color:#111">Arrays</span><span style="color:#f92672">.</span><span style="color:#75af00">asList</span><span style="color:#f92672">(</span><span style="color:#111">createAdminSwaggerFeature</span><span style="color:#f92672">()));</span>  <span style="color:#75715e">// 指定一个SwaggerFeature
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88</span><span><span style="color:#75715e"></span>        <span style="color:#00a8c8">return</span> <span style="color:#111">factory</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89</span><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="232-swaggerconfig">2.3.2 SwaggerConfig</h3>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>    <span style="color:#75af00">@Primary</span>    <span style="color:#75715e">// 关键，否则报错
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#75715e"></span>    <span style="color:#75af00">@Bean</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">SwaggerResourcesProvider</span> <span style="color:#75af00">swaggerResourcesProvider</span><span style="color:#f92672">(</span><span style="color:#111">InMemorySwaggerResourcesProvider</span> <span style="color:#111">defaultResourcesProvider</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#00a8c8">return</span> <span style="color:#f92672">()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>            <span style="color:#75715e">// 定义不同的API文档及路径
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"></span>            <span style="color:#111">SwaggerResource</span> <span style="color:#111">uidResource</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">SwaggerResource</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>            <span style="color:#111">uidResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setName</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;UID Apis&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>            <span style="color:#111">uidResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setSwaggerVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;2.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            <span style="color:#111">uidResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setLocation</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api/rest/swagger.json&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            <span style="color:#111">SwaggerResource</span> <span style="color:#111">adminResource</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">SwaggerResource</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>            <span style="color:#111">adminResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setName</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Admin Apis&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>            <span style="color:#111">adminResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setSwaggerVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;2.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>            <span style="color:#111">adminResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setLocation</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api/admin/swagger.json&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>            <span style="color:#111">SwaggerResource</span> <span style="color:#111">capResource</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">SwaggerResource</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>            <span style="color:#111">capResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setName</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;CAP Apis&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>            <span style="color:#111">capResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setSwaggerVersion</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;2.0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>            <span style="color:#111">capResource</span><span style="color:#f92672">.</span><span style="color:#75af00">setLocation</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/api/v1/swagger.json&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>            <span style="color:#75715e">// 返回一个List
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#75715e"></span>            <span style="color:#111">List</span><span style="color:#f92672">&lt;</span><span style="color:#111">SwaggerResource</span><span style="color:#f92672">&gt;</span> <span style="color:#111">resources</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>            <span style="color:#111">resources</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">uidResource</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>            <span style="color:#111">resources</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">adminResource</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>            <span style="color:#111">resources</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">capResource</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>            <span style="color:#00a8c8">return</span> <span style="color:#111">resources</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>        <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>因为现在生成了多个接口定义json文件，通过<code>springfox.documentation.swagger.v2.path</code>参数无法配置多个路径让swagger-ui感知。这时就需要定义<code>SwaggerResourcesProvider</code>这个Bean，<code>springfox-swagger-ui</code>这个库中的js封装了对上述配置的逻辑，会自动获取多个接口定义。</p>
+<p>至此，基于SpringBoot+CXF的Swagger使用方案完美了。</p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="http://cxf.apache.org/docs/swaggerfeature-swagger2feature.html">SwaggerFeature / Swagger2Feature</a></li>
+<li><a href="https://github.com/springfox/springfox/issues/645">Question: what&rsquo;s the preferred way to override the v2 path?</a></li>
+<li><a href="https://github.com/apache/cxf/blob/master/distribution/src/main/release/samples/jax_rs/spring_boot/src/main/java/sample/rs/service/SampleRestApplication.java">Springboot CXF Swagger example</a></li>
+<li><a href="http://springfox.github.io/springfox/docs/current/#introduction">Springfox documentation</a></li>
+<li><a href="https://github.com/springfox/springfox/issues/1954">Multiple swagger JSON&rsquo;s in swagger-ui.html</a></li>
+<li><a href="https://issues.apache.org/jira/browse/CXF-6740">Collision by Swagger2Feature in two OSGI bundles</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Spring" rel="tag" title="Spring">#Spring#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Springboot" rel="tag" title="Springboot">#Springboot#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/" rel="next" title="迁移到SpringBoot 07 - Redis发布订阅机制">
+        <i class="fa fa-chevron-left"></i> 迁移到SpringBoot 07 - Redis发布订阅机制
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2018/06/22/Handling-Bigint-using-Jackson-in-Springboot/" rel="prev" title="SpringBoot中使用Jackson导致Long型数据精度丢失问题">
+        SpringBoot中使用Jackson导致Long型数据精度丢失问题 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-集成方法">1. 集成方法</a>
+      <ul>
+        <li><a href="#11-后端">1.1 后端</a></li>
+        <li><a href="#12-前端">1.2 前端</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-多个jaxrsserverfactorybean">2. 多个JAXRSServerFactoryBean</a>
+      <ul>
+        <li><a href="#21-更多思考">2.1 更多思考</a></li>
+        <li><a href="#22-剩余问题">2.2 剩余问题</a></li>
+        <li><a href="#23-最终修改方案">2.3 最终修改方案</a>
+          <ul>
+            <li><a href="#231-apiconfig">2.3.1 ApiConfig</a></li>
+            <li><a href="#232-swaggerconfig">2.3.2 SwaggerConfig</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vue on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Vue/</link>
+    <description>Recent content in Vue on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 24 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Vue/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vue进行条件编译发布</title>
+      <link>https://orchidflower.github.io/2021/09/24/Vue-compile-on-condition/</link>
+      <pubDate>Fri, 24 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/09/24/Vue-compile-on-condition/</guid>
+      <description>&lt;p&gt;最近碰到一个问题：公司新申请了一个公众号，这个新公众号的功能与之前一个公众号功能基本一致，只是两个公众号的用户协议有些区别，所以就会公用一份代码。现在需要解决发布的问题，需要确保发布到两个不同公众号的页面是正确的，不同公众号的用户看到正确的用户协议。&lt;/p&gt;
+&lt;p&gt;经过上网查找方案，发现 &lt;code&gt;Vue&lt;/code&gt; 脚手架中提供的 &lt;code&gt;vue-cli-service&lt;/code&gt; 内置了类似的功能，可以用来实现类似功能，这里简单说一下其涉及到的改动要点，更多细节可以参考&lt;code&gt;vue-cli&lt;/code&gt;的文档&lt;a href=&#34;https://cli.vuejs.org/zh/guide/mode-and-env.html&#34;&gt;模式和环境变量&lt;/a&gt;。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

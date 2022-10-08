@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>高可用 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
+    <description>Recent content in 高可用 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 20 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用KeepAlived配置Nginx高可用</title>
+      <link>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</link>
+      <pubDate>Mon, 20 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/07/20/Use-keepalived-for-high-availability-support-for-nginx/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;最近为一个传统行业的客户开发了一个生产调度系统。但是他的生产环境是自己搭建的，不是购买的云服务，因此碰到了一些问题。&lt;/p&gt;
+&lt;p&gt;客户购买了多台高性能的物理机，在上面自行搭建虚拟机。但是只有虚拟机，没有提供类似负载均衡、数据库等基础服务。为了解决负载均衡问题，我们自行安装了 &lt;code&gt;Nginx&lt;/code&gt; 。为了保证系统健壮和性能，安装 &lt;code&gt;Nginx&lt;/code&gt; 的两台虚拟机（Ubuntu 18.04.3 LTS，172.16.45.22，172.16.45.26）分别部署在两台不同的物理机上（172.16.45.11， 172.168.45.12）。然后 &lt;code&gt;DNS&lt;/code&gt; 解析到两台 &lt;code&gt;Nginx&lt;/code&gt; 主机上。&lt;/p&gt;
+&lt;p&gt;现在的问题是：客户的要求是任何一台物理机出现问题都要能够保证系统可用，验证的方式是测试的时候会直接断开物理机的网线，这将导致通过 &lt;code&gt;DNS&lt;/code&gt; 解析出来的 &lt;code&gt;Nginx&lt;/code&gt; 主机必然有一台是无法使用的。访问显然会出问题。&lt;/p&gt;
+&lt;p&gt;经过考虑，最后选定解决办法是：使用 &lt;code&gt;KeepAlived&lt;/code&gt; 做高可用，两台 &lt;code&gt;Nginx&lt;/code&gt; 共同维护一个虚拟IP（172.16.45.50），&lt;code&gt;DNS&lt;/code&gt; 解析到这个虚拟IP上。&lt;/p&gt;
+&lt;p&gt;这里简单记录一下安装 &lt;code&gt;KeepAlived&lt;/code&gt; 的过程以及碰到的一些问题及解决方案。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

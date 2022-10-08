@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WebSVN on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/WebSVN/</link>
+    <description>Recent content in WebSVN on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 26 May 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/WebSVN/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Docker&#43;Apache2&#43;WebSVN搭建SVN服务器</title>
+      <link>https://orchidflower.github.io/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/</link>
+      <pubDate>Fri, 26 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/05/26/Running-SVN-Server-using-Docker-Apache2-WebSVN/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;虽然现在的SVN已经用的越来越少，很多人都切换到了Git上。但是以前的一些历史项目还是需要SVN支持的。
+之前的SVN服务器是直接搭建在一台Ubuntu服务器上的。当时一起搭建了WebSVN。也曾经研究过怎么搭建WebSVN，但是现在也不能够工作了，时间长久了也忘了怎么搭建了。所以想研究一下怎么使用Docker来完成一样的工作。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

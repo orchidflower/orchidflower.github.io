@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSL on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/SSL/</link>
+    <description>Recent content in SSL on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 03 Jun 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/SSL/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nginx配置导致的SSL证书认证失败</title>
+      <link>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</link>
+      <pubDate>Sat, 03 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;注： 这是在之前博客上发过的文章，在实际使用中经常会有人碰到，特意转贴过来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;目前公司对外开放了一个云服务平台，提供一些功能供商户接入使用。整个项目的架构是基于Spring + MyBatis的。另外，商户端的服务接口是基于SOAP WebService的，这部分使用CXF实现。
+安全方面采用了Spring Security，可以对商户提供证书认证或密码认证。但是出于安全考虑，目前只开放了证书认证。为了使用证书认证商户，我们创建了一个自签名的CA，用来生成商户使用的客户端证书。在验证上，使用Nginx验证客户端证书是否是指定CA产生的。另外，为了防止被作废的证书（例如给商户颁发了新证书后，原证书应该作废，但是原证书也是由指定CA产生的）再次使用，在代码层面对证书进行了进一步的验证（这一点是通过Nginx将客户端证书作为Header传递到Java后台实现的，有时间以后再讲）。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Java SSL握手记录分析</title>
+      <link>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</link>
+      <pubDate>Fri, 28 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/04/28/Java-SSL-Handshake-Log/</guid>
+      <description>&lt;p&gt;公司项目当中经常使用CXF库连接WebService服务，而且我们自己提供的服务也是基于CXF的SOAP服务，经常需要指导客户怎么连接我们的服务。CXF库整个体系架构比较庞大，相关的类、知识点都比较多。尤其是连接SSL双向认证服务的时候，经常碰到问题。&lt;/p&gt;
+&lt;p&gt;使用双向SSL认证的时候，在Spring中配置起来非常简单，但是一旦出错就比较难找问题。经过多次尝试，最后发现还是分析SSL握手记录比较靠谱，比较容易找出真正的问题所在。特此记录一下自己的一些心得，以作备忘并希望能够帮到其他人。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

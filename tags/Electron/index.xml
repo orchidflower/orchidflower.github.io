@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Electron on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Electron/</link>
+    <description>Recent content in Electron on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 29 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Electron/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Electron开发使用Vue Devtools</title>
+      <link>https://orchidflower.github.io/2017/03/29/Using-Vue-Devtools-in-Electron/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/03/29/Using-Vue-Devtools-in-Electron/</guid>
+      <description>&lt;p&gt;最近在用Electron + Vue.js 2.0写一个桌面工具。使用下来感觉Electron用起来还是挺爽的。之前为了开发跨平台的桌面应用，我曾经用过Python+wxPython，Swing，SWT等各种技术，但是都有这样那样的问题（例如打包比较麻烦、界面各平台不太一致等）。而Electron基于目前成熟的前端技术，通过内嵌的浏览器内核实现了统一的表现形式，这一点用于做跨平台开发真是太方便了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

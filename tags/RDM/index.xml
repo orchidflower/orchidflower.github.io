@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RDM on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/RDM/</link>
+    <description>Recent content in RDM on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 01 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/RDM/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Mac上编译RedisDesktopManager（1）国际化处理</title>
+      <link>https://orchidflower.github.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/</link>
+      <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/07/01/How-to-build-Redis-Desktop-Manager-on-Mac/</guid>
+      <description>&lt;h1 id=&#34;1-概述&#34;&gt;1. 概述&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Redis Desktop Manager（RedisDesktopManager，RDM）是一个快速、简单、支持跨平台的 Redis 桌面管理工具，基于 Qt 5 开发，支持通过 SSH Tunnel 连接。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&amp;ndash; 开源中国上面对项目的介绍&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;RedisDesktopManager&lt;/code&gt; 是一款优秀的 &lt;code&gt;Redis&lt;/code&gt; 客户端。最初是作为开源项目发布的，官方也会发布编译好的版本。后来，作者做了一些商业化处理，上架了&lt;code&gt;App Store&lt;/code&gt;，从此不再发布编译后的版本，也在开源版本中阉割掉了 &lt;code&gt;SSH Tunnel&lt;/code&gt; 功能。有鉴于此，网上有很多人写教程来说明如何从源码构建一个发行版本，但是目前见到的教程多多少少都有一些问题。最近花了一些时间尝试完善整个编译过程，目前进展不错。以后会陆续说明编译过程中碰到的问题以及对应的解决办法。&lt;/p&gt;
+&lt;p&gt;今天首先来说一下国际化的问题。&lt;/p&gt;
+&lt;p&gt;目前网上流行的 &lt;code&gt;RedisDesktopManager&lt;/code&gt; 编译方法都没有对国际化文件进行处理，所以编译后的版本没有国际化功能，界面只显示英文，语言切换功能无效。经过对相关源码的分析，终于找到了正确的编译处理方法，现在可以完美切换语言。效果如图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/2020-07-02-15936592204991.jpg&#34; alt=&#34;-w800&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

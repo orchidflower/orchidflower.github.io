@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>博客 on 执子之手</title>
+    <link>https://orchidflower.github.io/categories/%E5%8D%9A%E5%AE%A2/</link>
+    <description>Recent content in 博客 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 14 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/categories/%E5%8D%9A%E5%AE%A2/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hexo博客提交搜索引擎</title>
+      <link>https://orchidflower.github.io/2017/02/14/submit-to-search-engine/</link>
+      <pubDate>Tue, 14 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/02/14/submit-to-search-engine/</guid>
+      <description>&lt;p&gt;新博客上线多天之后，通过百度和Google仍然搜索不到我写的内容。忽然意识到这应该是网站没有被搜索引擎索引。经过搜索，发现还真是这么回事。直接搜索：&lt;code&gt;site:orchidflower.oschina.io&lt;/code&gt;和&lt;code&gt;site:orchidflower.github.io&lt;/code&gt;，发现真的没有找到相关的记录。&lt;/p&gt;
+&lt;p&gt;经过上网查找原因，找到了一些资料，原来Hexo已经有这方面的解决方案了。&lt;/p&gt;
+&lt;p&gt;根据网上搜索到的资料，要解决这个问题总体上可以分为两步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;在搜索引擎注册网站；&lt;/li&gt;
+&lt;li&gt;提交链接信息或者站点地图给搜索引擎。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;下面简单描述一下过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Hexo搭建个人博客</title>
+      <link>https://orchidflower.github.io/2017/01/24/hexo-deploy/</link>
+      <pubDate>Tue, 24 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/01/24/hexo-deploy/</guid>
+      <description>&lt;h1 id=&#34;0-什么是hexo&#34;&gt;0. 什么是Hexo&lt;/h1&gt;
+&lt;p&gt;Hexo 是高效的静态站点生成框架，它基于 Node.js。 通过 Hexo 你可以轻松地使用 Markdown 编写文章，除了 Markdown 本身的语法之外，还可以使用 Hexo 提供的 标签插件 来快速的插入特定形式的内容。
+网上关于Hexo介绍的文章已经很多，这里不写一般的安装部署步骤，只写一些不常提到的地方。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

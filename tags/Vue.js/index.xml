@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vue.js on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Vue.js/</link>
+    <description>Recent content in Vue.js on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 11 Apr 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Vue.js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在VSCode中为Vue.js开发启用静态类型检查Flow</title>
+      <link>https://orchidflower.github.io/2017/04/11/Using-flow-js-for-vue-in-VSCode/</link>
+      <pubDate>Tue, 11 Apr 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/04/11/Using-flow-js-for-vue-in-VSCode/</guid>
+      <description>&lt;p&gt;众所周知，Javascript是一种弱类型（或者称为动态类型）语言，即变量的类型是不确定的。例如，下面代码中的&lt;code&gt;temp&lt;/code&gt;一开始是字符串，后来又变成了数字：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;temp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#39;hello&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;2&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75af00&#34;&gt;temp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;&lt;span style=&#34;color:#111&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;弱类型语言变量类型完全由当时的值决定，所以称为“弱类型”。这样设计有其好处，可以写出非常简洁的代码。但是在构建大型项目的时候，无法在编译期发现问题会导致很难发现问题，反而会为程序员带来非常大的负担。这实际上限制了JS项目的规模，无法开发过于复杂的项目。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Electron开发使用Vue Devtools</title>
+      <link>https://orchidflower.github.io/2017/03/29/Using-Vue-Devtools-in-Electron/</link>
+      <pubDate>Wed, 29 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/03/29/Using-Vue-Devtools-in-Electron/</guid>
+      <description>&lt;p&gt;最近在用Electron + Vue.js 2.0写一个桌面工具。使用下来感觉Electron用起来还是挺爽的。之前为了开发跨平台的桌面应用，我曾经用过Python+wxPython，Swing，SWT等各种技术，但是都有这样那样的问题（例如打包比较麻烦、界面各平台不太一致等）。而Electron基于目前成熟的前端技术，通过内嵌的浏览器内核实现了统一的表现形式，这一点用于做跨平台开发真是太方便了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

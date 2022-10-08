@@ -1,0 +1,571 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>使用Python写一个Alfred Workflow - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="使用Python写一个Alfred Workflow">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="使用Python写一个Alfred Workflow - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/" itemprop="url">
+        使用Python写一个Alfred Workflow
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-08-21">
+    2020-08-21
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E6%8A%80%E5%B7%A7" itemprop="url" rel="index">
+        <span itemprop="name">技巧</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">2359 字 ~5分钟</span>
+</span>
+      <span id="/2020/08/21/Build-Alfred-workflow-using-python/" class="leancloud_visitors" data-flag-title="使用Python写一个Alfred Workflow">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-alfred-和-workflows-介绍">1. <code>Alfred</code> 和 <code>Workflows</code> 介绍</h1>
+<p><code>Alfred</code> 号称是 <code>Mac</code> 上最强大的效率工具，一直在 <code>Mac</code> 平台的工具类中排名榜首。它在<code>Spotlight</code> （ <code>Mac</code> 自带的搜索和快速启动引擎）基础上优化了快速启动与搜索的功能，还引入了 <code>Workflows</code> 等强大的扩展功能，使之成为了一个拥有无限自动化潜力的「工具平台」软件，可以用它来实现近乎一切有关自动化的想法。</p>
+<p><code>Worflows</code> 是 <code>Alfred</code> 的高端应用方式，它以流的方式来进行工作，从输入 -&gt; 动作 -&gt; 输出，将各种工具串联在一起进行工作，非常开放，用来将各种功能串联起来执行，可以定制完成各种想要实现的功能，潜力无限。</p>
+<p>虽然网上已经有很多别人写好的 <code>Workflow</code>，但总是不够用，毕竟各自的偷懒点不同，因此有必要学会 <code>Workflow</code> 的编写，可以更好的满足自己的要求。</p>
+<h1 id="2-开始写一个workflows">2. 开始写一个<code>Workflows</code></h1>
+<p>今天想写一个生成随机字符串的<code>Workflow</code>，可选接收一个长度参数，生成指定长度的字符串，这个字符串可以由数字、字符、数字+字符等构成。下面说一下整个创建过程。</p>
+<h2 id="21-创建一个-workflows">2.1 创建一个 <code>Workflows</code></h2>
+<p>打开 <code>Alfred</code> 的 <code>Preferences</code> 窗口，选择 <code>Workflows</code> 菜单，点击下面的“[+]”按钮，就能够创建新的 <code>Workflows</code> 了。<code>Alfred</code> 提供了多种模板可供参考，通常选择 <code>Workflow Defaults...</code> 就可以了。然后在弹出的窗口中填上必要的信息保存即可。这些信息在你发布这个 <code>Workflow</code> 的时候可以更好的描述它的作者、功能等信息，如果自己使用的话，随便填一下也无所谓：</p>
+<ol>
+<li><img src="http://blog-cache.orchidflower.cn/2020-08-28-15979773706989.jpg" alt="-w504"></li>
+</ol>
+<h2 id="22-一些概念">2.2 一些概念</h2>
+<p>一个<code>Workflow</code>中可以添加多种类型的对象，例如<code>Triggers</code>, <code>Inputs</code>等等，他们的具体功能可以参考官网的帮助信息：</p>
+<blockquote>
+<p><strong>Triggers</strong>: Activate Alfred from a hotkey, another Alfred feature or an external source.
+简单的说Triggers的用途就是通过热键或者其他方式启动<code>Alfred</code>，进而启动<code>Workflow</code>。</p>
+</blockquote>
+<blockquote>
+<p><strong>Inputs</strong>: Keyword-based objects used to perform an action, on its own or followed by a query.
+Inputs通过一个定义的关键字对象来执行一个action，这个关键字可以带查询参数也可以不带。例如你定义关键字<code>mc</code>，那么在Alfred搜索框中输入<code>mc</code>就可以启动这个功能。</p>
+</blockquote>
+<blockquote>
+<p><strong>Actions</strong>: The objects that do most of the work in your workflows; opening or revealing files and web searches, running scripts and performing commands.
+Actions对象在<code>workflows</code>中负责完成绝大多数的工作，例如可以打开文件，打开搜索，执行脚本等等。</p>
+</blockquote>
+<blockquote>
+<p><strong>Utilities</strong>: Utilities give you control over how your objects are connected together and how the arguments output by the previous object is passed on to the next object.
+Utilities可以让你控制你的对象如何连接在一起工作，控制参数如何在对象之间传递。这个对象我用的不多。</p>
+</blockquote>
+<blockquote>
+<p><strong>Outputs</strong>: Collect the information from the earlier objects in your workflow to pop up a Notification Centre message, show output in Large Type, copy to clipboard or run a script containing the result of your workflow.
+Outputs对象负责从你的<code>Workflow</code>中的前一个对象中收集信息，然后真正输出到系统中，这个输出可能是：弹出一个通托盘通知，拷贝到剪贴板，写一个文件，播放一个声音等等。</p>
+</blockquote>
+<p>这些对象不是都要用到，常用的有<code>Script Filter</code>（Inputs），<code>Keyword</code>（Inputs）、<code>Run Script</code>（Actions）等几个。</p>
+<p>这次要写一个生成随机字符串的功能，主要用到两个对象，分别是 <code>Script Filter</code> 和 <code>Copy to Clipboard</code> 。其中 <code>Script Filter</code> 负责生成随机数，<code>Copy to Clipboard</code> 负责将被选中的随机数拷贝到剪切板。</p>
+<h2 id="23-script-filter的一些说明">2.3 Script Filter的一些说明</h2>
+<p><code>Script Filter</code>的输出结果需要符合特定的格式才能够被<code>Alfred</code>识别并解析出来。这个格式可以是xml，也可以是json。官方推荐用json格式。下面是一个例子：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>  <span style="color:#f92672">&#34;items&#34;</span><span style="color:#111">:</span> <span style="color:#111">[</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>      <span style="color:#f92672">&#34;arg&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;7RWa7SASoDVjuv45&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>      <span style="color:#f92672">&#34;title&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;7RWa7SASoDVjuv45&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>      <span style="color:#f92672">&#34;subtitle&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;字母加数字&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>      <span style="color:#f92672">&#34;icon&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    <span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>      <span style="color:#f92672">&#34;arg&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;2550619258781486&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>      <span style="color:#f92672">&#34;title&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;2550619258781486&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>      <span style="color:#f92672">&#34;subtitle&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;数字&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>      <span style="color:#f92672">&#34;icon&#34;</span><span style="color:#111">:</span> <span style="color:#d88200">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    <span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    <span style="color:#960050;background-color:#1e0010">...</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>  <span style="color:#111">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#111">}</span>
+</span></span></code></pre></div><p>在这个结构中，items是个数组，其中的内容就是多条要被显示出来的记录。每条记录中，关键的几个字段为：</p>
+<ul>
+<li>arg 这个值非常重要，被选中项目的arg值将被传递到后续的action中；官方的解释如下：</li>
+</ul>
+<blockquote>
+<p>The argument which is passed through the workflow to the connected output action. While the arg attribute is optional, it&rsquo;s highly recommended that you populate this as it&rsquo;s the string which is passed to your connected output actions. If excluded, you won&rsquo;t know which result item the user has selected.</p>
+</blockquote>
+<ul>
+<li>title 在Alfred结果栏中显示的内容，是必须的选项，通常这个值与arg相同，也就是显示的值也是要输出到下一个action中的值。官方解释如下：</li>
+</ul>
+<blockquote>
+<p>The title displayed in the result row. There are no options for this element and it is essential that this element is populated.</p>
+</blockquote>
+<ul>
+<li>subtitle 对title的一个解释性信息，在主要内容下面以小字显示；官方说明如下：</li>
+</ul>
+<blockquote>
+<p>The subtitle displayed in the result row. This element is optional.</p>
+</blockquote>
+<ul>
+<li>icon 是图标。为空的话就用workflow本身的图标代替。</li>
+</ul>
+<p>上面的结果显示的效果图如下：
+<img src="http://blog-cache.orchidflower.cn/2020-08-28-15980032823913.jpg" alt="-w573"></p>
+<h2 id="24-添加一个-script-filter">2.4 添加一个 <code>Script Filter</code></h2>
+<p>在 <code>Workflow</code> 工作区中点右键，在弹出菜单中选择好 <code>Script Filter</code> 添加即可。<code>Alfred</code> 默认的<code>Python</code> 是2.7版本，因为要用到3.x版本，所以在 <code>Language</code> 中选择了 <code>External Script</code>，然后选择新建一个脚本即可。</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-08-28-15979774372976.jpg" alt="-w782"></p>
+<h2 id="25-添加一个copy-to-clipboard">2.5 添加一个<code>Copy to Clipboard</code></h2>
+<p>最后添加一个 <code>Copy to Clipboard</code> 对象，配置如图即可，不需要自己编写任何代码就能够把选中的项目拷贝到剪贴板：</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-08-28-15980041317587.jpg" alt="-w564"></p>
+<h1 id="3-最终代码">3. 最终代码</h1>
+<p>下面代码是<code>Script Filter</code>中的核心内容，负责生成随机字符串，并组装成特定格式的<code>JSON</code>字符串，输出到控制台中。代码比较直观，就不做过多解读了。</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e">#!/usr/bin/python3</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#f92672">import</span> <span style="color:#111">sys</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#f92672">import</span> <span style="color:#111">json</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#f92672">import</span> <span style="color:#111">random</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#f92672">from</span> <span style="color:#111">datetime</span> <span style="color:#f92672">import</span> <span style="color:#111">datetime</span><span style="color:#111">,</span> <span style="color:#111">timezone</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#75715e">#from workflow import Workflow</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#111">TABLES</span> <span style="color:#f92672">=</span> <span style="color:#111">[</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	<span style="color:#d88200">&#34;1234567890&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	<span style="color:#d88200">&#34;1234567890abcdef&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>	<span style="color:#d88200">&#34;1234567890ABCDEF&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	<span style="color:#d88200">&#34;1234567890ABCDEFabcdef&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	<span style="color:#d88200">&#34;1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#111">]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#00a8c8">def</span> <span style="color:#75af00">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">itemValue</span><span style="color:#111">,</span> <span style="color:#111">itemTitle</span><span style="color:#111">):</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>	<span style="color:#111">item</span> <span style="color:#f92672">=</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>		<span style="color:#d88200">&#39;arg&#39;</span><span style="color:#111">:</span> <span style="color:#111">itemValue</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>		<span style="color:#d88200">&#39;title&#39;</span><span style="color:#111">:</span> <span style="color:#111">itemValue</span><span style="color:#111">,</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>		<span style="color:#d88200">&#39;subtitle&#39;</span><span style="color:#111">:</span> <span style="color:#111">itemTitle</span><span style="color:#111">,</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>		<span style="color:#d88200">&#39;icon&#39;</span><span style="color:#111">:</span> <span style="color:#d88200">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>	<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>	<span style="color:#111">items</span><span style="color:#f92672">.</span><span style="color:#111">append</span><span style="color:#111">(</span><span style="color:#111">item</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#00a8c8">def</span> <span style="color:#75af00">randString</span><span style="color:#111">(</span><span style="color:#111">tableStr</span><span style="color:#111">,</span> <span style="color:#111">length</span><span style="color:#111">):</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	<span style="color:#111">ret</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>	<span style="color:#00a8c8">for</span> <span style="color:#111">i</span> <span style="color:#f92672">in</span> <span style="color:#111">range</span><span style="color:#111">(</span><span style="color:#111">length</span><span style="color:#111">):</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>		<span style="color:#111">ret</span> <span style="color:#f92672">+=</span> <span style="color:#111">random</span><span style="color:#f92672">.</span><span style="color:#111">choice</span><span style="color:#111">(</span><span style="color:#111">tableStr</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>	<span style="color:#00a8c8">return</span> <span style="color:#111">ret</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#00a8c8">def</span> <span style="color:#75af00">main</span><span style="color:#111">():</span> 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>	<span style="color:#111">randomLength</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">16</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>	<span style="color:#00a8c8">if</span> <span style="color:#111">len</span><span style="color:#111">(</span><span style="color:#111">sys</span><span style="color:#f92672">.</span><span style="color:#111">argv</span><span style="color:#111">)</span><span style="color:#f92672">&gt;</span><span style="color:#ae81ff">1</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>		<span style="color:#111">randomLength</span> <span style="color:#f92672">=</span> <span style="color:#111">int</span><span style="color:#111">(</span><span style="color:#111">sys</span><span style="color:#f92672">.</span><span style="color:#111">argv</span><span style="color:#111">[</span><span style="color:#ae81ff">1</span><span style="color:#111">])</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>	<span style="color:#111">items</span> <span style="color:#f92672">=</span> <span style="color:#111">[]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>	<span style="color:#111">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">randString</span><span style="color:#111">(</span><span style="color:#111">TABLES</span><span style="color:#111">[</span><span style="color:#ae81ff">4</span><span style="color:#111">],</span> <span style="color:#111">randomLength</span><span style="color:#111">),</span> <span style="color:#d88200">&#39;字母加数字&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>	<span style="color:#111">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">randString</span><span style="color:#111">(</span><span style="color:#111">TABLES</span><span style="color:#111">[</span><span style="color:#ae81ff">0</span><span style="color:#111">],</span> <span style="color:#111">randomLength</span><span style="color:#111">),</span> <span style="color:#d88200">&#39;数字&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>	<span style="color:#111">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">randString</span><span style="color:#111">(</span><span style="color:#111">TABLES</span><span style="color:#111">[</span><span style="color:#ae81ff">1</span><span style="color:#111">],</span> <span style="color:#111">randomLength</span><span style="color:#111">),</span> <span style="color:#d88200">&#39;小写16进制&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>	<span style="color:#111">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">randString</span><span style="color:#111">(</span><span style="color:#111">TABLES</span><span style="color:#111">[</span><span style="color:#ae81ff">2</span><span style="color:#111">],</span> <span style="color:#111">randomLength</span><span style="color:#111">),</span> <span style="color:#d88200">&#39;大写16进制&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>	<span style="color:#111">addItem</span><span style="color:#111">(</span><span style="color:#111">items</span><span style="color:#111">,</span> <span style="color:#111">randString</span><span style="color:#111">(</span><span style="color:#111">TABLES</span><span style="color:#111">[</span><span style="color:#ae81ff">3</span><span style="color:#111">],</span> <span style="color:#111">randomLength</span><span style="color:#111">),</span> <span style="color:#d88200">&#39;16进制&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>	
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span>	<span style="color:#111">print</span><span style="color:#111">(</span><span style="color:#111">json</span><span style="color:#f92672">.</span><span style="color:#111">dumps</span><span style="color:#111">({</span><span style="color:#d88200">&#39;items&#39;</span><span style="color:#111">:</span> <span style="color:#111">items</span><span style="color:#111">}))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span><span style="color:#00a8c8">if</span> <span style="color:#111">__name__</span> <span style="color:#f92672">==</span> <span style="color:#d88200">&#39;__main__&#39;</span><span style="color:#111">:</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>	<span style="color:#75715e">#wf = Workflow()</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>	<span style="color:#75715e">#sys.exit(wf.run(main))</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>	<span style="color:#111">main</span><span style="color:#111">()</span>
+</span></span></code></pre></div><h1 id="4-调试及排错">4. 调试及排错</h1>
+<p>刚开始写 <code>Workflow</code> 的时候难免会碰到问题，这时候就需要进行调试和排错了。首先可以找到 <code>Workflow</code> 的目录在哪里，这样就可以在命令行下执行自己写的脚本，看看结果怎么样。可以通过在<code>Workflow</code>上点右键选择<code>Open in Finder</code>，<code>Open in Terminal</code>等功能找到脚本所在的目录。</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-08-28-workflow_right_button_menu.png" alt="右键菜单截图"></p>
+<p>另外，Alfred执行的时候会把输入输出内容都显示出来，可以通过<code>Alfred</code>内置的控制台看到这些交互内容，方法是点击右上角的<code>BUG</code>图标，就能够在打开控制台了。这时执行结果包括错误信息之类的都会显示在里面。</p>
+<p><img src="http://blog-cache.orchidflower.cn/2020-08-28-15979775833373.jpg" alt="-w139">
+<img src="http://blog-cache.orchidflower.cn/2020-08-28-15979775994586.jpg" alt="-w864"></p>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Mac" rel="tag" title="Mac">#Mac#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Alfred" rel="tag" title="Alfred">#Alfred#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Workflow" rel="tag" title="Workflow">#Workflow#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/09/04/Using-MyBatis-ResultHandler-to-export-huge-resultset-avoiding-OOM/" rel="next" title="使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM">
+        <i class="fa fa-chevron-left"></i> 使用MyBatis ResultHandler解决巨大结果集导出Excel引发的OOM
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/08/11/How-to-change-hibernate-mod-for-Mac/" rel="prev" title="Mac休眠模式调整">
+        Mac休眠模式调整 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-alfred-和-workflows-介绍">1. <code>Alfred</code> 和 <code>Workflows</code> 介绍</a></li>
+    <li><a href="#2-开始写一个workflows">2. 开始写一个<code>Workflows</code></a>
+      <ul>
+        <li><a href="#21-创建一个-workflows">2.1 创建一个 <code>Workflows</code></a></li>
+        <li><a href="#22-一些概念">2.2 一些概念</a></li>
+        <li><a href="#23-script-filter的一些说明">2.3 Script Filter的一些说明</a></li>
+        <li><a href="#24-添加一个-script-filter">2.4 添加一个 <code>Script Filter</code></a></li>
+        <li><a href="#25-添加一个copy-to-clipboard">2.5 添加一个<code>Copy to Clipboard</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#3-最终代码">3. 最终代码</a></li>
+    <li><a href="#4-调试及排错">4. 调试及排错</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSH on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/SSH/</link>
+    <description>Recent content in SSH on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 23 Jul 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/SSH/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何无密码登录SSH</title>
+      <link>https://orchidflower.github.io/2017/07/23/How-to-login-without-password-over-SSH/</link>
+      <pubDate>Sun, 23 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/07/23/How-to-login-without-password-over-SSH/</guid>
+      <description>&lt;p&gt;我们在用&lt;code&gt;Jenkins&lt;/code&gt;做发布工具的时候，经常用到的功能是通过&lt;code&gt;SSH&lt;/code&gt;通道完成各种功能。例如使用&lt;code&gt;scp&lt;/code&gt;命令拷贝安装包到服务器上，通过&lt;code&gt;ssh -t&lt;/code&gt;命令执行服务器上的脚本等。&lt;/p&gt;
+&lt;p&gt;这时就需要配置无密码登录，否则无法做到自动执行命令。如果每次都手动输入密码，想想都不现实。要实现无密码登录，需要配置好SSH允许证书登录。&lt;/p&gt;
+&lt;p&gt;其原理是使用了公钥体系，假设有服务器Server，用户在服务器Client上，用户在服务器Client上有私钥Private Key，在服务器Server上有对应的公钥Public Key。这样访问的时候Server就能够通过公钥体系进行验证：要求用户使用其私钥进行签名，从而确保用户拥有私钥，以此验证用户身份。如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/mweb/sshauthentication.png&#34; alt=&#34;公钥体系原理图&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

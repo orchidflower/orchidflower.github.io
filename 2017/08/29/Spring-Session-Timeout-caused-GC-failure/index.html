@@ -1,0 +1,468 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>Spring应用因Session Timeout设置引起的GC问题 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="Spring应用因Session Timeout设置引起的GC问题">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="Spring应用因Session Timeout设置引起的GC问题 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2017/08/29/Spring-Session-Timeout-caused-GC-failure/" itemprop="url">
+        Spring应用因Session Timeout设置引起的GC问题
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-08-29">
+    2017-08-29
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">1495 字 ~3分钟</span>
+</span>
+      <span id="/2017/08/29/Spring-Session-Timeout-caused-GC-failure/" class="leancloud_visitors" data-flag-title="Spring应用因Session Timeout设置引起的GC问题">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>最近在客户的要求下，对系统进行了压测。自己压测的时候一切指标都挺正常。但是客户却反馈说压测的时候有时候会碰到性能衰减很厉害，不稳定。于是有了下面这次的排查过程。客户反馈说问题是发生在多次连续压测之后碰到的，所以进行了一系列的测试。</p>
+<p>先说一下测试环境的一些信息：测试主机是阿里云的ECS，配置是2C + 16G。为了方便，数据库采用的是Docker搭建的，版本是5.6.X。另外，这台机器上还安装了Zookeeper 3.4.X 和Kafka 1.0。系统本身是一个标准的Spring + CXF的应用，提供给客户使用的服务是标准的Restful接口。</p>
+<h1 id="1-重现问题">1. 重现问题</h1>
+<p>因为客户反馈是多次压测之后碰到的，因此首先尝试连续压测多次看看能不能重现问题。为了可能存在的数据库性能问题，临时申请了RDS作为数据库；另外为了尽快发现问题，将程序占用内存缩小到1G。这次测试测出了客户所说的问题，通过jconsole监控也发现了问题原因，应该是因为GC导致的。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15035654400984.jpg" alt="">
+看图表可以发现，压测5~6分钟之后，Java的GC占用了大量的CPU时间（左上图中的蓝色线），而且内存占用一直居高不下（右上图）。</p>
+<h1 id="2-调整内存使用量">2. 调整内存使用量</h1>
+<p>把内存占用调整到2G，发现问题还是同样存在，只是出现问题的时间晚了，压测开始15分钟之后才会出现问题。也就是说问题是同样存在的，只是内存大了之后，把出现问题的时间拖后了而已。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15035674372739.jpg" alt=""></p>
+<h1 id="3-问题根源">3. 问题根源</h1>
+<p>通过上面的测试发现了问题是GC导致的，也就是系统中有些内存无法给GC回收，当内存达到Java虚拟机可以申请的上限的时候，会出现频繁的GC操作，从而导致GC操作占用大量CPU时间，必然导致系统本身的TPS下降。</p>
+<p>通过分析dump文件，以及上网搜索，最终确认问题可能出现在Session超时时间设置上：
+在Java Web开发中，Session为我们提供了很多方便，Session是由浏览器和服务器之间维护的。Session超时理解为：浏览器和服务器之间创建了一个Session，由于客户端长时间（休眠时间）没有与服务器交互，服务器将此Session销毁，客户端再一次与服务器交互时之前的Session就不存在了。</p>
+<p>这个Session长短是可以设置的。默认情况下，什么也不设置的话Session超时时间是30分钟。设置方法是修改项目中的web.xml，如下面的配置是设置session时间为1分钟：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>    &lt;session-config&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>        &lt;session-timeout&gt;1&lt;/session-timeout&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    &lt;/session-config&gt;
+</span></span></code></pre></div><p>之前项目中都没有对session时间进行设置，因此会有大量的session信息被缓存，不到时间是无法GC的。而项目本身的服务是不依赖于session的，完全可以将session时间设置的更短一些。</p>
+<h1 id="4-调整session时间为1分钟">4. 调整session时间为1分钟</h1>
+<p>这一轮测试基本信息如下：</p>
+<ul>
+<li>数据库使用RDS</li>
+<li>内存占用使用2G</li>
+<li>Session设置为1分钟
+压测结果如下：</li>
+</ul>
+<p><img src="http://blog-cache.orchidflower.cn/15036258505518.jpg" alt="">
+这次总共压测了30分钟，GC占用的CPU时间也非常少，内存也表现良好，可以正常GC回收。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15036258884678.jpg" alt="">
+性能表现一直稳定。</p>
+<h1 id="5-数据库切换回docker">5. 数据库切换回Docker</h1>
+<p>上一轮测试结果给了很大的信心，因此决定把数据库切换为本机的Docker中的MySQL，其他的不变：</p>
+<p><img src="http://blog-cache.orchidflower.cn/15036350695677.jpg" alt="">
+GC表现正常，内存也回收良好。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15036350539692.jpg" alt="">
+TPS降低了不少，之前是1700+，这次只有1250+了。这个一方面是所有服务运行在一台主机上带来的性能损耗，另一方面应该是Docker本身带来了一些损耗。</p>
+<h1 id="6-调整为1g内存">6. 调整为1G内存</h1>
+<p>再把内存调整为1G，再测试一次。</p>
+<p><img src="http://blog-cache.orchidflower.cn/15036422539719.jpg" alt="">
+GC占用时间略有上升，但是总体还是很稳定。</p>
+<h1 id="7-结论">7. 结论</h1>
+<p>如果你的系统本身不依赖于Web的Session机制，请把Session时间调小一些，这样在高负载的情况下，GC才能够正常工作。</p>
+<h1 id="附录a-参考资料">附录A. 参考资料</h1>
+<ul>
+<li><a href="https://stackoverflow.com/questions/36795678/how-to-enable-session-and-set-session-timeout-in-spring-security">How to enable session and set session timeout in Spring Security</a></li>
+<li><a href="http://blog.csdn.net/draling/article/details/6435925">Session的有效期设置 </a></li>
+<li><a href="https://stackoverflow.com/questions/27162627/possible-spring-boot-or-spring-security-memory-leak">Possible Spring Boot or Spring Security Memory Leak</a></li>
+<li><a href="https://github.com/spring-projects/spring-boot/issues/2084">server.sessionTimeout default #2084</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Java" rel="tag" title="Java">#Java#</a>
+    
+    <a href="https://orchidflower.github.io/tags/Spring" rel="tag" title="Spring">#Spring#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/onlineapis/" rel="next" title="在线API列表">
+        <i class="fa fa-chevron-left"></i> 在线API列表
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/08/20/Use-Webhook-between-Gogs-and-Jenkins/" rel="prev" title="使用Docker运行Jenkins（二）">
+        使用Docker运行Jenkins（二） <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-重现问题">1. 重现问题</a></li>
+    <li><a href="#2-调整内存使用量">2. 调整内存使用量</a></li>
+    <li><a href="#3-问题根源">3. 问题根源</a></li>
+    <li><a href="#4-调整session时间为1分钟">4. 调整session时间为1分钟</a></li>
+    <li><a href="#5-数据库切换回docker">5. 数据库切换回Docker</a></li>
+    <li><a href="#6-调整为1g内存">6. 调整为1G内存</a></li>
+    <li><a href="#7-结论">7. 结论</a></li>
+    <li><a href="#附录a-参考资料">附录A. 参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

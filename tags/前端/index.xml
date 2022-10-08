@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>前端 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E5%89%8D%E7%AB%AF/</link>
+    <description>Recent content in 前端 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 27 Feb 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E5%89%8D%E7%AB%AF/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js从入门到放弃（一）-基础知识</title>
+      <link>https://orchidflower.github.io/2017/02/27/nodejs-learning-note-01/</link>
+      <pubDate>Mon, 27 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/02/27/nodejs-learning-note-01/</guid>
+      <description>&lt;p&gt;最近一周比较忙，一直忙着搭建开发平台。之前不就刚用Golang搭建了一个服务端开发平台。完成之后，就需要针对Golang开发的服务开发一个管理平台，用Golang也能做，但是感觉还是麻烦，最后决定使用Node.js。&lt;/p&gt;
+&lt;p&gt;这次搭建的平台倾向于使用比较新的一些Node.js特性，例如ES6、async/await解决回调地狱等。之前用过Node.js，但是属于浅尝辄止，这次准备充分了解一下。因此有了这些学习笔记。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

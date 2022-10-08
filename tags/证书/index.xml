@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>证书 on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6/</link>
+    <description>Recent content in 证书 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 26 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RSA证书格式</title>
+      <link>https://orchidflower.github.io/2021/11/26/RSA-certificate-format/</link>
+      <pubDate>Fri, 26 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2021/11/26/RSA-certificate-format/</guid>
+      <description>&lt;h1 id=&#34;1-tldr&#34;&gt;1. TL;DR&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN CERTIFICATE-----&lt;/code&gt; 开头的是证书。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN RSA PRIVATE KEY-----&lt;/code&gt; 开头是遵循的&lt;code&gt;PKCS#1&lt;/code&gt;规范，其内容只是一个RSA私钥。它本质上只是来自PKCS#8的关键对象，但前面没有版本或算法标识符。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;# -----BEGIN PRIVATE KEY-----&lt;/code&gt; 开头遵循的是&lt;code&gt;PKCS#8&lt;/code&gt;规范，并指示密钥类型包含在密钥数据本身中。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>iOS证书及推送相关概念</title>
+      <link>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</link>
+      <pubDate>Tue, 04 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/</guid>
+      <description>&lt;h1 id=&#34;1i-os开发中碰到的概念&#34;&gt;1.i OS开发中碰到的概念&lt;/h1&gt;
+&lt;h2 id=&#34;11-开发者账号&#34;&gt;1.1 开发者账号&lt;/h2&gt;
+&lt;p&gt;苹果对开发者账号分为如下几类：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人 Individual  （$99/year，可以上架Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;组织 Organizations。又可以写分为两类：
+&lt;ul&gt;
+&lt;li&gt;组织 Organization  （普通账号，$99/year，能够上传Apple Store，最大UUID数目100）&lt;/li&gt;
+&lt;li&gt;企业账号 Enterprise Program  （企业账号，$299/year，能够进行企业发布，不能够发布到Apple Store，不限制UUID数目）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;教育机构（Educational Institutions）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://blog-cache.orchidflower.cn/15264592291888.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Nginx配置导致的SSL证书认证失败</title>
+      <link>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</link>
+      <pubDate>Sat, 03 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;注： 这是在之前博客上发过的文章，在实际使用中经常会有人碰到，特意转贴过来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;目前公司对外开放了一个云服务平台，提供一些功能供商户接入使用。整个项目的架构是基于Spring + MyBatis的。另外，商户端的服务接口是基于SOAP WebService的，这部分使用CXF实现。
+安全方面采用了Spring Security，可以对商户提供证书认证或密码认证。但是出于安全考虑，目前只开放了证书认证。为了使用证书认证商户，我们创建了一个自签名的CA，用来生成商户使用的客户端证书。在验证上，使用Nginx验证客户端证书是否是指定CA产生的。另外，为了防止被作废的证书（例如给商户颁发了新证书后，原证书应该作废，但是原证书也是由指定CA产生的）再次使用，在代码层面对证书进行了进一步的验证（这一点是通过Nginx将客户端证书作为Header传递到Java后台实现的，有时间以后再讲）。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

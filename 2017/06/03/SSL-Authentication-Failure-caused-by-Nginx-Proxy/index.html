@@ -1,0 +1,551 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>Nginx配置导致的SSL证书认证失败 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="Nginx配置导致的SSL证书认证失败">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="Nginx配置导致的SSL证书认证失败 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/" itemprop="url">
+        Nginx配置导致的SSL证书认证失败
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-06-03">
+    2017-06-03
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">3472 字 ~7分钟</span>
+</span>
+      <span id="/2017/06/03/SSL-Authentication-Failure-caused-by-Nginx-Proxy/" class="leancloud_visitors" data-flag-title="Nginx配置导致的SSL证书认证失败">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <blockquote>
+<p>注： 这是在之前博客上发过的文章，在实际使用中经常会有人碰到，特意转贴过来。</p>
+</blockquote>
+<h1 id="1-背景">1. 背景</h1>
+<p>目前公司对外开放了一个云服务平台，提供一些功能供商户接入使用。整个项目的架构是基于Spring + MyBatis的。另外，商户端的服务接口是基于SOAP WebService的，这部分使用CXF实现。
+安全方面采用了Spring Security，可以对商户提供证书认证或密码认证。但是出于安全考虑，目前只开放了证书认证。为了使用证书认证商户，我们创建了一个自签名的CA，用来生成商户使用的客户端证书。在验证上，使用Nginx验证客户端证书是否是指定CA产生的。另外，为了防止被作废的证书（例如给商户颁发了新证书后，原证书应该作废，但是原证书也是由指定CA产生的）再次使用，在代码层面对证书进行了进一步的验证（这一点是通过Nginx将客户端证书作为Header传递到Java后台实现的，有时间以后再讲）。</p>
+<h1 id="2-部署架构">2. 部署架构</h1>
+<p>云服务平台部署在aliyun上，大致上结构是这样的（只涉及到了网络访问层面的东西）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>商户 -https-&gt; aliyun负载均衡 -tcp转发-&gt; Nginx -http-&gt; Jetty --&gt; ClientCertificateFromProxyFilter
+</span></span></code></pre></div><p>商户访问云服务的时候，需要使用我们提供的客户端证书来建立https链接。aliyun的LB只负责TCP转发，不对协议进行分析。因此从aliyun到Nginx之间实际的数据流是https数据流。Nginx接受到请求后，验证客户端证书是否正确，并将客户端证书设置为HTTP请求中的Header变量，然后请求后台的Jetty服务器。
+我们代码中实现了一个Filter（ClientCertificateFromProxyFilter），它的唯一作用是检查过来的HTTP请求中有没有变量<code>SSL_CLIENT_CERT</code>，如果有则把它转换成一个Certificate对象，添加到HTTP请求中，从而将一个HTTP请求模拟成一个HTTPS请求，这样Spring Security就能够进行证书认证了。</p>
+<h1 id="3-问题">3. 问题</h1>
+<p>在上线之前，按照以往的经验，我们测试了通过浏览器访问受保护的资源来测试HTTPS是否工作正常。因为提前在浏览器中导入了客户端证书，因此浏览器上能够弹出对话框选择客户端证书，选择之后就能够访问指定的资源了。</p>
+<p>我们推荐商户使用CXF作为接入方式，一般的代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#f92672">&lt;jaxws:client</span> <span style="color:#75af00">id=</span><span style="color:#d88200">&#34;uidService&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#75af00">serviceClass=</span><span style="color:#d88200">&#34;com.xwf.cloudauth....&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	<span style="color:#75af00">address=</span><span style="color:#d88200">&#34;https://.../api/UidApiService&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#f92672">&lt;/jaxws:client&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#f92672">&lt;http-conf:conduit</span> <span style="color:#75af00">name=</span><span style="color:#d88200">&#34;*.http-conduit&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#f92672">&lt;http-conf:tlsClientParameters</span> <span style="color:#75af00">disableCNCheck=</span><span style="color:#d88200">&#34;true&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>			<span style="color:#f92672">&lt;sec:keyManagers</span> <span style="color:#75af00">keyPassword=</span><span style="color:#d88200">&#34;123456&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>			<span style="color:#f92672">&lt;sec:keyStore</span> <span style="color:#75af00">type=</span><span style="color:#d88200">&#34;PKCS12&#34;</span> <span style="color:#75af00">password=</span><span style="color:#d88200">&#34;123456&#34;</span> <span style="color:#75af00">resource=</span><span style="color:#d88200">&#34;...com.p12&#34;</span><span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>		<span style="color:#f92672">&lt;/sec:keyManagers&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>			<span style="color:#f92672">&lt;sec:trustManagers&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>			<span style="color:#f92672">&lt;sec:keyStore</span> <span style="color:#75af00">type=</span><span style="color:#d88200">&#34;JKS&#34;</span> <span style="color:#75af00">password=</span><span style="color:#d88200">&#34;changeit&#34;</span> <span style="color:#75af00">resource=</span><span style="color:#d88200">&#34;cacerts&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>		<span style="color:#f92672">&lt;/sec:trustManagers&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	<span style="color:#f92672">&lt;/http-conf:tlsClientParameters&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	<span style="color:#f92672">&lt;http-conf:client</span> <span style="color:#75af00">Connection=</span><span style="color:#d88200">&#34;Keep-Alive&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>		<span style="color:#75af00">MaxRetransmits=</span><span style="color:#d88200">&#34;1&#34;</span> <span style="color:#75af00">AllowChunking=</span><span style="color:#d88200">&#34;false&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#f92672">&lt;/http-conf:conduit&gt;</span>
+</span></span></code></pre></div><p>但是商户实际接入的时候却碰到了问题：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#111">Caused</span> <span style="color:#111">by</span><span style="color:#f92672">:</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">http</span><span style="color:#f92672">.</span><span style="color:#75af00">HTTPException</span><span style="color:#f92672">:</span> <span style="color:#111">HTTP</span> <span style="color:#111">response</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">401</span><span style="color:#f92672">:</span> <span style="color:#111">Full</span> <span style="color:#111">authentication</span> <span style="color:#111">is</span> <span style="color:#111">required</span> <span style="color:#111">to</span> <span style="color:#111">access</span> <span style="color:#00a8c8">this</span> <span style="color:#111">resource</span><span style="color:#960050;background-color:#1e0010">&#39;</span> <span style="color:#111">when</span> <span style="color:#111">communicating</span> <span style="color:#111">with</span> <span style="color:#111">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#75715e"></span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">http</span><span style="color:#f92672">.</span><span style="color:#75af00">HTTPConduit$WrappedOutputStream</span><span style="color:#f92672">.</span><span style="color:#75af00">handleResponseInternal</span><span style="color:#f92672">(</span><span style="color:#111">HTTPConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">1549</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">http</span><span style="color:#f92672">.</span><span style="color:#75af00">HTTPConduit$WrappedOutputStream</span><span style="color:#f92672">.</span><span style="color:#75af00">handleResponse</span><span style="color:#f92672">(</span><span style="color:#111">HTTPConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">1504</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">http</span><span style="color:#f92672">.</span><span style="color:#75af00">HTTPConduit$WrappedOutputStream</span><span style="color:#f92672">.</span><span style="color:#75af00">close</span><span style="color:#f92672">(</span><span style="color:#111">HTTPConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">1310</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">AbstractConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">close</span><span style="color:#f92672">(</span><span style="color:#111">AbstractConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">56</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">transport</span><span style="color:#f92672">.</span><span style="color:#75af00">http</span><span style="color:#f92672">.</span><span style="color:#75af00">HTTPConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">close</span><span style="color:#f92672">(</span><span style="color:#111">HTTPConduit</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">628</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>	<span style="color:#111">at</span> <span style="color:#111">org</span><span style="color:#f92672">.</span><span style="color:#75af00">apache</span><span style="color:#f92672">.</span><span style="color:#75af00">cxf</span><span style="color:#f92672">.</span><span style="color:#75af00">interceptor</span><span style="color:#f92672">.</span><span style="color:#75af00">MessageSenderInterceptor$MessageSenderEndingInterceptor</span><span style="color:#f92672">.</span><span style="color:#75af00">handleMessage</span><span style="color:#f92672">(</span><span style="color:#111">MessageSenderInterceptor</span><span style="color:#f92672">.</span><span style="color:#75af00">java</span><span style="color:#f92672">:</span><span style="color:#111">62</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>	<span style="color:#f92672">...</span> <span style="color:#111">38</span> <span style="color:#111">more</span>
+</span></span></code></pre></div><h1 id="4-解决过程">4. 解决过程</h1>
+<p>401错误代表未授权，所以首先怀疑是客户端证书不正确。</p>
+<h2 id="41-切换到本地测试">4.1 切换到本地测试</h2>
+<p>收到客户反馈之后，首先想到的可能是证书发放的不正确，毕竟已经通过浏览器通过了测试。
+首先在本地测试环境进行了测试。因为之前测试坏境中配置的连接服务的代码中启用了用户名密码认证，因此首先做的是将用户名、密码认证部分屏蔽掉，然后进行测试，结果还真发现了问题。
+这下子有点着急了，担心有大的bug存在。毕竟产品已经上线，碰到这种bug可比较麻烦了。</p>
+<h2 id="42-本地问题的解决">4.2 本地问题的解决</h2>
+<p>经过添加日志、断点在本地环境进行了调试，找到了本地报401错误的原因：本地环境中的证书是被废弃掉的了，本地环境证书重发后并没有同步到本地SVN中，因此才会出现401错误。证书通过了Nginx的验证，但是被Java层的代码拦截掉（因为客户提交过来的代码与数据库中用户相关的证书不一致）。
+通过将本地证书替换之后，问题得到了解决。原来本地环境只是虚惊一场。</p>
+<h2 id="43-发布调试版本">4.3 发布调试版本</h2>
+<p>本地环境问题解决之后，更加怀疑生产环境的问题来源于证书不匹配。但是经过仔细分析客户证书文件及数据库中的记录，发现并不能够支持这种想法。
+没有办法的情况下，只好在代码中（主要是ClientCertificateFromProxyFilter）添加了更多的调试信息，临时发布了调试版本。再次测试，发现在ClientCertificateFromProxyFilter中没有收到<code>SSL_CLIENT_CERT</code>这个变量。初步断定问题出在Nginx转发上（从Nginx到Jetty没有转发客户端证书）。</p>
+<h2 id="44-wireshark">4.4 Wireshark</h2>
+<p>确定问题出在Nginx层之后事情陷入了僵局，因为实在不知道为什么会产生这种情况。
+因为前一阵子研究过SSL握手的过程，当时使用过Wireshark进行过网络抓包。当事情陷入僵局的时候，想起来可以使用这种方法分析一下协议。经过抓包，比各个环境（测试环境、生产环境/浏览器及Java环境），发现了问题所在，原来在生产环境上Java根本没有发送客户端证书到Nginx上去！</p>
+<h2 id="45-协议分析">4.5 协议分析</h2>
+<p>没有办法的情况下，只好回头又去分析SSL协议：</p>
+<ul>
+<li><a href="http://www.360doc.com/content/10/1102/10/2734308_65888370.shtml">SSL我握手过程</a></li>
+<li><a href="http://www.cnblogs.com/jifeng/archive/2010/11/30/1891779.html">SSL协议（HTTPS）握手、工作流程分析（双向HTTPS分析）</a></li>
+<li><a href="http://blog.csdn.net/fw0124/article/details/40983787">使用Wireshark观察SSL/TLS握手过程-双向认证、单项认证</a></li>
+</ul>
+<p>发现在双向认证过程中，在<code>server hello done</code>结束之前，服务器应该发送<code>certificate request</code> 到客户端。这样客户端才能够决定发送客户端证书到服务器进行认证。但是在生产环境使用Java访问的时候，服务器没有发送该请求；但是奇怪的是当使用浏览器访问的时候，这个请求又出现了。</p>
+<h2 id="46-sni">4.6 SNI</h2>
+<p>再次陷入了僵局。同样的HTTPS请求为什么会导致不同的认证顺序和结果呢？经过漫长的，漫无目的的搜索后，终于找到了一点眉目。原来这是一个兼容性问题：SNI。
+这里先介绍一下SNI的概念：</p>
+<blockquote>
+<p>SNI（Server Name Indication）是为了解决一个服务器使用多个域名和证书的SSL/TLS扩展。一句话简述它的工作原理就是，在连接到服务器建立SSL连接之前先发送要访问站点的域名（Hostname），这样服务器根据这个域名返回一个合适的证书。目前，大多数操作系统和浏览器都已经很好地支持SNI扩展，OpenSSL 0.9.8已经内置这一功能。</p>
+</blockquote>
+<p>我们的云认证平台后台有很多台服务器，配置了多个域名，但是对外的出口是唯一的，都是使用Nginx作为代理/反向代理的。这样就用到了SNI技术，在一台机器上同时对多个域名提供服务。当浏览器访问的时候，因为浏览器支持SNI技术，因此会提供域名给Nginx，这样Nginx能够从配置好的多个域名配置文件中找到需要的证书及客户端证书CA配置信息进行验证。
+但是当Java访问的时候，就碰到了问题：因为Java不能够自动支持SNI协议（Java8中提供了SNI的支持，但是需要手工编码），因此在上面的Spring配置中，并没有办法把域名发送给Nginx，因此Nginx不知道使用哪个配置中的证书及客户端证书CA配置信息。</p>
+<h2 id="47-解决方法">4.7 解决方法</h2>
+<p>后来从网上找到了这样一篇文章：<a href="https://tech.mendix.com/linux/2014/10/29/nginx-certs-sni/">Using nginx and client certificate!</a>，这才最终明白了怎么解决问题。</p>
+<p>Nginx有一个default server的概念。也就是说当出现不支持SNI协议的客户端时，将使用default server的配置进行验证。当没有配置default server的时候，Nginx将使用找到的第一个配置文件中的配置（经过测试，应该是按照字母顺序排序的）。
+而在我们生产环境的配置中，第一个找到的配置文件中没有指定客户端证书CA！！</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">server</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>        <span style="color:#f92672">listen</span> <span style="color:#ae81ff">443</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#f92672">server_name</span> <span style="color:#d88200">...xwf-id.com</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#f92672">ssl</span>                  <span style="color:#00a8c8">on</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#f92672">ssl_certificate</span>      <span style="color:#d88200">/etc/nginx/keys/xwfserver.pem</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#f92672">ssl_certificate_key</span>  <span style="color:#d88200">/etc/nginx/keys/xwfserver.key</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#f92672">ssl_session_timeout</span>  <span style="color:#ae81ff">5m</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#f92672">ssl_verify_client</span> <span style="color:#00a8c8">off</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>        <span style="color:#f92672">location</span> <span style="color:#d88200">/</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>                <span style="color:#f92672">proxy_buffer_size</span> <span style="color:#ae81ff">8k</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                <span style="color:#f92672">proxy_buffers</span> <span style="color:#ae81ff">8</span> <span style="color:#ae81ff">64k</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>                <span style="color:#f92672">proxy_buffering</span> <span style="color:#00a8c8">on</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>                <span style="color:#f92672">proxy_pass</span> <span style="color:#d88200">http://prm_admin</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>                <span style="color:#f92672">proxy_set_header</span> <span style="color:#d88200">Host</span>            <span style="color:#111">$host</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>                <span style="color:#f92672">proxy_set_header</span>   <span style="color:#d88200">X-Real-IP</span>        <span style="color:#111">$remote_addr</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>                <span style="color:#f92672">proxy_set_header</span> <span style="color:#d88200">X-Forwarded-Host</span> <span style="color:#111">$host</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>                <span style="color:#f92672">proxy_set_header</span> <span style="color:#d88200">X-Forwarded-Server</span> <span style="color:#111">$host</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>                <span style="color:#f92672">proxy_set_header</span> <span style="color:#d88200">X-Forwarded-For</span> <span style="color:#111">$proxy_add_x_forwarded_for</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>        <span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#111">}</span>
+</span></span></code></pre></div><p>所以当Java访问的时候，服务器端告诉客户端，不需要提供客户端证书。。。</p>
+<h2 id="48-安全考虑">4.8 安全考虑</h2>
+<p>最后，我们添加了一个default server来解决这个问题：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#00a8c8">server</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>        <span style="color:#f92672">listen</span> <span style="color:#ae81ff">443</span> <span style="color:#d88200">default_server</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        <span style="color:#f92672">server_name</span> <span style="color:#d88200">a</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        <span style="color:#f92672">ssl</span>                  <span style="color:#00a8c8">on</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        <span style="color:#f92672">ssl_certificate</span>      <span style="color:#d88200">/etc/nginx/keys/xwfserver.pem</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        <span style="color:#f92672">ssl_certificate_key</span>  <span style="color:#d88200">/etc/nginx/keys/xwfserver.key</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        <span style="color:#f92672">ssl_session_timeout</span>  <span style="color:#ae81ff">5m</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#f92672">ssl_client_certificate</span> <span style="color:#d88200">/etc/nginx/keys/ca-certs.pem</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        <span style="color:#f92672">ssl_verify_client</span> <span style="color:#d88200">optional_no_ca</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        <span style="color:#f92672">location</span> <span style="color:#d88200">/</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                <span style="color:#f92672">return</span> <span style="color:#ae81ff">200</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        <span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#111">}</span>
+</span></span></code></pre></div><p>这里需要说明的一个问题是：因为我们服务器上有两个服务器要进行客户端证书认证，因此有两个自签名的CA存在。为了解决能够验证两个证书CA签名的证书，在<code>/etc/nginx/keys/ca-certs.pem</code>中需要同时包含两个CA证书。
+但是这也带来了一定的风险：使用网站A证书认证的用户有可能访问到网站B的内容！</p>
+<p>但是因为我们目前的体系中，使用<code>ClientCertificateFromProxyFilter</code>对证书有效性进行了进一步的验证，所以这一问题在我们的系统中没有导致风险。如果其他系统中要用到这个功能，需要对这部分的风险性投入关注。</p>
+<h1 id="5-总结">5. 总结</h1>
+<p>问题终于解决了，看看时间已经是凌晨5点了。总结一下经验教训：</p>
+<ul>
+<li>通过这次事故，对SSL通讯的握手过程有了进一步的了解。</li>
+<li>对Wireshark也有了更进一步的了解。</li>
+<li>以后产品上线的时候，还是要使用真正的代码进行以下测试，这样就能够今早发现这个Java的SNI兼容性问题了。</li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Nginx" rel="tag" title="Nginx">#Nginx#</a>
+    
+    <a href="https://orchidflower.github.io/tags/SSL" rel="tag" title="SSL">#SSL#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6" rel="tag" title="证书">#证书#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/06/18/How-to-install-FastDFS-on-Mac/" rel="next" title="在Mac上如何安装FastDFS">
+        <i class="fa fa-chevron-left"></i> 在Mac上如何安装FastDFS
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/06/02/The-source-code-of-DelegatingFilterProxy/" rel="prev" title="DelegatingFilterProxy源码分析">
+        DelegatingFilterProxy源码分析 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-背景">1. 背景</a></li>
+    <li><a href="#2-部署架构">2. 部署架构</a></li>
+    <li><a href="#3-问题">3. 问题</a></li>
+    <li><a href="#4-解决过程">4. 解决过程</a>
+      <ul>
+        <li><a href="#41-切换到本地测试">4.1 切换到本地测试</a></li>
+        <li><a href="#42-本地问题的解决">4.2 本地问题的解决</a></li>
+        <li><a href="#43-发布调试版本">4.3 发布调试版本</a></li>
+        <li><a href="#44-wireshark">4.4 Wireshark</a></li>
+        <li><a href="#45-协议分析">4.5 协议分析</a></li>
+        <li><a href="#46-sni">4.6 SNI</a></li>
+        <li><a href="#47-解决方法">4.7 解决方法</a></li>
+        <li><a href="#48-安全考虑">4.8 安全考虑</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-总结">5. 总结</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

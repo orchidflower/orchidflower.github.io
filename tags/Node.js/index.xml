@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Node.js on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Node.js/</link>
+    <description>Recent content in Node.js on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 30 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Node.js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Node.js 使用Redis发布订阅模式</title>
+      <link>https://orchidflower.github.io/2017/03/30/Nodejs-using-redis-publish-subscribe/</link>
+      <pubDate>Thu, 30 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/03/30/Nodejs-using-redis-publish-subscribe/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;最近在用Node.js做一个管理系统的时候碰到了一个场景：为了访问性能，系统在内存中（不是Redis）缓存了一些常用数据，例如系统菜单树之类的。但是什么时候刷新这些缓存就成了问题。当然在单服务器模式下也不是大问题，只要在更新数据的时候删除内存中的缓存数据即可。但是这一方法在分布式服务中就无效了：同时会有多个这种系统在跑，但是只有一台服务器接到了处理请求，其他服务器根本没有办法刷新内存中的数据。
+当然有人会说将缓存放到Redis中不就解决问题了？但是如果数据量稍大一些，而且访问频繁、更新却不频繁，放到Redis中每次访问都会对Redis带来不小的压力，显得很没有必要。
+这种情况下，自然就可以使用Redis的发布订阅机制来解决问题了：当数据更新之后，只要发布一个消息到Redis，所有服务器都可以收到消息，执行刷新缓存的操作了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Node.js从入门到放弃（一）-基础知识</title>
+      <link>https://orchidflower.github.io/2017/02/27/nodejs-learning-note-01/</link>
+      <pubDate>Mon, 27 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/02/27/nodejs-learning-note-01/</guid>
+      <description>&lt;p&gt;最近一周比较忙，一直忙着搭建开发平台。之前不就刚用Golang搭建了一个服务端开发平台。完成之后，就需要针对Golang开发的服务开发一个管理平台，用Golang也能做，但是感觉还是麻烦，最后决定使用Node.js。&lt;/p&gt;
+&lt;p&gt;这次搭建的平台倾向于使用比较新的一些Node.js特性，例如ES6、async/await解决回调地狱等。之前用过Node.js，但是属于浅尝辄止，这次准备充分了解一下。因此有了这些学习笔记。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

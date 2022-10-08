@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>技巧 on 执子之手</title>
+    <link>https://orchidflower.github.io/categories/%E6%8A%80%E5%B7%A7/</link>
+    <description>Recent content in 技巧 on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 04 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/categories/%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>删除启动台Launchpad上无效的图标</title>
+      <link>https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/</link>
+      <pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/</guid>
+      <description>&lt;p&gt;今天删除软件的时候碰到一个问题，软件虽然被删除了，但是图标依然在启动台上。怎么也删不掉。上网搜了搜，找到一个办法可以解决。特此记录一下。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 切换到目录 /private/var/folders&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#111&#34;&gt;cd&lt;/span&gt; /private/var/folders
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 寻找 com.apple.dock.launchpad 目录，图标信息存在该目录中的一个sqlite3数据库中&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4&lt;/span&gt;&lt;span&gt;sudo find . &lt;span style=&#34;color:#111&#34;&gt;|&lt;/span&gt; grep com.apple.dock.launchpad
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 确定好目录，然后使用cd转入对应的目录。目录名不同机器上不一样&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 使用sqlite3工具查询一下&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7&lt;/span&gt;&lt;span&gt;sqlite3 db &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;select * from apps where title like &amp;#39;eclipse%&amp;#39;;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 确认之后可以使用delete语句删除&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9&lt;/span&gt;&lt;span&gt;sqlite3 db &lt;span style=&#34;color:#d88200&#34;&gt;&amp;#34;delete from apps where title like &amp;#39;eclipse%&amp;#39;;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10&lt;/span&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 然后杀掉Dock进程，就好了&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span style=&#34;white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11&lt;/span&gt;&lt;span&gt;killall Dock
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+    
+    <item>
+      <title>禁用CleanMyMacX HealthMonitor</title>
+      <link>https://orchidflower.github.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</link>
+      <pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/11/27/How-to-Disable-CleanMyMacX-HealthMonitor/</guid>
+      <description>&lt;p&gt;&lt;code&gt;CleanMyMacX&lt;/code&gt; 是&lt;code&gt;Mac&lt;/code&gt;平台上优秀的卸载工具。虽然&lt;code&gt;Mac&lt;/code&gt;上的应用安装卸载比&lt;code&gt;Windows&lt;/code&gt;上简单很多，&lt;code&gt;AppStore&lt;/code&gt;上的软件采用的是沙盒模型，删除的时候会把相关的数据一并删除；但是大量的非&lt;code&gt;AppStore&lt;/code&gt;软件在删除对应的app之后不会同时删除对应的数据。 &lt;code&gt;CleanMyMacX&lt;/code&gt; 这种类型的软件会扫描这些相关的数据并一起删除。&lt;/p&gt;
+&lt;p&gt;最近发现 &lt;code&gt;CleanMyMacX&lt;/code&gt; 会附带一个后台服务：&lt;code&gt;CleanMyMacX HealthMonitor&lt;/code&gt;，即使软件本身退出这个后台服务还一直运行。这就有点360的味道了，让人不爽。最主要的是这个进程对资源的占用还是有的，没有到那种可以完全忽略的地步。因此想办法禁用它。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>使用Python写一个Alfred Workflow</title>
+      <link>https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/</link>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/</guid>
+      <description>&lt;h1 id=&#34;1-alfred-和-workflows-介绍&#34;&gt;1. &lt;code&gt;Alfred&lt;/code&gt; 和 &lt;code&gt;Workflows&lt;/code&gt; 介绍&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;Alfred&lt;/code&gt; 号称是 &lt;code&gt;Mac&lt;/code&gt; 上最强大的效率工具，一直在 &lt;code&gt;Mac&lt;/code&gt; 平台的工具类中排名榜首。它在&lt;code&gt;Spotlight&lt;/code&gt; （ &lt;code&gt;Mac&lt;/code&gt; 自带的搜索和快速启动引擎）基础上优化了快速启动与搜索的功能，还引入了 &lt;code&gt;Workflows&lt;/code&gt; 等强大的扩展功能，使之成为了一个拥有无限自动化潜力的「工具平台」软件，可以用它来实现近乎一切有关自动化的想法。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Worflows&lt;/code&gt; 是 &lt;code&gt;Alfred&lt;/code&gt; 的高端应用方式，它以流的方式来进行工作，从输入 -&amp;gt; 动作 -&amp;gt; 输出，将各种工具串联在一起进行工作，非常开放，用来将各种功能串联起来执行，可以定制完成各种想要实现的功能，潜力无限。&lt;/p&gt;
+&lt;p&gt;虽然网上已经有很多别人写好的 &lt;code&gt;Workflow&lt;/code&gt;，但总是不够用，毕竟各自的偷懒点不同，因此有必要学会 &lt;code&gt;Workflow&lt;/code&gt; 的编写，可以更好的满足自己的要求。&lt;/p&gt;
+&lt;h1 id=&#34;2-开始写一个workflows&#34;&gt;2. 开始写一个&lt;code&gt;Workflows&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;今天想写一个生成随机字符串的&lt;code&gt;Workflow&lt;/code&gt;，可选接收一个长度参数，生成指定长度的字符串，这个字符串可以由数字、字符、数字+字符等构成。下面说一下整个创建过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mac休眠模式调整</title>
+      <link>https://orchidflower.github.io/2020/08/11/How-to-change-hibernate-mod-for-Mac/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/08/11/How-to-change-hibernate-mod-for-Mac/</guid>
+      <description>&lt;p&gt;手头的Mac已经用了三年了，之前合盖睡眠的时候感觉掉电还不明显，最近几次系统升级后感觉掉电的情况明显了，一个晚上会掉5%左右，虽然不多，但是还是不爽。
+经过搜索，发现可以通过修改休眠模式，来解决这个问题，特此记录一下。&lt;/p&gt;
+&lt;h1 id=&#34;1-pmset及参数介绍&#34;&gt;1. pmset及参数介绍&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;pmset&lt;/code&gt;是Mac的一个系统命令，可以用来修改和电源管理相关的参数。看&lt;code&gt;man&lt;/code&gt;中的帮助：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;pmset can modify the values of any of the power management settings defined below. You may specify one or more
+setting &amp;amp; value pairs on the command-line invocation of pmset.  The -a, -b, -c, -u flags determine whether the
+settings apply to battery ( -b ), charger (wall power) ( -c ), UPS ( -u ) or all ( -a ).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;简单来说就是可以通过&lt;code&gt;pmset -b&lt;/code&gt;或&lt;code&gt;pmset -c&lt;/code&gt;,&lt;code&gt;pmset -a&lt;/code&gt;等命令修改电源配置参数。当然也可以通过&lt;code&gt;pmset -g&lt;/code&gt;命令查询当前的配置参数或日志等。例如以下命令可以查看当前系统的电源相关配置：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Mac上面的文件比较功能</title>
+      <link>https://orchidflower.github.io/2020/03/20/How-to-compare-file-on-mac/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/03/20/How-to-compare-file-on-mac/</guid>
+      <description>&lt;p&gt;以前在Windows上一直使用TotalCmd，它的比较功能非常棒。不论是目录还是文件，只要按下F10，就能够比较，还能够同步，非常方便。切换到Mac也有好几年了，一直没有找到完全匹配上的替代品。现在用的是ForkLift，常用功能还可以，但是比较功能差距很大。目前正在想办法自己写一些脚本增强一下功能。&lt;/p&gt;
+&lt;p&gt;目前实现了一个脚本，通过&lt;code&gt;ForkLift&lt;/code&gt;调用，可以满足基本的比较功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用&lt;code&gt;file&lt;/code&gt;判断文件类型，对文本类型调用&lt;code&gt;FileMerge&lt;/code&gt;进行源码比较；&lt;/li&gt;
+&lt;li&gt;如果不是，则只用&lt;code&gt;cmp&lt;/code&gt;功能比较内容是否相等；&lt;/li&gt;
+&lt;li&gt;后期考虑增加对目录类型的支持，引入目录比较工具。&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

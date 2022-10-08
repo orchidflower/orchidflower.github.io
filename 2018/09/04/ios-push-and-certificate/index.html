@@ -1,0 +1,501 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>iOS证书及推送相关概念 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="iOS证书及推送相关概念">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="iOS证书及推送相关概念 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2018/09/04/ios-push-and-certificate/" itemprop="url">
+        iOS证书及推送相关概念
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-09-04">
+    2018-09-04
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">1461 字 ~3分钟</span>
+</span>
+      <span id="/2018/09/04/ios-push-and-certificate/" class="leancloud_visitors" data-flag-title="iOS证书及推送相关概念">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1i-os开发中碰到的概念">1.i OS开发中碰到的概念</h1>
+<h2 id="11-开发者账号">1.1 开发者账号</h2>
+<p>苹果对开发者账号分为如下几类：</p>
+<ul>
+<li>个人 Individual  （$99/year，可以上架Apple Store，最大UUID数目100）</li>
+<li>组织 Organizations。又可以写分为两类：
+<ul>
+<li>组织 Organization  （普通账号，$99/year，能够上传Apple Store，最大UUID数目100）</li>
+<li>企业账号 Enterprise Program  （企业账号，$299/year，能够进行企业发布，不能够发布到Apple Store，不限制UUID数目）</li>
+</ul>
+</li>
+<li>教育机构（Educational Institutions）</li>
+</ul>
+<p><img src="http://blog-cache.orchidflower.cn/15264592291888.jpg" alt=""></p>
+<h2 id="12-证书-certificate">1.2 证书 Certificate</h2>
+<p>证书是对电脑开发资格的认证，每个开发者帐号有一套。开发者证书可以分为两种：</p>
+<h3 id="121-开发证书-developer-certification">1.2.1 开发证书 Developer Certification</h3>
+<p>安装在电脑上提供权限：开发人员通过设备进行真机测试。
+可以生成副本供多台电脑使用。</p>
+<h3 id="122-发布证书-distribution-certification">1.2.2 发布证书 Distribution Certification</h3>
+<p>安装在电脑上提供发布iOS程序的权限：开发人员可以制做测试版和发布版的程序。
+不可生成副本，仅有配置该证书的电脑才可使用；</p>
+<h2 id="13-授权文件-provisioning-profile">1.3 授权文件 Provisioning Profile</h2>
+<p>授权文件是对设备如iPod Touch、iPad、iPhone的授权，文件内记录了是设备的UDID和程序的App ID。
+即：使被授权的设备可以安装或调试Bundle identifier与授权文件中记录的App ID对应的程序。
+开发者帐号在创建授权文件时候会选择App ID，（开发者帐号下App ID中添加，单选）和UDID（开发者帐号下Devices中添加最多100个，多选）。</p>
+<p>授权文件分为两种，对应相应的证书使用：</p>
+<h3 id="131-开发授权文件-developer-provisioning-profile">1.3.1 开发授权文件 Developer Provisioning Profile</h3>
+<p>功能：在装有开发证书或副本的电脑上使用，开发人员选择该授权文件通过电脑将程序安装到授权文件记录的设备中，即可进行真机测试。</p>
+<p>注意：</p>
+<ol>
+<li>确保电脑有权限真机调试，即安装了开发证书或副本；</li>
+<li>在开发工具中程序的Bundle identifier和选中使用的授权文件的App ID要一致；</li>
+<li>连接调试的设备的UDID在选中的授权文件中有记录。</li>
+</ol>
+<h3 id="132-发布授权文件-distribution-provisioning-profile">1.3.2 发布授权文件 Distribution Provisioning Profile</h3>
+<p>功能：在装有发布证书的电脑上（即配置证书的电脑，只有一台）制做测试版和发布版的程序。</p>
+<ul>
+<li>发布版就是发布到App Store上的程序文件，开发者帐号创建授权文件时选择store选项，选择App ID，无需选择UDID；</li>
+<li>测试版就是在发布之前交给测试人员可同步到设备上的程序文件，开发者帐号创建授权文件时选择AdHoc，选择App ID和UDID；只有选中的UDID对应的设备才可能安装上通过该授权文件制做的程序。</li>
+</ul>
+<h2 id="14-appid">1.4 AppID</h2>
+<p>APPID代表了一个具体的APP。通过BundleID定义一个APP，理论上每个APP的BundleID都需要不同，因此在开发者账号中单独有个功能用来维护AppID，需要提供BundleID来创建一个AppID。</p>
+<p>AppID会用于生成与APP有关的证书（例如推送证书）和授权文件。在创建这些内容的时候可以选择AppID。</p>
+<h2 id="15-udid">1.5 UDID</h2>
+<p>每一台Apple设备都会有一个唯一标识符，这就是UDID。Apple会根据这个唯一标识符进行安装方面的限制：</p>
+<ul>
+<li>对没有上架的应用，只有UDID包含在对应的授权文件的时候才能安装；</li>
+<li>对于上架的应用，Apple应该也维护了一张UDID与AppID的对应表，下载过或购买过的用户会有一条记录（猜测）。</li>
+</ul>
+<h1 id="2-极光推送">2. 极光推送</h1>
+<p><img src="http://blog-cache.orchidflower.cn/15264599240300.png" alt=""></p>
+<p>极光推送提供了两种推送方式：</p>
+<ul>
+<li>红色部分是 APNs 推送，JPush 代理开发者的应用（需要基于开发者提供的应用证书），向苹果 APNs 服务器推送。由 APNs Server 推送到 iOS 设备上。</li>
+<li>蓝色部分是 JPush 应用内推送部分，即 App 启动时，内嵌的 JPush SDK 会开启长连接到 JPush Server，从而 JPush Server 可以推送消息到 App 里。</li>
+</ul>
+<p>他们的区别及应用场景：
+<img src="http://blog-cache.orchidflower.cn/15264599770989.jpg" alt=""></p>
+<h1 id="附录参考资料">附录、参考资料</h1>
+<ul>
+<li><a href="https://www.jianshu.com/p/8eff18ad88b3">【实用帖】苹果开发者账号证书详解</a></li>
+<li><a href="https://developer.apple.com/cn/support/compare-memberships/">开发者账号类型</a></li>
+<li><a href="https://docs.jiguang.cn/jpush/client/iOS/ios_sdk/">极光推送iOS SDK</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/ios" rel="tag" title="ios">#ios#</a>
+    
+    <a href="https://orchidflower.github.io/tags/push" rel="tag" title="push">#push#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E8%AF%81%E4%B9%A6" rel="tag" title="证书">#证书#</a>
+    
+    <a href="https://orchidflower.github.io/tags/%E6%8E%A8%E9%80%81" rel="tag" title="推送">#推送#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2020/03/13/linux-command-introduction-01-curl/" rel="next" title="Linux常用命令介绍 01 - curl">
+        <i class="fa fa-chevron-left"></i> Linux常用命令介绍 01 - curl
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2018/07/13/migrating-to-spring-boot-08-logging/" rel="prev" title="迁移到SpringBoot 08 - 日志">
+        迁移到SpringBoot 08 - 日志 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1i-os开发中碰到的概念">1.i OS开发中碰到的概念</a>
+      <ul>
+        <li><a href="#11-开发者账号">1.1 开发者账号</a></li>
+        <li><a href="#12-证书-certificate">1.2 证书 Certificate</a>
+          <ul>
+            <li><a href="#121-开发证书-developer-certification">1.2.1 开发证书 Developer Certification</a></li>
+            <li><a href="#122-发布证书-distribution-certification">1.2.2 发布证书 Distribution Certification</a></li>
+          </ul>
+        </li>
+        <li><a href="#13-授权文件-provisioning-profile">1.3 授权文件 Provisioning Profile</a>
+          <ul>
+            <li><a href="#131-开发授权文件-developer-provisioning-profile">1.3.1 开发授权文件 Developer Provisioning Profile</a></li>
+            <li><a href="#132-发布授权文件-distribution-provisioning-profile">1.3.2 发布授权文件 Distribution Provisioning Profile</a></li>
+          </ul>
+        </li>
+        <li><a href="#14-appid">1.4 AppID</a></li>
+        <li><a href="#15-udid">1.5 UDID</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-极光推送">2. 极光推送</a></li>
+    <li><a href="#附录参考资料">附录、参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

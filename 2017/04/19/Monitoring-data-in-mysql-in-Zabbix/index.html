@@ -1,0 +1,529 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" /> 
+    <title>通过Zabbix监控业务数据 - 执子之手</title>
+    <meta name="keywords" content="Orchid,Orchidflower,程序员,架构师,个人,思考,读书,笔记,技术,分享,Golang">
+    
+    <meta property="og:title" content="通过Zabbix监控业务数据">
+    <meta property="og:site_name" content="执子之手">
+    <meta property="og:image" content="/img/author.jpg"> 
+    <meta name="title" content="通过Zabbix监控业务数据 - 执子之手" />
+    <meta name="description" content="Do one thing at a time, and do well."> 
+    <link rel="shortcut icon" href="https://orchidflower.github.io/img/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link rel="apple-touch-icon-precomposed" href="https://orchidflower.github.io/img/apple-touch-icon.png" />
+    <link href="https://orchidflower.github.io/js/vendor/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+    <link href="https://orchidflower.github.io/css/main.css" rel="stylesheet" type="text/css" />
+    
+    <script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+     fancybox: true, 
+    motion: true
+  };
+</script>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<div class="container one-collumn sidebar-position-left page-home  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-meta  custom-logo ">
+
+  <div class="custom-logo-site-title">
+    <a href="https://orchidflower.github.io"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">执子之手</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">与子偕老</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+    <ul id="menu" class="menu">
+      
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/categories" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/post/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/tags/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签
+          </a>
+        </li>
+      
+        <li class="menu-item ">
+          <a href="https://orchidflower.github.io/about/" rel="section">
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于
+          </a>
+        </li>
+      
+      <li class="menu-item menu-item-search">
+        <a href="javascript:;" class="popup-trigger"> <i class="menu-item-icon fa fa-search fa-fw"></i> <br /> 搜索</a>
+      </li>
+    </ul>
+    <div class="site-search">
+      <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+    </div>
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+<section id="posts" class="posts-expand">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2017/04/19/Monitoring-data-in-mysql-in-Zabbix/" itemprop="url">
+        通过Zabbix监控业务数据
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-04-19">
+    2017-04-19
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+       <span>
+&nbsp; | &nbsp;
+<span class="post-meta-item-icon">
+    <i class="fa fa-eye"></i>
+</span>
+<span class="post-meta-item-text">阅读：</span>
+<span class="leancloud-visitors-count">3947 字 ~8分钟</span>
+</span>
+      <span id="/2017/04/19/Monitoring-data-in-mysql-in-Zabbix/" class="leancloud_visitors" data-flag-title="通过Zabbix监控业务数据">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>为了事后分析服务质量，我们的云认证系统将商户访问记录保存到了数据库中（MySQL）。在日志中我们记录了商户每次访问的返回结果，耗费时间等信息。通过这些信息我们可以分析发现服务什么时候性能比较低，什么时候处理效果比较差。</p>
+<p>之前通过写脚本，每小时对这些信息进行一次统计，并根据情况（如错误比例过高等）发送邮件通知给相关人员。但是这存在两个问题：</p>
+<ul>
+<li>响应不及时：因为一小时才统计一次，所以滞后效应太明显，经常问题已经发生很久报警才发送出来；</li>
+<li>报警条件更新不方便：报警条件只能通过脚本编写人员实现，修改起来不方便。</li>
+</ul>
+<p>鉴于此，一直想对这个报警体系进行改造，最后选择通过Zabbix实现这个功能。</p>
+<h1 id="1-背景介绍">1. 背景介绍</h1>
+<p>Zabbix这里就不介绍了，具体怎么操作网上很多教程。这里会介绍我在使用中碰到的问题，以及对应的解决办法，不涉及具体操作。</p>
+<p>这次改造主要对返回值进行判断。简单介绍一下数据：每条记录都有一个返回值字段ERROR_CODE，其可能的值为：</p>
+<ul>
+<li>100 服务处理成功；</li>
+<li>441 服务处理失败（服务失败，但是如果比例过高，可能有隐含的问题发生。例如商户提交的信息有问题，编码错误导致问题等）；</li>
+<li>442 有异常发生；</li>
+<li>443 有超时发生。</li>
+</ul>
+<p>这次希望达到的目标为：
+当成功比例过低（例如低于70%）的时候，触发报警；另外检查频度要提高（例如1分钟检查一次，不再1小时一次），这样可以快速发现问题。但是具体的报警条件还要考虑访问量等要素：例如晚上访问量很少，经常1分钟只有几条，这时很容易出发70%这个警戒线，所以还需要考虑过滤这种情况。</p>
+<h1 id="2-使用zabbix">2. 使用Zabbix</h1>
+<p>定下了目标，最初感觉实现起来比较容易，所以通过修改Zabbix agent，创建了几个Item，分别用来采集每分钟的编码100、441、442、443的记录数量、以及成功率，Zabbix中创建对应的Item。然后创建Trigger，判断成功率是否小于70即可。</p>
+<p>但是这样使用起来发现有问题：从数据库中获取上述记录数以及成功率的脚本执行速度较慢，偶尔会出现执行超时的问题，这会导致数据采集中断（Zabbix无法采集到数据），影响判断效果。虽然后来发现脚本本身优化有问题，经过优化速度有所提升，但是这种长时间的操作理应使用Zabbix Agent Active模式来处理。最后决定切换到<code>Zabbix agent(active)</code>。</p>
+<h1 id="3-使用zabbix-agent-active">3. 使用Zabbix Agent active</h1>
+<p>Zabbix agent和Zabbix agent(active)的区别在于后者会主动从Server拉取要监控的项目，成功采集之后提交给Server，相当于两步操作；而前者则是Server直接发命令给Agent，并等待返回，相当于一步操作。Active模式就是为了解决部分采集项耗时时间长而设计的。</p>
+<p>切换到Active Agent比较简单，只要在<code>/etc/zabbix/zabbix_agentd.conf</code>中指定配置即可：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span># 指定Zabbix服务器地址
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ServerActive=192.168.251.11
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span># 配置当前主机的Hostname，需要与Zabbix中配置的主机名对应，否则会无法获取监控项
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Hostname=192.168.61.53
+</span></span></code></pre></div><p>然后在Zabbix中把对应Item项改成<code>Zabbix agent(active)</code>即可。</p>
+<p>这样配置下来，解决了上面的耗时过长问题。但是实际使用中又发现了新问题。这个问题跟我们采用的报警判断条件有关。所以先介绍一下报警条件的思路：要触发警报，需要满足以下条件：</p>
+<ol>
+<li>最近5分钟内成功率低于70%（不是只判断当前1分钟，因为考虑单分钟可能有采样不够的问题）；</li>
+<li>最近5分钟访问总量不低于50（如果过低，因为采样条数有限，所以可能误判）。</li>
+</ol>
+<p>要满足上面这种判断，上面的数据采集方式有很大的问题：</p>
+<ol>
+<li>数据不是同时采集的：Zabbix无法驱动Agent同时采集一批Item，Agent只能一个一个的进行采集。这就导致几个Item并不是同一时期的数据。例如有可能这样：错误码100的信息是0点整采集的，而错误码441的信息可能是0点0分10秒采集的，错误码442的信息采集的时间可能是0点0分30秒。拿不同时间点采集的数据去计算成功率是不正确的；</li>
+<li>如果单纯的采用每分钟的成功率进行平均（avg），也是不准确的，因为每分钟的访问量是不一样的。正确的算法是成功率与访问量进行加权平均。但是上述采集方法显然满足不了这种计算要求。</li>
+</ol>
+<h1 id="4-使用zabbix-trapper">4. 使用Zabbix Trapper</h1>
+<p>经过阅读官方文档，发现可以使用Zabbix Trapper这种模式来解决问题。</p>
+<p>Trapper类型的Item一般翻译为捕捉器，可能理解起来有些困难，其核心的用法是Zabbix创建此种类型的Item，但是不会主动去进行数据采集。而不管是Agent、Agent（active）实际上都是Zabbix在主动收集数据，只是主动的有可能是Zabbix Server（对应Zabbix Agent类型）或者Zabbix Agent（对应Zabbix Agent active类型）。但是对Zabbix Trapper类型，Zabbix只是准备好了数据存放的地方，等待数据的到来。</p>
+<p>使用Trapper类型，数据采集的工作由使用者来实现。数据采集完成后，可以通过<code>zabbix_sender</code>发送到Zabbix Server中。然后Server就可以对各种Trigger进行判断了。也就是说，Trapper类型将数据采集功能交给了使用者。</p>
+<p>我采用的方法是通过cron定时执行（每分钟）一个脚本，脚本负责采集数据并发送给Zabbix。脚本内容大体如下，可供参考：</p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 获取当前时间</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#111">DATE_NOW</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span>date +<span style="color:#d88200">&#39;%Y-%m-%d %H:%M&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 获取上次执行时间</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#111">DATE_LAST</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span>cat /tmp/last.access.txt<span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#00a8c8">if</span> <span style="color:#f92672">[</span> -z <span style="color:#d88200">&#34;</span><span style="color:#111">$DATE_LAST</span><span style="color:#d88200">&#34;</span> <span style="color:#f92672">]</span><span style="color:#111">;</span> <span style="color:#00a8c8">then</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#75715e"># 如果没有上次执行时间，上次执行时间假定为5分钟前</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    <span style="color:#111">DATE_LAST</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span>date -d<span style="color:#d88200">&#39;-5 minute&#39;</span> +<span style="color:#d88200">&#39;%Y-%m-%d %H:%M&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#00a8c8">fi</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#75715e"># 保存上次执行时间</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#111">echo</span> <span style="color:#111">$DATE_NOW</span> &gt; /tmp/last.access.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#75715e"># 获取统计信息</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#111">sql</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;select count(id) as error_all, count(if(error_code=100,id,null)) as error_100,count(if(error_code=441,id,null)) as error_441,count(if(error_code=442, id, null)) as error_442,coun
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#d88200">t(if(error_code=443,id,null)) as error_443,count(if(error_code=100,id,null))/count(id)*100 as percent from xwf_logs.uid_bankcard_auth_no_otp_log where ACCESS_TIME&lt;&#39;</span><span style="color:#d88200">${</span><span style="color:#111">DATE_NOW</span><span style="color:#d88200">}</span><span style="color:#d88200">&#39; and AC
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#d88200">CESS_TIME&gt;=&#39;</span><span style="color:#d88200">${</span><span style="color:#111">DATE_LAST</span><span style="color:#d88200">}</span><span style="color:#d88200">&#39;&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#111">result</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#d88200">${</span><span style="color:#111">MYSQL_CONN_READ</span><span style="color:#d88200">}</span> -e <span style="color:#d88200">&#34;</span><span style="color:#d88200">${</span><span style="color:#111">sql</span><span style="color:#d88200">}</span><span style="color:#d88200">&#34;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#111">error_all</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $7}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#111">error_100</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $8}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#111">error_441</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $9}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#111">error_442</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $10}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#111">error_443</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $11}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#111">error_per</span><span style="color:#f92672">=</span><span style="color:#d88200">`</span><span style="color:#111">echo</span> <span style="color:#111">$result</span> <span style="color:#111">|</span> awk <span style="color:#d88200">&#39;{print $12}&#39;</span><span style="color:#d88200">`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#75715e"># 发送到Zabbix中</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#111">echo</span> Data was sent at: <span style="color:#111">$DATE_NOW</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_ALL<span style="color:#f92672">]</span> -o <span style="color:#111">$error_all</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_100<span style="color:#f92672">]</span> -o <span style="color:#111">$error_100</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_441<span style="color:#f92672">]</span> -o <span style="color:#111">$error_441</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_442<span style="color:#f92672">]</span> -o <span style="color:#111">$error_442</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_443<span style="color:#f92672">]</span> -o <span style="color:#111">$error_443</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>zabbix_sender -z <span style="color:#111">$ZABBIX_SERVER</span> -p <span style="color:#111">$ZABBIX_PORT</span> -s <span style="color:#111">$HOST_NAME</span> -k uid.logs<span style="color:#f92672">[</span>ERROR_CODE_100_PERCENT<span style="color:#f92672">]</span> -o <span style="color:#111">$error_per</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#111">echo</span> Data was sent successfully. 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#111">echo</span> ----------------------------------------------
+</span></span></code></pre></div><p>上述代码中，使用一条语句计算所有的指标，这样及减轻了MySQL的压力，也保证了数据都是同一个是简单采集出来的。另外，通过使用临时文件<code>/tmp/last.access.txt</code>保存上次数据采集的时间点，保证了即使定时任务触发有所变化，也不会导致部分数据没有采集到。</p>
+<p>Trigger中的条件设置成这样：
+<img src="http://blog-cache.orchidflower.cn/14925850061152.jpg" alt="">
+也就是最近5分钟内访问量&gt;50并且成功率低于70%就触发报警。</p>
+<h1 id="5-解决误报">5. 解决误报</h1>
+<h2 id="51-数据提交顺序">5.1 数据提交顺序</h2>
+<p>配置完成之后，运行一段时间发现经常误报：明明检查数据不符合条件，但是就是会触发一个状态OK的报警通知，持续时间（Duration）为0，没有对应的PROBLEM状态的报警。这真是非常奇怪。</p>
+<p>这个问题耗费了很长时间，经过仔细研读Zabbix的官方手册，发现里面有这么一段 <a href="https://www.zabbix.com/documentation/3.2/manual/config/triggers">Triggers</a>：</p>
+<blockquote>
+<p>Trigger status (the expression) is recalculated every time Zabbix server receives a new value that is part of the expression.
+也就是说，当Trigger的表达式依赖于多个Item（例如上面的依赖于ALL和100两个Item）的时候，当每一个Item的新值到来的时候，Zabbix都会对Trigger进行重新计算。Zabbix不会等到多个数据都齐全之后再进行判断。</p>
+</blockquote>
+<p>返回头看上面的脚本，先提交了ALL，然后提交了100。这样Zabbix先拿到了新的ALL值，**然后就会拿最近的5分钟的ERROR_CODE_100的值（这时实际上只有4个，最新的数据服务器还没有收到），和最近5分钟的ERROR_CODE_ALL的值（5个）一起计算成功率，显然这样很容易触发低于70%这个条件。所以Zabbix就认为这个Trigger处于PROBLEM状态。但是当100的数据也收到之后，Zabbix再次重新计算，又发现状态实际上是OK的。**所以就出现上面那种反复出现OK报警的情况。但是为什么没有对应的PROBLEM报警，可能是Zabbix本身进行了限制，不发送这种Duration很短的PRBLEM状态。有时间看看源码确认一下。</p>
+<p>最先想到的解决办法是将脚本中的数据提交顺序换一下，将100的数据先提交，然后是ALL。但是实际上这样也是有问题的，它会导致Trigger从PRBLEM状态错误的变成OK状态（5个100数据和4个ALL数据计算成功率）。所以最后的解决办法是这样：
+<img src="http://blog-cache.orchidflower.cn/14925808205344.jpg" alt="">
+就是判断最近30秒之内ALL和100的数据有没有，没有就认为数据不全，认为状态正常。只有当两者数据都有的情况下，才计算比例是否小于70%。</p>
+<h2 id="52-recovery条件">5.2 Recovery条件</h2>
+<p>仔细分析一下就会发现，<strong>上面的判断条件在Trigger状态为PROBLEM的时候还是有问题的：当ALL或者100的数据没有收到的时候，不进行计算百分比，上面的Express被判断没有问题，Trigger就会被判定为OK。但是当数据齐全之后，计算百分比之后发现还是有问题。这样就导致了状态反复切换，频繁的发送PRBLEM、OK的报警信息。</strong></p>
+<p>这个问题的解决办法是增加Recovery Expression到Trigger中。这个Expression的作用是当Trigger处于PROBLEM状态的时候，即使判断Expression状态没有问题（FALSE），还需要判断Recovery Expression装个表达式，只有它判断为TRUE的时候才解除报警状态。</p>
+<p>最后增加Recovery Expression，内容如下：
+<img src="http://blog-cache.orchidflower.cn/14925808045485.jpg" alt="">
+在这个表达式中，会判断成功率高于等于70%才认为状态恢复。</p>
+<h1 id="6-心得">6. 心得</h1>
+<ol>
+<li>Zabbix提供的基本功能能够满足大部分的需求，同时它还提供了很好的扩展方法。例如这里用到的Trapper，可以让用户自由的采集数据，而Zabbix专心干好它的Trigger功能，各司其职，配合高效。</li>
+<li>官方文档作为权威资料一定要看，很多疑难问题，可以在里面找到权威解答。</li>
+</ol>
+<h1 id="附录a-参考资料">附录A. 参考资料</h1>
+<ul>
+<li><a href="https://www.zabbix.com/documentation/3.2/manual/config/triggers/expression">Zabbix Trigger expression</a></li>
+<li><a href="https://www.zabbix.com/documentation/3.2/manual/appendix/triggers/functions">Zabbix Supported trigger functions</a></li>
+<li><a href="https://www.zabbix.com/documentation/3.2/manual/concepts/sender">Zabbix Sender</a></li>
+</ul>
+    </div>
+    <footer class="post-footer">
+     
+ 
+<div class="post-tags">     
+     
+    <a href="https://orchidflower.github.io/tags/Zabbix" rel="tag" title="Zabbix">#Zabbix#</a>
+    
+</div>
+
+
+
+     <div class="post-nav">
+    <div class="post-nav-next post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/04/20/Monitoring-data-in-mysql-using-Zabbixpart2/" rel="next" title="通过Zabbix监控业务数据（续）">
+        <i class="fa fa-chevron-left"></i> 通过Zabbix监控业务数据（续）
+        </a>
+    
+    </div>
+
+    <div class="post-nav-prev post-nav-item">
+    
+        <a href="https://orchidflower.github.io/2017/04/17/Enable-BBR-on-Linode/" rel="prev" title="在Linode节点上开启BBR算法">
+        在Linode节点上开启BBR算法 <i class="fa fa-chevron-right"></i>
+        </a>
+    
+    </div>
+</div>
+      
+     
+     
+     
+
+
+
+<div id="vcomments"></div>
+    </footer>
+  </article>
+</section>
+
+          </div>
+        </div>
+        <div class="sidebar-toggle">
+  <div class="sidebar-toggle-line-wrap">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  </div>
+</div>
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-inner">
+
+  <ul class="sidebar-nav motion-element">
+    <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+      文章目录
+    </li>
+    <li class="sidebar-nav-overview" data-target="site-overview">
+      站点概览
+    </li>
+  </ul>
+
+    <section class="site-overview sidebar-panel ">
+      <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+        src="https://orchidflower.github.io/img/author.jpg"
+        alt="Orchidflower" />
+    <p class="site-author-name" itemprop="name">Orchidflower</p>
+    <p class="site-description motion-element" itemprop="description"> 
+        Do one thing at a time, and do well.</p>
+</div>
+      <nav class="site-state motion-element">
+    <div class="site-state-item site-state-posts">
+      <a href="https://orchidflower.github.io/post/">
+        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-name">日志</span>
+      </a>
+    </div>
+    <div class="site-state-item site-state-categories">    
+        <a href="https://orchidflower.github.io/categories/">      
+         
+        <span class="site-state-item-count">6</span>
+        
+        <span class="site-state-item-name">分类</span>
+        
+        </a>
+    </div>
+
+    <div class="site-state-item site-state-tags">
+        <a href="https://orchidflower.github.io/tags/">
+         
+        <span class="site-state-item-count">82</span>
+        
+        <span class="site-state-item-name">标签</span>
+        </a>
+    </div>
+</nav>
+      
+      
+<div class="links-of-author motion-element">
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.github.io" target="_blank" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+            GitHub
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/orchid-flower" target="_blank" title="知乎">
+            <i class="fa fa-fw fa-globe"></i>
+            知乎
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://orchidflower.gitee.io" target="_blank" title="OSC">
+            <i class="fa fa-fw fa-git"></i>
+            OSC
+        </a>
+        </span>
+    
+        <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/47742465/" target="_blank" title="豆瓣">
+            <i class="fa fa-fw fa-globe"></i>
+            豆瓣
+        </a>
+        </span>
+    
+</div>
+
+
+      
+
+      
+    </section>
+    
+<section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+    <div class="post-toc">
+        <div class="post-toc-content"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-背景介绍">1. 背景介绍</a></li>
+    <li><a href="#2-使用zabbix">2. 使用Zabbix</a></li>
+    <li><a href="#3-使用zabbix-agent-active">3. 使用Zabbix Agent active</a></li>
+    <li><a href="#4-使用zabbix-trapper">4. 使用Zabbix Trapper</a></li>
+    <li><a href="#5-解决误报">5. 解决误报</a>
+      <ul>
+        <li><a href="#51-数据提交顺序">5.1 数据提交顺序</a></li>
+        <li><a href="#52-recovery条件">5.2 Recovery条件</a></li>
+      </ul>
+    </li>
+    <li><a href="#6-心得">6. 心得</a></li>
+    <li><a href="#附录a-参考资料">附录A. 参考资料</a></li>
+  </ul>
+</nav></div>
+    </div>
+</section>
+
+  </div>
+</aside>
+
+      </div>
+    </main>
+   
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  <span itemprop="copyrightYear">  &copy; 
+  2009 - 2022</span>
+  <span class="with-love"><i class="fa fa-heart"></i></span>
+  <span class="author" itemprop="copyrightHolder">执子之手</span>
+</div>
+<div class="powered-by">
+  Powered by - <a class="theme-link" href="http://gohugo.io" target="_blank" title="hugo" >Hugo v0.104.3</a>
+</div>
+<div class="powered-by">
+  Theme by - <a class="theme-link" href="https://github.com/xtfly/hugo-theme-next" target="_blank"> NexT
+  </a>
+</div>
+<div class="theme-info">
+  ICP - <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备17006463号-1</a>
+</div>
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+      <span id="scrollpercent"><span>0</span>%</span>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery/index.js?v=2.1.3"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/fastclick/lib/fastclick.min.js?v=1.0.6"></script> 
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.min.js?v=1.2.1"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/vendor/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="https://orchidflower.github.io/js/vendor/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+
+<script src="https://orchidflower.github.io/js/vendor/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/utils.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/motion.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/affix.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/schemes/pisces.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/scrollspy.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/post-details.js"></script>
+<script type="text/javascript" src="https://orchidflower.github.io/js/toc.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="https://orchidflower.github.io/js/search.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { fonts: ["TeX"] }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/av-min.js"></script>
+<script src="https://orchidflower.github.io/js/vendor/valine/Valine.min.js"></script>
+
+<script>
+  new Valine({
+    el: '#vcomments',
+    appId: 'rRoK18jJcvpFfn8Qmjmr0U5Y-MdYXbMMI',
+    appKey: '0VSzBkok3Snp1c4xHL4r3Sn3',
+    serverURLs: 'https:\/\/leancloud-api.orchidflower.cn',
+    visitor: true,
+    placeholder: 'Leave a comment...',
+    recordIP: true
+  })
+</script>
+
+</body>
+</html>

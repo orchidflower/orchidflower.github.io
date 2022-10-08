@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Workflow on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/Workflow/</link>
+    <description>Recent content in Workflow on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 21 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/Workflow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用Python写一个Alfred Workflow</title>
+      <link>https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/</link>
+      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2020/08/21/Build-Alfred-workflow-using-python/</guid>
+      <description>&lt;h1 id=&#34;1-alfred-和-workflows-介绍&#34;&gt;1. &lt;code&gt;Alfred&lt;/code&gt; 和 &lt;code&gt;Workflows&lt;/code&gt; 介绍&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;Alfred&lt;/code&gt; 号称是 &lt;code&gt;Mac&lt;/code&gt; 上最强大的效率工具，一直在 &lt;code&gt;Mac&lt;/code&gt; 平台的工具类中排名榜首。它在&lt;code&gt;Spotlight&lt;/code&gt; （ &lt;code&gt;Mac&lt;/code&gt; 自带的搜索和快速启动引擎）基础上优化了快速启动与搜索的功能，还引入了 &lt;code&gt;Workflows&lt;/code&gt; 等强大的扩展功能，使之成为了一个拥有无限自动化潜力的「工具平台」软件，可以用它来实现近乎一切有关自动化的想法。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Worflows&lt;/code&gt; 是 &lt;code&gt;Alfred&lt;/code&gt; 的高端应用方式，它以流的方式来进行工作，从输入 -&amp;gt; 动作 -&amp;gt; 输出，将各种工具串联在一起进行工作，非常开放，用来将各种功能串联起来执行，可以定制完成各种想要实现的功能，潜力无限。&lt;/p&gt;
+&lt;p&gt;虽然网上已经有很多别人写好的 &lt;code&gt;Workflow&lt;/code&gt;，但总是不够用，毕竟各自的偷懒点不同，因此有必要学会 &lt;code&gt;Workflow&lt;/code&gt; 的编写，可以更好的满足自己的要求。&lt;/p&gt;
+&lt;h1 id=&#34;2-开始写一个workflows&#34;&gt;2. 开始写一个&lt;code&gt;Workflows&lt;/code&gt;&lt;/h1&gt;
+&lt;p&gt;今天想写一个生成随机字符串的&lt;code&gt;Workflow&lt;/code&gt;，可选接收一个长度参数，生成指定长度的字符串，这个字符串可以由数字、字符、数字+字符等构成。下面说一下整个创建过程。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

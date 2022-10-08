@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SOAPUI on 执子之手</title>
+    <link>https://orchidflower.github.io/tags/SOAPUI/</link>
+    <description>Recent content in SOAPUI on 执子之手</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 21 Jun 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/tags/SOAPUI/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Mac上运行SOAPUI 5.3.0</title>
+      <link>https://orchidflower.github.io/2017/06/21/Running-SOAPUI-5-3-0-on-Mac-OSX/</link>
+      <pubDate>Wed, 21 Jun 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2017/06/21/Running-SOAPUI-5-3-0-on-Mac-OSX/</guid>
+      <description>&lt;h1 id=&#34;0-前言&#34;&gt;0. 前言&lt;/h1&gt;
+&lt;p&gt;Mac上找不到特别好的SOAP Webservice测试工具。以前用过SOAP UI，感觉很好。但是SOAP UI在Mac上安装有些问题。特此记录一下安装过程。&lt;/p&gt;
+&lt;p&gt;SoapUI目前最新的版本是5.3.0，目前已经开源。SmartBear在SOAP UI之后发布了新版本更名为SOAPUI NG。SOAPUI NG体积大了很多，而且功能更加繁琐，个人感觉还不如以前的版本好用。SoapUI以前收费，到了5.2.1以后版本就开源并且免费了。&lt;/p&gt;
+&lt;p&gt;SoapUI在Mac会出现无响应的现象：界面能够打开，但是画面卡住，鼠标显示成旋转彩球，无法操作。要正常使用需要修改一下才行。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
