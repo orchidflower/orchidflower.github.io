@@ -6,7 +6,23 @@
     <description>Recent content in Posts on 执子之手</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 27 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Dec 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://orchidflower.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>无损扩容Linux磁盘分区容量</title>
+      <link>https://orchidflower.github.io/2022/12/01/Expand-Linux-Partition-without-Data-Loss/</link>
+      <pubDate>Thu, 01 Dec 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://orchidflower.github.io/2022/12/01/Expand-Linux-Partition-without-Data-Loss/</guid>
+      <description>&lt;h1 id=&#34;1-背景&#34;&gt;1. 背景&lt;/h1&gt;
+&lt;p&gt;公司有台虚拟机，当初安装的时候给的磁盘容量偏小（80G），最近频繁报磁盘空间不足。因为上面跑了比较重要的服务，没有办法重装，只好考虑如何扩容。物理机上面的空闲空间还比较多，通过虚拟机管理软件修改了虚拟机的配置，很容易的把虚拟磁盘容量调大了，调整到了215G。&lt;/p&gt;
+&lt;p&gt;虚拟磁盘调整后，就需要在&lt;code&gt;Linux&lt;/code&gt;系统中进行扩容操作。扩容主要有两步工作要做：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;调整分区大小：将新增的空间添加到分区内容；需要用到工具&lt;code&gt;parted&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;调整文件系统大小：分区容量扩大后，使用&lt;code&gt;resize2fs&lt;/code&gt;命令将文件系统扩容到整个磁盘容量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;：当时分区的时候没有选择&lt;code&gt;LVM&lt;/code&gt;管理，如果使用&lt;code&gt;LVM&lt;/code&gt;管理可以通过&lt;code&gt;lvextend&lt;/code&gt;命令进行分区的扩容，具体方法参考附录中的链接。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>奇怪现象：两个Consumer消费同一个分区（Partition）</title>
       <link>https://orchidflower.github.io/2022/05/27/Two-Kafka-Consumer-consume-one-partition/</link>

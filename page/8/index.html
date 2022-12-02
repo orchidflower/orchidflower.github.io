@@ -118,6 +118,73 @@
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2017/02/15/install-golang-debugger-dlv-on-mac/" itemprop="url">
+        安装Go语言调试工具dlv
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2017-02-15">
+    2017-02-15
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2017/02/15/install-golang-debugger-dlv-on-mac/" class="leancloud_visitors" data-flag-title="安装Go语言调试工具dlv">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.github.io/2017/02/15/install-golang-debugger-dlv-on-mac/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>Dlv，也成为Delve，是Go语言的源码调试工具。由<code>derekparker</code>开发，开源与Github。在Mac上配置Go语言开发环境的时候，经常碰到的问题就是Dlv调用总是不成功，无法启动应用，无法调试等等。大部分的问题都与Mac的安全机制有关。Mac上使用codesign对应用进行签名，没有签名的程序会受到一些限制，例如无法作为调试程序。</p>
+<p>当然如果为了方便，你可以通过Homebrew安装Homebrew编译好的Dlv。下面描述的是如何从源码构建这一工具。Delve作者专门写了一篇文档（请看附录的链接），描述如何对Dlv进行自签名。方法是生成一个自签名的证书，然后从源码编译安装Dlv。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.github.io/2017/02/15/install-golang-debugger-dlv-on-mac/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
         <a class="post-title-link" href="https://orchidflower.github.io/2017/02/14/submit-to-search-engine/" itemprop="url">
         Hexo博客提交搜索引擎
         </a>
@@ -542,7 +609,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.github.io/post/">
-        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -559,7 +626,7 @@
     <div class="site-state-item site-state-tags">
         <a href="https://orchidflower.github.io/tags/">
          
-        <span class="site-state-item-count">82</span>
+        <span class="site-state-item-count">83</span>
         
         <span class="site-state-item-name">标签</span>
         </a>

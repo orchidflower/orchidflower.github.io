@@ -118,6 +118,74 @@
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/" itemprop="url">
+        迁移到SpringBoot 07 - Redis发布订阅机制
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-07-09">
+    2018-07-09
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
+        <span itemprop="name">开发</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 07 - Redis发布订阅机制">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.github.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <p>Redis中的发布订阅机制（Pub/Sub）是基于channel这一概念的，这有些类似于Kafka中的基于topic的消息机制，只是不支持持久化。如果publish的消息，没有任何client处于&quot;subscribe&quot;状态，消息将会被丢弃。如果client在subcribe时，链接断开后重连，那么此期间的消息也将丢失。Redis server将会&quot;尽力&quot;将消息发送给处于subscribe状态的client，但是仍不会保证每条消息都能被正确接收。</p>
+<p>为了解耦发布者(publisher)和订阅者(subscriber)之间的关系，Redis 使用了 channel (频道)作为两者的中介：发布者将信息直接发布给 channel ，而 channel 负责将信息发送给适当的订阅者，发布者和订阅者之间没有相互关系，也不知道对方的存在。</p>
+<p>Spring Data Redis组件对Pub/Sub机制进行了抽象，提供了类似JMS的编程模式。Spring Data Redis使用了一个Container（RedisMessageListenerContainer）来解决发布订阅机制。这个Container使用一个Redis链接解决了多个topic订阅的问题。它把其他的订阅、发布者隔离成基本的POJO对象，而不用与Redis对象打交道。这简化了整个编程模型。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.github.io/2018/07/09/migrating-to-spring-boot-07-Redis-Pub-Sub/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
         <a class="post-title-link" href="https://orchidflower.github.io/2018/07/06/migrating-to-spring-boot-06-swagger/" itemprop="url">
         迁移到SpringBoot 06 - Swagger
         </a>
@@ -779,72 +847,6 @@
     <footer class="post-footer"><div class="post-eof"></div></footer>
   </article>
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">
-        <a class="post-title-link" href="https://orchidflower.github.io/2018/05/08/migrating-to-spring-boot-00-background/" itemprop="url">
-        迁移到SpringBoot 00 - 背景介绍
-        </a>
-      </h1>
-      <div class="post-meta">
-      <span class="post-time">
-<span class="post-meta-item-icon">
-    <i class="fa fa-calendar-o"></i>
-</span>
-<span class="post-meta-item-text">时间：</span>
-<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2018-05-08">
-    2018-05-08
-</time>
-</span> 
-      
-
-  <span class="post-category" >
-  &nbsp; | &nbsp;
-  <span class="post-meta-item-icon">
-    <i class="fa fa-folder-o"></i>
-  </span>
-  <span class="post-meta-item-text">分类：</span>
-  
-    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-      <a href="https://orchidflower.github.io/categories/%E5%BC%80%E5%8F%91" itemprop="url" rel="index">
-        <span itemprop="name">开发</span>
-      </a>
-      &nbsp; 
-    </span>
-  
-</span>
-
-
-      
-      <span id="/2018/05/08/migrating-to-spring-boot-00-background/" class="leancloud_visitors" data-flag-title="迁移到SpringBoot 00 - 背景介绍">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-    </span>
-    <span class="post-meta-item-text">评论：</span>
-    <a href="https://orchidflower.github.io/2018/05/08/migrating-to-spring-boot-00-background/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-fire"></i>
-    </span>
-    <span class="post-meta-item-text">访问：</span>
-    <span class="leancloud-visitors-count">0</span>
-</span>
-      </div>
-    </header>
-    <div class="post-body" itemprop="articleBody">
-    <p>最近因为发布方面的原因，需要对项目进行一次改造，趁着这次机会，对云平台项目进行了彻底的重构，迁移到了Spring Boot上。改造过程中，从传统的Spring项目迁移到Spring Boot上，还是碰到了一些问题的，也因此留下了这个系列的笔记。其中的内容，应该对希望把传统的Spring项目迁移到Spring Boot的人会有所帮助。</p>
-    </div>
-    
-    <div class="post-more-link text-center">
-    <a class="btn" href="https://orchidflower.github.io/2018/05/08/migrating-to-spring-boot-00-background/" rel="contents">
-      阅读全文 &raquo;
-    </a>
-    </div>
-    
-    <footer class="post-footer"><div class="post-eof"></div></footer>
-  </article>
-
 </section>
 
 
@@ -944,7 +946,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.github.io/post/">
-        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -961,7 +963,7 @@
     <div class="site-state-item site-state-tags">
         <a href="https://orchidflower.github.io/tags/">
          
-        <span class="site-state-item-count">82</span>
+        <span class="site-state-item-count">83</span>
         
         <span class="site-state-item-name">标签</span>
         </a>

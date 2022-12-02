@@ -118,6 +118,79 @@
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
       <h1 class="post-title" itemprop="name headline">
+        <a class="post-title-link" href="https://orchidflower.github.io/2022/12/01/Expand-Linux-Partition-without-Data-Loss/" itemprop="url">
+        无损扩容Linux磁盘分区容量
+        </a>
+      </h1>
+      <div class="post-meta">
+      <span class="post-time">
+<span class="post-meta-item-icon">
+    <i class="fa fa-calendar-o"></i>
+</span>
+<span class="post-meta-item-text">时间：</span>
+<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2022-12-01">
+    2022-12-01
+</time>
+</span> 
+      
+
+  <span class="post-category" >
+  &nbsp; | &nbsp;
+  <span class="post-meta-item-icon">
+    <i class="fa fa-folder-o"></i>
+  </span>
+  <span class="post-meta-item-text">分类：</span>
+  
+    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+      <a href="https://orchidflower.github.io/categories/%E8%BF%90%E7%BB%B4" itemprop="url" rel="index">
+        <span itemprop="name">运维</span>
+      </a>
+      &nbsp; 
+    </span>
+  
+</span>
+
+
+      
+      <span id="/2022/12/01/Expand-Linux-Partition-without-Data-Loss/" class="leancloud_visitors" data-flag-title="无损扩容Linux磁盘分区容量">
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+    </span>
+    <span class="post-meta-item-text">评论：</span>
+    <a href="https://orchidflower.github.io/2022/12/01/Expand-Linux-Partition-without-Data-Loss/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
+    &nbsp; | &nbsp;
+    <span class="post-meta-item-icon">
+        <i class="fa fa-fire"></i>
+    </span>
+    <span class="post-meta-item-text">访问：</span>
+    <span class="leancloud-visitors-count">0</span>
+</span>
+      </div>
+    </header>
+    <div class="post-body" itemprop="articleBody">
+    <h1 id="1-背景">1. 背景</h1>
+<p>公司有台虚拟机，当初安装的时候给的磁盘容量偏小（80G），最近频繁报磁盘空间不足。因为上面跑了比较重要的服务，没有办法重装，只好考虑如何扩容。物理机上面的空闲空间还比较多，通过虚拟机管理软件修改了虚拟机的配置，很容易的把虚拟磁盘容量调大了，调整到了215G。</p>
+<p>虚拟磁盘调整后，就需要在<code>Linux</code>系统中进行扩容操作。扩容主要有两步工作要做：</p>
+<ol>
+<li>调整分区大小：将新增的空间添加到分区内容；需要用到工具<code>parted</code>；</li>
+<li>调整文件系统大小：分区容量扩大后，使用<code>resize2fs</code>命令将文件系统扩容到整个磁盘容量。</li>
+</ol>
+<p><strong>备注</strong>：当时分区的时候没有选择<code>LVM</code>管理，如果使用<code>LVM</code>管理可以通过<code>lvextend</code>命令进行分区的扩容，具体方法参考附录中的链接。</p>
+    </div>
+    
+    <div class="post-more-link text-center">
+    <a class="btn" href="https://orchidflower.github.io/2022/12/01/Expand-Linux-Partition-without-Data-Loss/" rel="contents">
+      阅读全文 &raquo;
+    </a>
+    </div>
+    
+    <footer class="post-footer"><div class="post-eof"></div></footer>
+  </article>
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="name headline">
         <a class="post-title-link" href="https://orchidflower.github.io/2022/05/27/Two-Kafka-Consumer-consume-one-partition/" itemprop="url">
         奇怪现象：两个Consumer消费同一个分区（Partition）
         </a>
@@ -851,84 +924,6 @@
     <footer class="post-footer"><div class="post-eof"></div></footer>
   </article>
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <h1 class="post-title" itemprop="name headline">
-        <a class="post-title-link" href="https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/" itemprop="url">
-        删除启动台Launchpad上无效的图标
-        </a>
-      </h1>
-      <div class="post-meta">
-      <span class="post-time">
-<span class="post-meta-item-icon">
-    <i class="fa fa-calendar-o"></i>
-</span>
-<span class="post-meta-item-text">时间：</span>
-<time itemprop="dateCreated" datetime="2016-03-22T13:04:35+08:00" content="2020-12-04">
-    2020-12-04
-</time>
-</span> 
-      
-
-  <span class="post-category" >
-  &nbsp; | &nbsp;
-  <span class="post-meta-item-icon">
-    <i class="fa fa-folder-o"></i>
-  </span>
-  <span class="post-meta-item-text">分类：</span>
-  
-    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-      <a href="https://orchidflower.github.io/categories/%E6%8A%80%E5%B7%A7" itemprop="url" rel="index">
-        <span itemprop="name">技巧</span>
-      </a>
-      &nbsp; 
-    </span>
-  
-</span>
-
-
-      
-      <span id="/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/" class="leancloud_visitors" data-flag-title="删除启动台Launchpad上无效的图标">
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-    </span>
-    <span class="post-meta-item-text">评论：</span>
-    <a href="https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/#vcomments">&nbsp;<span class="leancloud-comments-count">0</span>&nbsp;</a>
-    &nbsp; | &nbsp;
-    <span class="post-meta-item-icon">
-        <i class="fa fa-fire"></i>
-    </span>
-    <span class="post-meta-item-text">访问：</span>
-    <span class="leancloud-visitors-count">0</span>
-</span>
-      </div>
-    </header>
-    <div class="post-body" itemprop="articleBody">
-    <p>今天删除软件的时候碰到一个问题，软件虽然被删除了，但是图标依然在启动台上。怎么也删不掉。上网搜了搜，找到一个办法可以解决。特此记录一下。</p>
-<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#75715e"># 切换到目录 /private/var/folders</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#111">cd</span> /private/var/folders
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#75715e"># 寻找 com.apple.dock.launchpad 目录，图标信息存在该目录中的一个sqlite3数据库中</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>sudo find . <span style="color:#111">|</span> grep com.apple.dock.launchpad
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#75715e"># 确定好目录，然后使用cd转入对应的目录。目录名不同机器上不一样</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#75715e"># 使用sqlite3工具查询一下</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>sqlite3 db <span style="color:#d88200">&#34;select * from apps where title like &#39;eclipse%&#39;;&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#75715e"># 确认之后可以使用delete语句删除</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>sqlite3 db <span style="color:#d88200">&#34;delete from apps where title like &#39;eclipse%&#39;;&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#75715e"># 然后杀掉Dock进程，就好了</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>killall Dock
-</span></span></code></pre></div>
-    </div>
-    
-    <div class="post-more-link text-center">
-    <a class="btn" href="https://orchidflower.github.io/2020/12/04/Delete-Invalid-Icon-from-Lauchpad/" rel="contents">
-      阅读全文 &raquo;
-    </a>
-    </div>
-    
-    <footer class="post-footer"><div class="post-eof"></div></footer>
-  </article>
-
 </section>
 
 
@@ -1031,7 +1026,7 @@
       <nav class="site-state motion-element">
     <div class="site-state-item site-state-posts">
       <a href="https://orchidflower.github.io/post/">
-        <span class="site-state-item-count">75</span>
+        <span class="site-state-item-count">76</span>
         <span class="site-state-item-name">日志</span>
       </a>
     </div>
@@ -1048,7 +1043,7 @@
     <div class="site-state-item site-state-tags">
         <a href="https://orchidflower.github.io/tags/">
          
-        <span class="site-state-item-count">82</span>
+        <span class="site-state-item-count">83</span>
         
         <span class="site-state-item-name">标签</span>
         </a>
